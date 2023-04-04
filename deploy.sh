@@ -2,7 +2,7 @@ echo "Start auto deploy "
 git add .
 read -p "请输入commit 信息:   " title
 git commit -m "$title"
-git push
+git push origin master
 
 echo "Finish"
 echo 按任意键继续
