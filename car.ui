@@ -6,18 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1245</width>
-    <height>673</height>
+    <width>1202</width>
+    <height>646</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 255, 255);</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>1000</x>
-     <y>110</y>
+     <x>950</x>
+     <y>20</y>
      <width>171</width>
      <height>71</height>
     </rect>

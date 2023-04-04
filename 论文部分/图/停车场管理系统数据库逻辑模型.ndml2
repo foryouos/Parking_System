@@ -1,0 +1,714 @@
+{
+  "paper": {
+    "name": "A4",
+    "leftMargin": 0.5,
+    "rightMargin": 0.5,
+    "topMargin": 0.5,
+    "bottomMargin": 0.5,
+    "isPortriat": true
+  },
+  "modelVersion": 2.01,
+  "defaultSchema": "default",
+  "server": {
+    "objectType": "Server_LOGICAL",
+    "name": "Default",
+    "schemas": [
+      {
+        "objectType": "Schema_LOGICAL",
+        "name": "default",
+        "tables": [
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "PLocation",
+            "comment": "停车场信息",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_id",
+                "type": "INT",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场ID",
+                "oldName": "L_id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_name",
+                "type": "VARCHAR",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场名称",
+                "oldName": "L_name"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_longitude",
+                "type": "DOUBLE",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场所在经度",
+                "oldName": "L_longitude"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_latitude",
+                "type": "DOUBLE",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场所在纬度",
+                "oldName": "L_latitude"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_nowcount",
+                "type": "INT",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场现有车位",
+                "oldName": "L_nowcount"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_cout",
+                "type": "INT",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场总车位",
+                "oldName": "L_cout"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_price",
+                "type": "DOUBLE ",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场每小时价格",
+                "oldName": "L_price"
+              }
+            ],
+            "foreignKeys": [],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "L_id"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "Ctime",
+            "comment": "在某停车场停车时间信息",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "C_id",
+                "type": "VARCHAR",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "车牌号外键",
+                "oldName": "C_id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_id",
+                "type": "INT",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场ID",
+                "oldName": "L_id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "C_enter",
+                "type": "DATETIME",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "车辆进入停车场时间",
+                "oldName": "C_enter"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "C_leave",
+                "type": "DATETIME",
+                "length": 255,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "车辆离开停车场时间",
+                "oldName": "C_leave"
+              }
+            ],
+            "foreignKeys": [
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "车牌外键",
+                "fields": [
+                  "C_id"
+                ],
+                "referencedSchema": "default",
+                "referencedTable": "Car",
+                "referencedFields": [
+                  "C_id"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "车牌号时间外键",
+                "oldName": ""
+              },
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "车库外键",
+                "fields": [
+                  "L_id"
+                ],
+                "referencedSchema": "default",
+                "referencedTable": "PLocation",
+                "referencedFields": [
+                  "L_id"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "车在某车库停车时间外键",
+                "oldName": ""
+              }
+            ],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "Pnum",
+            "comment": "车库车位编号",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "P_locm",
+                "type": "INT",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "车库位置编号",
+                "oldName": "P_locm"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_id",
+                "type": "INT ",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "所在车库编号",
+                "oldName": "L_id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "P_longitude",
+                "type": "DOUBLE ",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "编号所在精度",
+                "oldName": "P_longitude"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "P_latitude",
+                "type": "DOUBLE",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "编号所在的纬度",
+                "oldName": "P_latitude"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "P_height",
+                "type": "DOUBLE ",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "编号所在的高度",
+                "oldName": "P_height"
+              }
+            ],
+            "foreignKeys": [
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "车库ID",
+                "fields": [
+                  "L_id"
+                ],
+                "referencedSchema": "default",
+                "referencedTable": "PLocation",
+                "referencedFields": [
+                  "L_id"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "引用车库id",
+                "oldName": ""
+              }
+            ],
+            "indexes": [],
+            "uniques": [],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "P_locm"
+              ],
+              "oldName": ""
+            }
+          },
+          {
+            "objectType": "Table_LOGICAL",
+            "name": "Car",
+            "comment": "车辆信息",
+            "oldName": "",
+            "fields": [
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "C_id",
+                "type": "VARCHAR",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": false,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "车牌号",
+                "oldName": "C_id"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "C_img",
+                "type": "VARCHAR",
+                "length": 0,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "车牌照片",
+                "oldName": "C_img"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "P_locm",
+                "type": "INT",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "车辆位置编号",
+                "oldName": "P_locm"
+              },
+              {
+                "objectType": "TableField_LOGICAL",
+                "name": "L_id",
+                "type": "INT",
+                "length": 20,
+                "decimals": 0,
+                "isNullable": true,
+                "defaultType": "None",
+                "defaultValue": "",
+                "comment": "停车场id",
+                "oldName": "L_id"
+              }
+            ],
+            "foreignKeys": [
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "车停在某停车场",
+                "fields": [
+                  "L_id"
+                ],
+                "referencedSchema": "default",
+                "referencedTable": "PLocation",
+                "referencedFields": [
+                  "L_id"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "车停在某停车场",
+                "oldName": ""
+              },
+              {
+                "objectType": "ForeignKey_LOGICAL",
+                "name": "车所在编号",
+                "fields": [
+                  "P_locm"
+                ],
+                "referencedSchema": "default",
+                "referencedTable": "Pnum",
+                "referencedFields": [
+                  "P_locm"
+                ],
+                "sourceCardinality": "NoneRelationship",
+                "targetCardinality": "NoneRelationship",
+                "comment": "车所在的编号",
+                "oldName": ""
+              }
+            ],
+            "indexes": [],
+            "uniques": [
+              {
+                "objectType": "Unique_LOGICAL",
+                "name": "",
+                "fields": [
+                  "C_id"
+                ],
+                "comment": "",
+                "oldName": ""
+              }
+            ],
+            "primaryKey": {
+              "objectType": "PrimaryKey_LOGICAL",
+              "name": "",
+              "fields": [
+                "C_id"
+              ],
+              "oldName": ""
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "diagrams": [
+    {
+      "name": "Diagram 1",
+      "paperWidth": 1,
+      "paperHeight": 1,
+      "tableFont": "Arial Unicode MS",
+      "tableFontSize": 14,
+      "isBalckWhite": false,
+      "showDBSchemaName": false,
+      "showViewRelations": true,
+      "notation": "default",
+      "showFieldComment": false,
+      "showTableComment": false,
+      "shapes": [
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "Car",
+          "x": 40,
+          "y": 280,
+          "width": 180,
+          "height": 140,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "PLocation",
+          "x": 640,
+          "y": 380,
+          "width": 200,
+          "height": 200,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "Ctime",
+          "x": 30,
+          "y": 660,
+          "width": 200,
+          "height": 200,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        },
+        {
+          "type": "table",
+          "schemaName": "default",
+          "tableName": "Pnum",
+          "x": 420,
+          "y": 100,
+          "width": 150,
+          "height": 140,
+          "isBold": false,
+          "titleColor": {
+            "r": 55,
+            "g": 131,
+            "b": 192,
+            "a": 1
+          }
+        }
+      ],
+      "layers": [],
+      "relations": [
+        {
+          "name": "车牌外键",
+          "sourceTableName": "Ctime",
+          "sourceSchemaName": "default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 140,
+              "y": 645
+            },
+            {
+              "x": 140,
+              "y": 340
+            },
+            {
+              "x": 140,
+              "y": 340
+            },
+            {
+              "x": 140,
+              "y": 435
+            }
+          ],
+          "label": {
+            "x": 148,
+            "y": 625,
+            "width": 64,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        },
+        {
+          "name": "车库外键",
+          "sourceTableName": "Ctime",
+          "sourceSchemaName": "default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 245,
+              "y": 760
+            },
+            {
+              "x": 740,
+              "y": 760
+            },
+            {
+              "x": 740,
+              "y": 595
+            }
+          ],
+          "label": {
+            "x": 235,
+            "y": 722,
+            "width": 64,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        },
+        {
+          "name": "车停在某停车场",
+          "sourceTableName": "Car",
+          "sourceSchemaName": "default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 235,
+              "y": 350
+            },
+            {
+              "x": 465,
+              "y": 350
+            },
+            {
+              "x": 465,
+              "y": 480
+            },
+            {
+              "x": 625,
+              "y": 480
+            }
+          ],
+          "label": {
+            "x": 225,
+            "y": 312,
+            "width": 106,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        },
+        {
+          "name": "车库ID",
+          "sourceTableName": "Pnum",
+          "sourceSchemaName": "default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 585,
+              "y": 170
+            },
+            {
+              "x": 740,
+              "y": 170
+            },
+            {
+              "x": 740,
+              "y": 365
+            }
+          ],
+          "label": {
+            "x": 575,
+            "y": 132,
+            "width": 51,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        },
+        {
+          "name": "车所在编号",
+          "sourceTableName": "Car",
+          "sourceSchemaName": "default",
+          "lineWidth": 1,
+          "visible": true,
+          "vertices": [
+            {
+              "x": 235,
+              "y": 360
+            },
+            {
+              "x": 320,
+              "y": 180
+            },
+            {
+              "x": 405,
+              "y": 180
+            }
+          ],
+          "label": {
+            "x": 225,
+            "y": 322,
+            "width": 78,
+            "height": 30,
+            "fontName": "Arial Unicode MS",
+            "fontSize": 14,
+            "fontColor": {
+              "r": 51,
+              "g": 51,
+              "b": 51,
+              "a": 1
+            },
+            "isFontBold": false,
+            "isFontItalic": false,
+            "isVisible": false
+          }
+        }
+      ],
+      "viewRelations": []
+    }
+  ]
+}

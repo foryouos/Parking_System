@@ -37,3 +37,7 @@ RC_ICONS = logo.ico
 RESOURCES += \
     images.qrc
 
+# 引入OpenCV
+INCLUDEPATH += D:\openCV3.2.0\opencv\build\include
+LIBS += -L"D:\openCV3.2.0\opencv\build\x64\vc14\lib\opencv_world320d.lib"
+
