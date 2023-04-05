@@ -7,6 +7,10 @@ Signup::Signup(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("停车场管理系统注册");
+    //初始化sqlite数据库
+    //sqlite_Init();
+    mysql(); //mysql初始化
+
     //设置左侧背景图片
     QPixmap *pix = new QPixmap(":./images/welcome.png");
     QSize sz = ui->label_login_image->size();
@@ -15,6 +19,7 @@ Signup::Signup(QWidget *parent) :
 
 Signup::~Signup()
 {
+    mysql().mysql_close();
     delete ui;
 }
 
@@ -31,12 +36,11 @@ void Signup::on_pushButton_back_clicked()
 //点击注册页面的确认按钮
 void Signup::on_pushButton_sure_clicked()
 {
-    //初始化数据库连接
-    //sqlite_Init();
-    mysql_Init();
     QString username = ui->lineEdit_username->text();
     QString password = ui->lineEdit_password->text();
     QString surepass = ui->lineEdit_sure_password->text();
+    QString telephone = ui->lineEdit_tel->text();
+    QString truename = ui->lineEdit_name->text();
     if (username.isEmpty() || password.isEmpty())
     {
         QMessageBox::warning(this, "注册认证", "账户和密码不能为空");
@@ -47,13 +51,13 @@ void Signup::on_pushButton_sure_clicked()
     {
         QString encryptedPassword = encryptPassword(password); // 对密码进行加密
         //插入语句
-        QString sql = QStringLiteral("insert into USER(username,password) values('%1','%2');").arg(username, encryptedPassword);
-        // QString sql=QString("insert into user(username,password) values('%1','%2');").arg(username).arg(password);
-        //创建执行语句
-        QSqlQuery query;
+
+        QString sql = QStringLiteral("insert into USER(username,password,telephone,truename) values('%1','%2','%3','%4');").arg(username, encryptedPassword,telephone,truename);
+
         //判断执行结果
-        if(!query.exec(sql))
+        if(!mysql().execute_bool(sql))
         {
+            qDebug()<<username<<encryptedPassword<<telephone<<truename;
             qDebug()<<"insert into error";
         }
         else
@@ -64,6 +68,7 @@ void Signup::on_pushButton_sure_clicked()
             MainWindow *w = new MainWindow;
             w->show();
             this->close();
+
         }
     }
     else

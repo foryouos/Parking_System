@@ -75,8 +75,7 @@ font: 20pt &quot;华文隶书&quot;;</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">
-font: 20pt &quot;华文隶书&quot;;</string>
+     <string notr="true">font: 20pt &quot;华文隶书&quot;;</string>
     </property>
     <property name="text">
      <string>密码</string>

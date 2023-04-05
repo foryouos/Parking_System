@@ -1,5 +1,5 @@
 # 引入数据库模块
-QT       += core gui sql
+QT       += core gui sql widgets uitools
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,12 +13,14 @@ SOURCES += \
     car.cpp \
     main.cpp \
     mainwindow.cpp \
-    signup.cpp
+    signup.cpp \
+    mysql.cpp
 
 HEADERS += \
     car.h \
     mainwindow.h \
-    signup.h
+    signup.h \
+    mysql.h
 
 FORMS += \
     car.ui \
@@ -38,6 +40,6 @@ RESOURCES += \
     images.qrc
 
 # 引入OpenCV
-INCLUDEPATH += D:\openCV3.2.0\opencv\build\include
-LIBS += -L"D:\openCV3.2.0\opencv\build\x64\vc14\lib\opencv_world320d.lib"
+#INCLUDEPATH += D:\openCV3.2.0\opencv\build\include
+#LIBS += -L"D:\openCV3.2.0\opencv\build\x64\vc14\lib\opencv_world320d.lib"
 

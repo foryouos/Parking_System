@@ -5,5 +5,6 @@
         <file>images/hello.jpg</file>
         <file>images/welcome.png</file>
         <file>images/logo.png</file>
+        <file>images/car.jpg</file>
     </qresource>
 </RCC>
