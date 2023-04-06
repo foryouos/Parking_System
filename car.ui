@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1202</width>
-    <height>646</height>
+    <width>1320</width>
+    <height>734</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
   <widget class="QPushButton" name="MainButton">
    <property name="geometry">
     <rect>
-     <x>1100</x>
-     <y>130</y>
+     <x>1200</x>
+     <y>160</y>
      <width>101</width>
      <height>41</height>
     </rect>
@@ -39,8 +39,8 @@ border-radius:7px;</string>
   <widget class="QPushButton" name="messageButton">
    <property name="geometry">
     <rect>
-     <x>1100</x>
-     <y>70</y>
+     <x>1200</x>
+     <y>80</y>
      <width>101</width>
      <height>41</height>
     </rect>
@@ -59,39 +59,42 @@ border-radius:7px;</string>
   <widget class="QStackedWidget" name="stack">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>1091</width>
-     <height>661</height>
+     <x>-10</x>
+     <y>-10</y>
+     <width>1201</width>
+     <height>751</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(255, 255, 255);</string>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="main">
     <widget class="QLabel" name="label_title">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>760</x>
        <y>420</y>
-       <width>221</width>
-       <height>61</height>
+       <width>141</width>
+       <height>41</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
+     </property>
      <property name="text">
-      <string>主页</string>
+      <string>识别的车牌号</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_video">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
-       <width>431</width>
-       <height>291</height>
+       <y>10</y>
+       <width>621</width>
+       <height>381</height>
       </rect>
      </property>
      <property name="text">
@@ -101,51 +104,124 @@ border-radius:7px;</string>
     <widget class="QLineEdit" name="Car_idinput">
      <property name="geometry">
       <rect>
-       <x>620</x>
-       <y>270</y>
+       <x>740</x>
+       <y>490</y>
        <width>181</width>
        <height>51</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
      </property>
      <property name="placeholderText">
       <string>车牌号</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="submit">
+    <widget class="QPushButton" name="submitCar">
      <property name="geometry">
       <rect>
-       <x>640</x>
-       <y>360</y>
+       <x>750</x>
+       <y>590</y>
        <width>121</width>
-       <height>41</height>
+       <height>51</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
      </property>
      <property name="text">
       <string>入库</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="message">
-    <widget class="QLabel" name="label_2">
+    <widget class="QPushButton" name="DeleteCar">
      <property name="geometry">
       <rect>
-       <x>400</x>
-       <y>140</y>
-       <width>291</width>
-       <height>241</height>
+       <x>960</x>
+       <y>590</y>
+       <width>121</width>
+       <height>51</height>
       </rect>
      </property>
-     <property name="text">
-      <string>车辆信息</string>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
      </property>
+     <property name="text">
+      <string>出库</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="message">
+    <widget class="QLabel" name="labelCar">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>80</y>
+       <width>171</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 17pt &quot;华文隶书&quot;;</string>
+     </property>
+     <property name="text">
+      <string>车库信息系统</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tableCar">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>160</y>
+       <width>931</width>
+       <height>551</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);
+border: none;</string>
+     </property>
+     <property name="rowCount">
+      <number>10</number>
+     </property>
+     <property name="columnCount">
+      <number>6</number>
+     </property>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <column/>
+     <column/>
+     <column/>
+     <column/>
+     <column/>
+     <column/>
     </widget>
    </widget>
    <widget class="QWidget" name="ctrol">
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>420</x>
-       <y>30</y>
+       <x>520</x>
+       <y>60</y>
        <width>171</width>
        <height>61</height>
       </rect>
@@ -160,8 +236,8 @@ border-radius:7px;</string>
     <widget class="QTableWidget" name="tablectrol">
      <property name="geometry">
       <rect>
-       <x>201</x>
-       <y>140</y>
+       <x>290</x>
+       <y>200</y>
        <width>651</width>
        <height>251</height>
       </rect>
@@ -280,8 +356,8 @@ border-radius:7px;</string>
     <widget class="QPushButton" name="ButtonModify">
      <property name="geometry">
       <rect>
-       <x>670</x>
-       <y>460</y>
+       <x>760</x>
+       <y>510</y>
        <width>131</width>
        <height>41</height>
       </rect>
@@ -300,8 +376,8 @@ border-radius:7px;</string>
     <widget class="QPushButton" name="ButtonADD">
      <property name="geometry">
       <rect>
-       <x>290</x>
-       <y>460</y>
+       <x>340</x>
+       <y>500</y>
        <width>111</width>
        <height>41</height>
       </rect>
@@ -320,8 +396,8 @@ border-radius:7px;</string>
     <widget class="QPushButton" name="ButtonDelete">
      <property name="geometry">
       <rect>
-       <x>470</x>
-       <y>460</y>
+       <x>550</x>
+       <y>500</y>
        <width>131</width>
        <height>41</height>
       </rect>
@@ -342,7 +418,7 @@ border-radius:7px;</string>
   <widget class="QPushButton" name="CtrolButton">
    <property name="geometry">
     <rect>
-     <x>1100</x>
+     <x>1200</x>
      <y>10</y>
      <width>101</width>
      <height>41</height>

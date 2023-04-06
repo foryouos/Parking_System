@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     mysql(); //mysql初始化
     mysql().create_user(); //初始化用户表格
 
+
     //设置登陆页面左边背景图
     // 创建QPixmap对象，加载png图像存储到pix变量中，使用new关键字分配堆内存来储存该对象
     QPixmap *pix = new QPixmap(":/images/hello.jpg");

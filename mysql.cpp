@@ -46,6 +46,75 @@ void mysql::create_user()
         qDebug()<<"table create success";
     }
 }
+//创建车表
+void mysql::create_car()
+{
+    //创建车库的表格,ID,车牌号，入库时间，出库时间，费用，id主键，车牌号索引
+    QString createsql = QString("CREATE TABLE IF NOT EXISTS CAR("
+                                "id INT NOT NULL AUTO_INCREMENT,"
+                                "license_plate VARCHAR(20) NOT NULL,"
+                                "check_in_time DATETIME NOT NULL,"
+                                "check_out_time DATETIME DEFAULT NULL,"
+                                "fee DECIMAL(10, 2) DEFAULT NULL,"
+                                "location VARCHAR(20) NOT NULL,"
+                                "PRIMARY KEY (id),"
+                                "INDEX(license_plate)"
+                                ");"
+                            );
+
+    if(!execute(createsql).exec()) //执行创建表格语句
+    {
+        qDebug()<<"table CAR create error";
+    }
+    else
+    {
+        qDebug()<<"table CAR create success";
+    }
+}
+
+void mysql::create_parking()
+{
+    //-- 建车库表格
+    // 车库id,车库名称，车库现有用量，车库总用量
+    QString createsql = QString("CREATE TABLE IF NOT EXISTS PARKING("
+                                    "P_id INT NOT NULL AUTO_INCREMENT,"
+                                    "P_name VARCHAR(255) NOT NULL,"
+                                    "P_now_count INT,"
+                                    "P_all_count INT,"
+                                    "P_fee DECIMAL(10, 2),"
+                                    "PRIMARY KEY (P_id)"
+                                ");"
+                            );
+
+    if(!execute_bool(createsql)) //执行创建表格语句
+    {
+        qDebug()<<"table Parking create error";
+    }
+    else
+    {
+        qDebug()<<"table Parking create success";
+    }
+}
+//初始化停车场数据
+void mysql::Parking_init()
+{
+    QString name = "新科停车场";
+    QString all_count = "200";
+    QString now_count = "0";
+    QString p_fee = "30.00";
+    //将停车场数据插入进入
+    //QString createsql_Parking = QStringLiteral("insert into PARKING(P_name,P_now_count,P_all_count,P_fee) values('%1','%2','%3','%4');").arg(Parking_name,now_count,parking_count,p_fee);
+
+    QString createsql_Parking = QStringLiteral("insert into PARKING(P_name,P_now_count,P_all_count,P_fee) values('%1','%2','%3','%4');").arg(name,now_count,all_count,p_fee);
+
+    if(mysql().execute_bool(createsql_Parking))
+    {
+        qDebug()<<"Parking Initative successful";
+    }
+    else {
+        qDebug()<<"Parking Initative Error";
+    }
+}
 
 QSqlQuery mysql::execute(QString createsql)
 {

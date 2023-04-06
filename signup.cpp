@@ -10,7 +10,6 @@ Signup::Signup(QWidget *parent) :
     //初始化sqlite数据库
     //sqlite_Init();
     mysql(); //mysql初始化
-
     //设置左侧背景图片
     QPixmap *pix = new QPixmap(":./images/welcome.png");
     QSize sz = ui->label_login_image->size();
