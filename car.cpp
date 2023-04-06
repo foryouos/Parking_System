@@ -9,7 +9,10 @@ Car::Car(QWidget *parent) :
     setWindowTitle("停车场管理系统车牌识别");
     mysql(); //mysql初始化
     // 隐藏行号
-    ui->tablectrol->verticalHeader()->setVisible(false);
+    //ui->tablectrol->verticalHeader()->setVisible(false);
+
+    //设置管理员列表第一列ID为只读
+
 
     //先给视频一个图片
     // 创建QPixmap对象，加载png图像存储到pix变量中，使用new关键字分配堆内存来储存该对象
@@ -78,24 +81,136 @@ void Car::on_CtrolButton_clicked()
         while (q.next()) {
             //设置表格行数，每一次加一行
             ui->tablectrol->setRowCount(i+1);
+            //第一列
             ui->tablectrol->setItem(i,0,new QTableWidgetItem(q.value(0).toString()));
             ui->tablectrol->item(i,0)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
 
+            //为添加过后的每i行第0列设置数据只读
+            ui->tablectrol->item(i,0)->setFlags(ui->tablectrol->item(i,0)->flags()^Qt::ItemIsEditable);
+
+            //第二列
             ui->tablectrol->setItem(i,1,new QTableWidgetItem(q.value(1).toString()));
             ui->tablectrol->item(i,1)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-
+            //第三列
             ui->tablectrol->setItem(i,2,new QTableWidgetItem(q.value(2).toString()));
             ui->tablectrol->item(i,2)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-
+            //第四列
             ui->tablectrol->setItem(i,3,new QTableWidgetItem(q.value(3).toString()));
             ui->tablectrol->item(i,3)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-
+            //第五列
             ui->tablectrol->setItem(i,4,new QTableWidgetItem(q.value(4).toString()));
             ui->tablectrol->item(i,4)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
             i++;
         }
+        ui->tablectrol->setRowCount(i+1);
+
     }
 
 
 
+}
+//获取当前用户鼠标太Table WIdget所在的行
+//并获取用户在哪一行做出修改，然后根据用户ID更新用户信息
+void Car::on_ButtonModify_clicked()
+{
+    //读取当前鼠标所在的行
+    int row = ui->tablectrol->currentRow();
+    qDebug()<<row;
+    if(row>=0)
+    {
+        //读取行对应的数据
+        QString ID = ui->tablectrol->item(row,0)->text(); //ID为只读，作为唯一标识符
+        //读取其它信息
+        QString username = ui->tablectrol->item(row,1)->text();
+        QString password = ui->tablectrol->item(row,2)->text();
+        QString telephone = ui->tablectrol->item(row,3)->text();
+        QString truename = ui->tablectrol->item(row,4)->text();
+        //输出信息测试
+        //qDebug()<<ID<<username<<password<<telephone<<truename;
+
+        //将读取到的数据更新到数据库
+        QString encryptedPassword = encryptPassword(password); // 对密码进行加密
+        QString sql_update = QStringLiteral("UPDATE USER SET username='%1', password='%2', telephone='%3',truename='%4' WHERE id='%5';").arg(username,encryptedPassword,telephone,truename,ID);
+        QSqlQuery query;
+        query.prepare(sql_update);
+        if (query.exec()) {
+            if (query.numRowsAffected() == 1) {
+                qDebug() << "User updated successfully.";
+                Car::on_CtrolButton_clicked(); //模拟点击，更新
+            } else {
+                qDebug() << "Could not update user with ID:" << ID;
+            }
+        } else {
+            //检查执行语句
+            qDebug()<<sql_update;
+            qDebug() << "Error executing SQL statement:" ;
+        }
+    }
+
+}
+
+void Car::on_ButtonADD_clicked()
+{
+    //读取当前鼠标所在的行
+    int row = ui->tablectrol->currentRow();
+    qDebug()<<row;
+    if(row>=0)
+    {
+        //读取用户添加数据后鼠标所在的行
+        QString ID = ui->tablectrol->item(row,0)->text();
+        QString username = ui->tablectrol->item(row,1)->text();
+        QString password = ui->tablectrol->item(row,2)->text();
+        QString telephone = ui->tablectrol->item(row,3)->text();
+        QString truename = ui->tablectrol->item(row,4)->text();
+        //输出信息测试
+        //qDebug()<<ID<<username<<password<<telephone<<truename;
+
+        //将读取到的数据更新到数据库
+        QString encryptedPassword = encryptPassword(password); // 对密码进行加密
+        QString sql_insert = QStringLiteral("insert into USER(id,username,password,telephone,truename) values('%1','%2','%3','%4','%5');").arg(ID,username, encryptedPassword,telephone,truename);
+
+        if (mysql().execute_bool(sql_insert))
+        {
+            qDebug() << "User Add successfully.";
+            //为添加过后的每i行第0列设置数据只读
+            ui->tablectrol->item(row,0)->setFlags(ui->tablectrol->item(row,0)->flags()^Qt::ItemIsEditable);
+            Car::on_CtrolButton_clicked(); //模拟点击，更新
+        }
+        else
+        {
+            qDebug()<<sql_insert;
+            qDebug() << "User Add error" << ID;
+        }
+
+
+    }
+}
+
+void Car::on_ButtonDelete_clicked()
+{
+    //读取当前鼠标所在的行
+    int row = ui->tablectrol->currentRow();
+    qDebug()<<row;
+    if(row>=0)
+    {
+        //读取用户添加数据后鼠标所在的行
+        QString ID = ui->tablectrol->item(row,0)->text();
+
+        QString sql_Drop = QStringLiteral("DELETE FROM USER WHERE id = '%1';").arg(ID);
+
+        if (mysql().execute_bool(sql_Drop))
+        {
+            qDebug() << "User Add successfully.";
+            //恢复可读
+            ui->tablectrol->item(row,0)->setFlags(ui->tablectrol->item(row,0)->flags() | Qt::ItemIsEditable);
+            Car::on_CtrolButton_clicked(); //模拟点击，更新
+        }
+        else
+        {
+            qDebug()<<sql_Drop;
+            qDebug() << "User Add error" << ID;
+        }
+
+
+    }
 }

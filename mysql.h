@@ -3,6 +3,7 @@
 #include <QSqlQuery> //数据库执行语句
 #include <QMessageBox> //数据库执行语句
 #include <QDebug>
+#include<QSqlError> //mysql报错语句
 
 class mysql
 {

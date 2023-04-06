@@ -59,8 +59,8 @@ border-radius:7px;</string>
   <widget class="QStackedWidget" name="stack">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>10</x>
+     <y>10</y>
      <width>1091</width>
      <height>661</height>
     </rect>
@@ -160,8 +160,8 @@ border-radius:7px;</string>
     <widget class="QTableWidget" name="tablectrol">
      <property name="geometry">
       <rect>
-       <x>200</x>
-       <y>130</y>
+       <x>201</x>
+       <y>140</y>
        <width>651</width>
        <height>251</height>
       </rect>
@@ -188,13 +188,121 @@ border-radius:7px;</string>
      <column/>
      <column/>
      <column/>
+     <item row="0" column="0">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="4" column="0">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="4" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="5" column="0">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="5" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
     </widget>
-    <widget class="QPushButton" name="ButtonAdd">
+    <widget class="QPushButton" name="ButtonModify">
      <property name="geometry">
       <rect>
-       <x>280</x>
-       <y>470</y>
+       <x>670</x>
+       <y>460</y>
        <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+     </property>
+     <property name="text">
+      <string>修改</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="ButtonADD">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>460</y>
+       <width>111</width>
        <height>41</height>
       </rect>
      </property>
@@ -212,9 +320,9 @@ border-radius:7px;</string>
     <widget class="QPushButton" name="ButtonDelete">
      <property name="geometry">
       <rect>
-       <x>480</x>
-       <y>470</y>
-       <width>111</width>
+       <x>470</x>
+       <y>460</y>
+       <width>131</width>
        <height>41</height>
       </rect>
      </property>
@@ -226,27 +334,7 @@ font: 10pt &quot;华文隶书&quot;;
 border-radius:7px;</string>
      </property>
      <property name="text">
-      <string>删除用户</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButtonModify">
-     <property name="geometry">
-      <rect>
-       <x>660</x>
-       <y>470</y>
-       <width>121</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>修改密码</string>
+      <string>删除</string>
      </property>
     </widget>
    </widget>

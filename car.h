@@ -19,8 +19,14 @@ public:
 
 private slots:
 
-
+    //点击用户管理页面
     void on_CtrolButton_clicked();
+    //点击修改用户信息
+    void on_ButtonModify_clicked();
+
+    void on_ButtonADD_clicked();
+
+    void on_ButtonDelete_clicked();
 
 private:
     Ui::Car *ui;
