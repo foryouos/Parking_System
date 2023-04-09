@@ -263,8 +263,6 @@ void Car::on_submitCar_clicked()
         QMessageBox::information(this,"停车入库","车牌入库失败！！");
 
     }
-
-
 }
 
 void Car::on_messageButton_clicked()
