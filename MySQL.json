@@ -1,0 +1,7 @@
+{
+    "ip": "localhost",
+    "port": 3306,
+    "user": "root",
+    "password":"5211314",
+    "DatabaseName":"car"
+}

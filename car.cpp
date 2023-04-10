@@ -12,6 +12,7 @@ Car::Car(QWidget *parent) :
     //初始化停车表
     mysql().create_parking(); //创建车表
 
+    mysql().Parking_init(); //初始化车表数据
 
     //判断是否在
 
@@ -61,6 +62,7 @@ void Car::SwitchPage(){
         ui->stack->setCurrentIndex(2);
 
 }
+
 
 
 //当点击用户控制页面的时候，
@@ -234,12 +236,26 @@ void Car::on_ButtonDelete_clicked()
 
     }
 }
+
+
+
+
 //车辆入库将信息提交到数据库
 void Car::on_submitCar_clicked()
 {
 
     //读取车牌号
     QString license_plate = ui->Car_idinput->text(); //读取输入或识别出来的车牌号
+    //检查车牌是否合规，不合规直接退出
+//    if(!checkPlateNumber(license_plate))
+//    {
+//        qDebug()<<license_plate ;
+//        QMessageBox::information(this,"识别失败","您输入的车牌号不合规");
+//        return;
+//    }
+
+
+
     //获取当前的时间
     // 获取当前时间
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -256,6 +272,9 @@ void Car::on_submitCar_clicked()
         qDebug()<<"车牌数据插入成功";
         ui->Car_idinput->clear();  //清空输入框
         QMessageBox::information(this,"停车入库","车牌入库成功!");
+        //车牌插入成功后，更新车库数据
+        mysql().parking_acc(); //让现有车库加一
+
     }
     else {
         qDebug()<<"车牌插入失败";
@@ -271,7 +290,7 @@ void Car::on_messageButton_clicked()
     ui->tableCar->verticalHeader()->setVisible(false);
     // 设置表头
     QStringList header;
-    header<<"ID"<<"车牌号"<<"入库时间"<<"出库时间"<<"费用"<<"停车地点";
+    header<<"ID"<<"车牌号"<<"入库时间"<<"出库时间"<<"费用"<<"停车地点"<<"车费单价";
     ui->tableCar->setHorizontalHeaderLabels(header);
     //让列号 自适应列表大小
     //ui->tableCar->resizeColumnsToContents(); //自适
@@ -281,7 +300,7 @@ void Car::on_messageButton_clicked()
     //读取数据库的数据
 
     //使用MySQL语句查询车库信息，根据时间倒序
-    QString sqlstrCar="select id,license_plate,check_in_time,check_out_time,fee,location from CAR  ORDER BY check_in_time DESC;";
+    QString sqlstrCar="SELECT id, license_plate, check_in_time, check_out_time, fee, location, P_fee FROM CAR JOIN parking ON Car.location = parking.P_name ORDER BY check_in_time DESC;";
     QSqlQuery q;
     q.prepare(sqlstrCar);
     int i = 0;
@@ -291,7 +310,7 @@ void Car::on_messageButton_clicked()
         while (q.next()) {
             //设置表格行数，每一次加一行
             ui->tableCar->setRowCount(i+1);
-            //第一列
+             //第一列
             ui->tableCar->setItem(i,0,new QTableWidgetItem(q.value(0).toString()));
             ui->tableCar->item(i,0)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
 
@@ -313,9 +332,99 @@ void Car::on_messageButton_clicked()
             //第六列
             ui->tableCar->setItem(i,5,new QTableWidgetItem(q.value(5).toString()));
             ui->tableCar->item(i,5)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+            //第七列
+            ui->tableCar->setItem(i,6,new QTableWidgetItem(q.value(6).toString()));
+            ui->tableCar->item(i,6)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
             i++;
         }
     }
 }
 //创建饼图
+//收费函数
+int Car::fee_charge(QDateTime oldDateTime, QDateTime currentDateTime,QString license_plate)
+{
+    //计算彼此的秒差
+    qint64 seconds = oldDateTime.secsTo(currentDateTime);
+    long long hours = std::abs(seconds) / 3600LL;
+    qDebug()<<seconds << hours;
+    //计算出费用SELECT parking.P_fee FROM parking JOIN car ON car.location = parking.P_name;
+    QString sql_fee= QStringLiteral("SELECT parking.P_fee FROM parking JOIN car ON car.location = parking.P_name WHERE CAR.license_plate='%1';").arg(license_plate);
+    QSqlQuery q = mysql().execute(sql_fee);
+    q.next();
+    int p_fee = q.value(0).toInt();
+
+    int fee = int(hours) * p_fee;
+
+    //首先根据车牌号，
+    return fee;
+}
+//当出库操作之后
+void Car::on_DeleteCar_clicked()
+{
+    //读取车牌号
+    QString license_plate = ui->Car_output->text(); //读取输入或识别出来的车牌号
+//    if(!checkPlateNumber(license_plate))
+//    {
+//        QMessageBox::information(this,"识别失败","您输入的车牌号不合规");
+//        return;
+//    }
+    //先检查车牌是否已入库，若未入库则报错，并返回时间
+    QString sqlplate_check= QStringLiteral("select id from CAR where license_plate = '%1' AND check_out_time IS NULL; ").arg(license_plate);
+    QSqlQuery query =mysql().execute(sqlplate_check);
+    if(!query.size()) //如果不存在此数据
+    {
+         QMessageBox::information(this,"入库检测","当前车牌不在车库当中!!");
+         return ;
+    }
+    //获取当前车牌号的时间
+    QString sql_time= QStringLiteral("select check_in_time from CAR where license_plate = '%1' ORDER BY check_in_time DESC;").arg(license_plate);
+    QSqlQuery q = mysql().execute(sql_time);
+    q.next();
+    QDateTime oldDateTime = q.value(0).toDateTime();
+
+
+
+    //获取当前的时间
+    // 获取当前时间
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    // 将时间转换为字符串格式（格式化为 "yyyy-MM-dd hh:mm:ss"）存储到MySQL的database
+    QString formattedDateTime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss");
+
+    //qDebug()<<oldDateTime<<currentDateTime;
+    //根据时间计算费用
+    //调用时间函数，传入参数，识别的车牌号（去求过去的时间)，还有现在的时间,根据时间差去求所需要的费用
+    qDebug()<<oldDateTime<<currentDateTime;
+    int fee = fee_charge(oldDateTime,currentDateTime,license_plate);
+
+
+    //将信息上传到数据库
+    qDebug()<<formattedDateTime<<fee<<license_plate;
+
+
+    //QString sql_submitfee = QStringLiteral("UPDATE CAR SET check_out_time='%1', fee='%2' WHERE license_plate='%3';").arg(formattedDateTime,fee,QChar::fromLatin1(license_plate.toLatin1()[0]));
+    QSqlQuery qupdate;
+    qupdate.prepare("UPDATE CAR SET check_out_time=:check_out_time, fee=:fee WHERE license_plate=:license_plate");
+    qupdate.bindValue(":check_out_time", formattedDateTime);
+    qupdate.bindValue(":fee", fee);
+    qupdate.bindValue(":license_plate", license_plate);
+
+    if(qupdate.exec())
+    {
+        qDebug()<<"车辆出库成功";
+        ui->Car_output->clear();  //清空输入框
+        QString message = QString("出库成功，车牌号'%1'需要支付'%2'元").arg(license_plate, QString::number(fee, 'f', 2));
+
+        QMessageBox::information(this,"停车出库库",message);
+        //车牌插入成功后，更新车库数据
+        mysql().parking_dec(); //让现有车位数量减一
+
+    }
+    else {
+        qDebug()<<"车牌出库失败";
+        //qDebug()<<sql_submitfee;
+        QMessageBox::information(this,"停车入库","车牌入库失败！！");
+
+    }
+}
+
 

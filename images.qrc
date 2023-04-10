@@ -6,5 +6,6 @@
         <file>images/welcome.png</file>
         <file>images/logo.png</file>
         <file>images/car.jpg</file>
+        <file>MySQL.json</file>
     </qresource>
 </RCC>

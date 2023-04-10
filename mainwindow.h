@@ -24,9 +24,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+
 private slots:
     void on_pushButton_2_clicked();
     void on_return_2_clicked();
+
+    void on_initmysql_clicked();
 
 private:
     Ui::MainWindow *ui;

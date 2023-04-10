@@ -2,17 +2,40 @@
 
 mysql::mysql()
 {
+    //读取本地json数据
+    //读取文件
+    QFile file(":/MySQL.json");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "文件打开失败:" << file.errorString();
+        return;
+    }
+
+    QTextStream in(&file);
+    in.setCodec("UTF-8");  // 将编码格式设置为 UTF-8
+    QString jsonString = in.readAll();
+
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
+    QJsonObject obj = doc.object();
+    // 使用键来访问每一个值
+    QString ip = obj["ip"].toString();
+    int port = obj["port"].toInt();
+    QString user = obj["user"].toString();
+    QString password = obj["password"].toString();
+    QString DatabaseName = obj["DatabaseName"].toString();
+    //qDebug()<<ip<<port<<user<<password<<DatabaseName;
+
+
     //如果数据库没有连接则连接数据库,解决 重复连接问题 ，QT会 默认连接，只有关闭所有窗口才会关闭连接
     //唯一的数据库连接qt_sql_default_connection会以此命名，若包含则不连接
     if(!QSqlDatabase::contains("qt_sql_default_connection"))
     {
         db = QSqlDatabase::addDatabase("QMYSQL");
 
-                db.setHostName("localhost");  //连接本地主机
-                db.setPort(3306);
-                db.setDatabaseName("Car");
-                db.setUserName("root");
-                db.setPassword("5211314");
+                db.setHostName(ip);  //连接本地主机
+                db.setPort(port);
+                db.setDatabaseName(DatabaseName);
+                db.setUserName(user);
+                db.setPassword(password);
                 bool ok = db.open();
                 if (!ok){
                     qDebug()<<"mysql open error";
@@ -58,7 +81,7 @@ void mysql::create_car()
                                 "fee DECIMAL(10, 2) DEFAULT NULL,"
                                 "location VARCHAR(20) NOT NULL,"
                                 "PRIMARY KEY (id),"
-                                "INDEX(license_plate)"
+                                "UNIQUE INDEX(license_plate)"
                                 ");"
                             );
 
@@ -82,7 +105,8 @@ void mysql::create_parking()
                                     "P_now_count INT,"
                                     "P_all_count INT,"
                                     "P_fee DECIMAL(10, 2),"
-                                    "PRIMARY KEY (P_id)"
+                                    "PRIMARY KEY (P_id),"
+                                    "UNIQUE INDEX(P_name)"
                                 ");"
                             );
 
@@ -98,22 +122,32 @@ void mysql::create_parking()
 //初始化停车场数据
 void mysql::Parking_init()
 {
-    QString name = "新科停车场";
-    QString all_count = "200";
-    QString now_count = "0";
-    QString p_fee = "30.00";
-    //将停车场数据插入进入
-    //QString createsql_Parking = QStringLiteral("insert into PARKING(P_name,P_now_count,P_all_count,P_fee) values('%1','%2','%3','%4');").arg(Parking_name,now_count,parking_count,p_fee);
-
-    QString createsql_Parking = QStringLiteral("insert into PARKING(P_name,P_now_count,P_all_count,P_fee) values('%1','%2','%3','%4');").arg(name,now_count,all_count,p_fee);
-
-    if(mysql().execute_bool(createsql_Parking))
+    QString createsql_check= QStringLiteral("select P_id from parking where P_name = '新科停车场'; ");
+    QSqlQuery query =mysql().execute(createsql_check);
+    if(!query.size()) //如果不存在此数据
     {
-        qDebug()<<"Parking Initative successful";
+        qDebug()<<"检索数据为空";
+        QString name = "新科停车场";
+        QString all_count = "200";
+        QString now_count = "0";
+        QString p_fee = "30.00";
+        //将停车场数据插入进入
+        //QString createsql_Parking = QStringLiteral("insert into PARKING(P_name,P_now_count,P_all_count,P_fee) values('%1','%2','%3','%4');").arg(Parking_name,now_count,parking_count,p_fee);
+
+        QString createsql_Parking = QStringLiteral("insert into PARKING(P_name,P_now_count,P_all_count,P_fee) values('%1','%2','%3','%4');").arg(name,now_count,all_count,p_fee);
+
+        if(mysql().execute_bool(createsql_Parking))
+        {
+            qDebug()<<"Parking Initative successful";
+        }
+        else {
+            qDebug()<<"Parking Initative Error";
+        }
+    }else
+    {
+        qDebug()<<"检索数据不为空";
     }
-    else {
-        qDebug()<<"Parking Initative Error";
-    }
+
 }
 
 QSqlQuery mysql::execute(QString createsql)
@@ -171,3 +205,32 @@ void mysql::commitTransaction() {
 void mysql::rollbackTransaction() {
     db.rollback();
 }
+//实现停车位现有车位减一
+void mysql::parking_acc()
+{
+    QString location = "新科停车场";
+    QString createsql_Parking = QStringLiteral("UPDATE parking SET P_now_count = P_now_count + 1 WHERE P_name = '%1';").arg(location);
+
+    if(mysql().execute_bool(createsql_Parking))
+    {
+        qDebug()<<"Parking Acc successful";
+    }
+    else {
+        qDebug()<<"Parking ACC Error";
+    }
+}
+//实现停车场现有车位+1
+void mysql::parking_dec()
+{
+    QString location = "新科停车场";
+    QString createsql_Parking = QStringLiteral("UPDATE parking SET P_now_count = P_now_count - 1 WHERE P_name = '%1';").arg(location);
+
+    if(mysql().execute_bool(createsql_Parking))
+    {
+        qDebug()<<"Parking dec successful";
+    }
+    else {
+        qDebug()<<"Parking dec Error";
+    }
+}
+

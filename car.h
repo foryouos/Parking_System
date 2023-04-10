@@ -4,8 +4,8 @@
 #include <QWidget>
 #include "mysql.h"
 #include <QDateTime>
-
-
+#include <QRegExp>
+#include <QRegularExpression>
 namespace Ui {
 class Car;
 }
@@ -19,6 +19,10 @@ public:
     ~Car();
     //切换函数
     void SwitchPage();
+    //检查输入的车牌号是否合规
+    bool checkPlateNumber(QString);
+    //时间计费函数
+    int fee_charge(QDateTime,QDateTime,QString);
 
 private slots:
 
@@ -42,6 +46,12 @@ private slots:
 
     //创建饼图
     //void create_pie();
+
+    void on_DeleteCar_clicked();
+
+
+
+
 
 private:
     Ui::Car *ui;

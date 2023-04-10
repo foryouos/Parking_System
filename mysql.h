@@ -5,6 +5,10 @@
 #include <QDebug>
 #include<QSqlError> //mysql报错语句
 #include <iostream>
+#include <QFile> //读取本地json数据
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QResource>
 class mysql
 {
 private:
@@ -36,6 +40,11 @@ public:
     void commitTransaction();
     // 回滚事务
     void rollbackTransaction();
+
+    //停车场车位减一，
+    void parking_acc();
+    //停车场车位加一
+    void parking_dec();
 
 };
 
