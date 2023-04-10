@@ -69,7 +69,7 @@ border-radius:7px;</string>
     <string notr="true">background-color: rgb(255, 255, 255);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="main">
     <widget class="QLabel" name="label_title">
@@ -215,10 +215,10 @@ font: 10pt &quot;华文隶书&quot;;</string>
     <widget class="QTableWidget" name="tableCar">
      <property name="geometry">
       <rect>
-       <x>40</x>
-       <y>60</y>
-       <width>1131</width>
-       <height>651</height>
+       <x>50</x>
+       <y>110</y>
+       <width>1091</width>
+       <height>591</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -248,6 +248,136 @@ border: none;</string>
      <column/>
      <column/>
      <column/>
+    </widget>
+    <widget class="QLineEdit" name="find_lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>50</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+     </property>
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>查询的车牌号</string>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="begin_dateTimeEdit">
+     <property name="geometry">
+      <rect>
+       <x>350</x>
+       <y>50</y>
+       <width>151</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+     </property>
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2023</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
+     </property>
+     <property name="date">
+      <date>
+       <year>2023</year>
+       <month>1</month>
+       <day>1</day>
+      </date>
+     </property>
+    </widget>
+    <widget class="QDateTimeEdit" name="end_dateTimeEdit">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>50</y>
+       <width>151</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+     </property>
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2024</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="Carcheck">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>50</y>
+       <width>111</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+     </property>
+     <property name="text">
+      <string>查询</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="Car_delete">
+     <property name="geometry">
+      <rect>
+       <x>940</x>
+       <y>50</y>
+       <width>111</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>鼠标选中车牌后点击即可删除</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>-3</number>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+     </property>
+     <property name="text">
+      <string>删除</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="ctrol">
@@ -391,10 +521,13 @@ border-radius:7px;</string>
      <property name="geometry">
       <rect>
        <x>760</x>
-       <y>510</y>
+       <y>500</y>
        <width>131</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>直接进行修改点击</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(0, 170, 127);
@@ -416,6 +549,9 @@ border-radius:7px;</string>
        <height>41</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>在表格输入新用户信息点击即可</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(0, 170, 127);
 color: rgb(255, 255, 255);
@@ -435,6 +571,9 @@ border-radius:7px;</string>
        <width>131</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>鼠标点击要删除的行</string>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(0, 170, 127);

@@ -42,6 +42,9 @@ MainWindow::MainWindow(QWidget *parent)
     // 设置模糊半径，数值越大，阴影边缘越模糊
     shadow->setBlurRadius(30);
     ui->label_image->setGraphicsEffect(shadow);
+
+    connect(ui->lineEdit_password, &QLineEdit::returnPressed, ui->pushButton_2, &QPushButton::click);
+
 }
 
 MainWindow::~MainWindow()

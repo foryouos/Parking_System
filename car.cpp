@@ -284,6 +284,10 @@ void Car::on_submitCar_clicked()
     }
 }
 
+
+
+
+
 void Car::on_messageButton_clicked()
 {
     // 隐藏车辆信息的列号
@@ -308,33 +312,7 @@ void Car::on_messageButton_clicked()
     {
 
         while (q.next()) {
-            //设置表格行数，每一次加一行
-            ui->tableCar->setRowCount(i+1);
-             //第一列
-            ui->tableCar->setItem(i,0,new QTableWidgetItem(q.value(0).toString()));
-            ui->tableCar->item(i,0)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-
-            //为添加过后的每i行第0列设置数据只读
-            //ui->tablectrol->item(i,0)->setFlags(ui->tablectrol->item(i,0)->flags()^Qt::ItemIsEditable);
-
-            //第二列
-            ui->tableCar->setItem(i,1,new QTableWidgetItem(q.value(1).toString()));
-            ui->tableCar->item(i,1)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-            //第三列
-            ui->tableCar->setItem(i,2,new QTableWidgetItem(q.value(2).toString()));
-            ui->tableCar->item(i,2)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-            //第四列
-            ui->tableCar->setItem(i,3,new QTableWidgetItem(q.value(3).toString()));
-            ui->tableCar->item(i,3)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-            //第五列
-            ui->tableCar->setItem(i,4,new QTableWidgetItem(q.value(4).toString()));
-            ui->tableCar->item(i,4)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-            //第六列
-            ui->tableCar->setItem(i,5,new QTableWidgetItem(q.value(5).toString()));
-            ui->tableCar->item(i,5)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
-            //第七列
-            ui->tableCar->setItem(i,6,new QTableWidgetItem(q.value(6).toString()));
-            ui->tableCar->item(i,6)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+            print_widget(q,i);
             i++;
         }
     }
@@ -347,7 +325,12 @@ int Car::fee_charge(QDateTime oldDateTime, QDateTime currentDateTime,QString lic
     qint64 seconds = oldDateTime.secsTo(currentDateTime);
     long long hours = std::abs(seconds) / 3600LL;
     qDebug()<<seconds << hours;
-    //计算出费用SELECT parking.P_fee FROM parking JOIN car ON car.location = parking.P_name;
+
+    //计算出费用
+    if(hours<0.5) //如果小于半个小时，则不收费
+    {
+        return 0;
+    }
     QString sql_fee= QStringLiteral("SELECT parking.P_fee FROM parking JOIN car ON car.location = parking.P_name WHERE CAR.license_plate='%1';").arg(license_plate);
     QSqlQuery q = mysql().execute(sql_fee);
     q.next();
@@ -357,6 +340,57 @@ int Car::fee_charge(QDateTime oldDateTime, QDateTime currentDateTime,QString lic
 
     //首先根据车牌号，
     return fee;
+}
+//输出widget列表数据
+void Car::print_widget(QSqlQuery q,int i)
+{
+    //设置表格行数，每一次加一行
+    ui->tableCar->setRowCount(i+1);
+     //第一列
+    ui->tableCar->setItem(i,0,new QTableWidgetItem(q.value(0).toString()));
+    ui->tableCar->item(i,0)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+
+    //为添加过后的每i行第0列设置数据只读
+    ui->tableCar->item(i,0)->setFlags(ui->tableCar->item(i,0)->flags()^Qt::ItemIsEditable);
+
+    //第二列
+    ui->tableCar->setItem(i,1,new QTableWidgetItem(q.value(1).toString()));
+    ui->tableCar->item(i,1)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+    //第三列
+    //使用QDateTimeEdit
+    QDateTimeEdit *editDateTime = new QDateTimeEdit();
+    editDateTime->setDisplayFormat("yyyy-MM-dd hh:mm:ss");
+
+    editDateTime->setDateTime(q.value(2).toDateTime());
+
+    ui->tableCar->setCellWidget (i, 2, editDateTime);
+
+    //ui->tableCar->setItem(i,2,new QTableWidgetItem(q.value(2).toString()));
+    //ui->tableCar->item(i,2)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+    //第四列
+
+    //如果数据库输出时间为空
+    if (q.value(3).isNull())
+    {
+        ui->tableCar->setItem(i,3,new QTableWidgetItem(q.value(3).toString()));
+        ui->tableCar->item(i,3)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+    }
+    else
+    {
+        QDateTimeEdit *editDateTime2 = new QDateTimeEdit();
+        editDateTime2->setDisplayFormat("yyyy-MM-dd hh:mm:ss");
+        editDateTime2->setDateTime(q.value(3).toDateTime());
+        ui->tableCar->setCellWidget(i, 3, editDateTime2);
+    }
+    //第五列
+    ui->tableCar->setItem(i,4,new QTableWidgetItem(q.value(4).toString()));
+    ui->tableCar->item(i,4)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+    //第六列
+    ui->tableCar->setItem(i,5,new QTableWidgetItem(q.value(5).toString()));
+    ui->tableCar->item(i,5)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+    //第七列
+    ui->tableCar->setItem(i,6,new QTableWidgetItem(q.value(6).toString()));
+    ui->tableCar->item(i,6)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
 }
 //当出库操作之后
 void Car::on_DeleteCar_clicked()
@@ -428,3 +462,82 @@ void Car::on_DeleteCar_clicked()
 }
 
 
+//点击查询后，根据用户输入的时间和车牌号，来进行输出数据
+void Car::on_Carcheck_clicked()
+{
+    //读取用户的输入数据
+    QString Car_name = ui->find_lineEdit->text();
+    QDateTime begin_datetimes = ui->begin_dateTimeEdit->dateTime();
+    QDateTime end_datetimes = ui->end_dateTimeEdit->dateTime();
+    QString begin_time = begin_datetimes.toString("yyyy-MM-dd hh:mm:ss");
+    QString end_time = end_datetimes.toString("yyyy-MM-dd hh:mm:ss");
+    //书写sql语句
+    //如果用户没有输入车牌号 则不显示
+    if(Car_name.isEmpty())
+    {
+        //名字为空根据时间查询
+        //qDebug()<<"名字为空"<<begin_time<<end_time;
+        QSqlQuery q;
+        q.prepare("SELECT id, license_plate, check_in_time, check_out_time, fee, location, P_fee from car JOIN parking ON car.location = parking.P_name WHERE check_in_time BETWEEN :begin_time AND :end_time;");
+        q.bindValue(":begin_time", begin_time);
+        q.bindValue(":end_time", end_time);
+        int i = 0;
+        if(q.exec())
+        {
+
+            while (q.next()) {
+                print_widget(q,i);
+                i++;
+            }
+        }
+     }
+    else
+    {   //名字不为空，根据时间和 名字
+            //qDebug()<<"名字为空"<<begin_time<<end_time;
+            QSqlQuery q;
+            q.prepare("SELECT id, license_plate, check_in_time, check_out_time, fee, location, P_fee from car JOIN parking ON car.location = parking.P_name WHERE check_in_time BETWEEN :begin_time AND :end_time AND license_plate =:Car_name;");
+            q.bindValue(":begin_time", begin_time);
+            q.bindValue(":end_time", end_time);
+            q.bindValue(":Car_name",Car_name);
+            int i = 0;
+            if(q.exec())
+            {
+                while (q.next())
+                {
+                    print_widget(q,i);
+                    i++;
+                }
+            }
+    }
+
+    //调用函数输出
+
+
+}
+//读取当前鼠标所在车牌号，进行删除
+void Car::on_Car_delete_clicked()
+{
+    //读取当前鼠标所在车辆信息表的行数
+    int row = ui->tableCar->currentRow();
+    qDebug()<<row;
+    if(row>=0)
+    {
+        //读取用户点击位置的车牌号
+        QString license_plate = ui->tableCar->item(row,1)->text();
+
+        QString sql_Drop_car = QStringLiteral("DELETE FROM CAR WHERE license_plate = '%1';").arg(license_plate);
+
+        if (mysql().execute_bool(sql_Drop_car))
+        {
+            qDebug() << "CAR delete successfully.";
+            Car::on_messageButton_clicked(); //模拟点击，更新
+        }
+        else
+        {
+            qDebug()<<sql_Drop_car;
+            qDebug() << "User Add error" << license_plate;
+        }
+
+
+    }
+}

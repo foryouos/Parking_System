@@ -14,6 +14,8 @@ Signup::Signup(QWidget *parent) :
     QPixmap *pix = new QPixmap(":./images/welcome.png");
     QSize sz = ui->label_login_image->size();
     ui->label_login_image->setPixmap(pix->scaled(sz));
+
+    connect(ui->lineEdit_tel, &QLineEdit::returnPressed, ui->pushButton_sure, &QPushButton::click);
 }
 
 Signup::~Signup()

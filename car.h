@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QRegExp>
 #include <QRegularExpression>
+#include <QDateTimeEdit>
 namespace Ui {
 class Car;
 }
@@ -23,6 +24,8 @@ public:
     bool checkPlateNumber(QString);
     //时间计费函数
     int fee_charge(QDateTime,QDateTime,QString);
+    //设置函数输出到Qtable widget中数据，传入参数数据库对象
+    void print_widget(QSqlQuery q,int i);
 
 private slots:
 
@@ -52,6 +55,10 @@ private slots:
 
 
 
+
+    void on_Carcheck_clicked();
+
+    void on_Car_delete_clicked();
 
 private:
     Ui::Car *ui;
