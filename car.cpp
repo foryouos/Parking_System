@@ -62,6 +62,37 @@ void Car::SwitchPage(){
         ui->stack->setCurrentIndex(2);
 
 }
+// 判断车牌是非合法
+
+bool Car::checkPlateNumber(QString license_plate)
+{
+    //判断车牌位数企微，读取QString的位数
+    if(license_plate.length() != 7)
+    {
+        QMessageBox::information(this,"入场失败","车牌号不足七位");
+        ui->Car_idinput->clear();
+        return false; //不满足7位，非法
+    }
+    //读取车牌的第一位，是否在所有省份的简称里面
+    QString province = "京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼"; //省份简称
+    if(!province.contains(license_plate.left(1)))
+    { //判断首位是否省份简称
+        ui->Car_idinput->clear();
+        QMessageBox::information(this,"入场失败","首字母不含省份");
+        return false;
+    }
+    //序列号共5位，包括英文和数字，其中第一位为英文字母，表示该车的使用性质；第二位为字母或数字，表示该车的行驶区域；后面三位为数字，表示该车的序号；
+    QString letter = "ABCDEFGHJKLMNPQRSTUVWXYZ"; //序列号中的英文字母
+    QString digit = "0123456789"; //序列号中的数字
+    if(!letter.contains(license_plate.mid(1,1)))
+    {
+        QMessageBox::information(this,"入场失败","第二位不符合规定");
+        ui->Car_idinput->clear();
+        return false; //判断第二位是否符合规定
+    }
+
+    return true;
+}
 
 
 
@@ -247,14 +278,25 @@ void Car::on_submitCar_clicked()
     //读取车牌号
     QString license_plate = ui->Car_idinput->text(); //读取输入或识别出来的车牌号
     //检查车牌是否合规，不合规直接退出
-//    if(!checkPlateNumber(license_plate))
-//    {
-//        qDebug()<<license_plate ;
-//        QMessageBox::information(this,"识别失败","您输入的车牌号不合规");
-//        return;
-//    }
+    if(!checkPlateNumber(license_plate))
+    {
+        qDebug()<<license_plate ;
+        //QMessageBox::information(this,"识别失败","您输入的车牌号不合规");
+        return;
+    }
 
-
+    //检查当前车牌是否在车库内部还未出库
+    QSqlQuery qISin;
+    qISin.prepare("select check_out_time from car WHERE license_plate = :license_plate;");
+    qISin.bindValue(":license_plate", license_plate);
+    qISin.exec();
+    qISin.next();
+    if(qISin.value(0).isNull()) //如果车还未出库，则禁止入库
+    {
+        QMessageBox::information(this,"入场失败","车辆仍未出场");
+        ui->Car_idinput->clear();
+        return ;
+    }
 
     //获取当前的时间
     // 获取当前时间
@@ -273,6 +315,7 @@ void Car::on_submitCar_clicked()
         ui->Car_idinput->clear();  //清空输入框
         QMessageBox::information(this,"停车入库","车牌入库成功!");
         //车牌插入成功后，更新车库数据
+        ui->Car_idinput->clear();
         mysql().parking_acc(); //让现有车库加一
 
     }
@@ -397,11 +440,11 @@ void Car::on_DeleteCar_clicked()
 {
     //读取车牌号
     QString license_plate = ui->Car_output->text(); //读取输入或识别出来的车牌号
-//    if(!checkPlateNumber(license_plate))
-//    {
-//        QMessageBox::information(this,"识别失败","您输入的车牌号不合规");
-//        return;
-//    }
+    if(!checkPlateNumber(license_plate))
+    {
+        //QMessageBox::information(this,"识别失败","您输入的车牌号不合规");
+        return;
+    }
     //先检查车牌是否已入库，若未入库则报错，并返回时间
     QString sqlplate_check= QStringLiteral("select id from CAR where license_plate = '%1' AND check_out_time IS NULL; ").arg(license_plate);
     QSqlQuery query =mysql().execute(sqlplate_check);

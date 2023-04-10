@@ -225,6 +225,9 @@ font: 10pt &quot;华文隶书&quot;;</string>
       <string notr="true">background-color: rgb(255, 255, 255);
 border: none;</string>
      </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <property name="rowCount">
       <number>10</number>
      </property>

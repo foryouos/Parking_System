@@ -7,5 +7,7 @@
         <file>images/logo.png</file>
         <file>images/car.jpg</file>
         <file>MySQL.json</file>
+        <file>images/bg01.jpg</file>
+        <file>images/bg02.png</file>
     </qresource>
 </RCC>

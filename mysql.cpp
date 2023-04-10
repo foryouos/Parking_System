@@ -81,7 +81,7 @@ void mysql::create_car()
                                 "fee DECIMAL(10, 2) DEFAULT NULL,"
                                 "location VARCHAR(20) NOT NULL,"
                                 "PRIMARY KEY (id),"
-                                "UNIQUE INDEX(license_plate)"
+                                "INDEX(license_plate)"
                                 ");"
                             );
 
