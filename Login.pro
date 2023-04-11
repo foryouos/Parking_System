@@ -15,20 +15,20 @@ SOURCES += \
     mainwindow.cpp \
     signup.cpp \
     mysql.cpp \
-    init.cpp
+    initfile.cpp
 
 HEADERS += \
     car.h \
     mainwindow.h \
     signup.h \
     mysql.h \
-    init.h
+    initfile.h
 
 FORMS += \
     car.ui \
     mainwindow.ui \
     signup.ui \
-    init.ui
+    initfile.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

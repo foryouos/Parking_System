@@ -3,22 +3,27 @@
 #include <QSqlQuery> //数据库执行语句
 #include <QMessageBox> //数据库执行语句
 #include <QDebug>
+#include <QJsonDocument>  //保存JSON数据
 #include<QSqlError> //mysql报错语句
 #include <iostream>
 #include <QFile> //读取本地json数据
-#include <QJsonDocument>
+#include <QApplication>
 #include <QJsonObject>
 #include <QResource>
 class mysql
 {
 private:
     QSqlDatabase db; //链接的数据库
-    QString Parking_name = "新科停车场"; //位置
-    int parking_count = 100;  //总停车位
-
 public:
     mysql(); //初始化连接数据库
     ~mysql();// 析构语句
+
+    QString Parking_name; //位置
+    int parking_count;  //总停车位
+    int parking_now_count; //现有停车位
+    int park_reserve;  //预定的车位数
+    int p_fee; //车位单价
+
     void create_user(); //创建管理员用户表格
     void create_car();  //存放车辆信息
 
@@ -45,6 +50,9 @@ public:
     void parking_acc();
     //停车场车位加一
     void parking_dec();
+
+    //建立车位预定信息表，在数据库初始化完毕时创建
+    void parking_reserve();
 
 };
 

@@ -68,7 +68,6 @@ void Signup::on_pushButton_sure_clicked()
             MainWindow *w = new MainWindow;
             w->show();
             this->close();
-
         }
     }
     else

@@ -7,6 +7,7 @@
 #include <QRegExp>
 #include <QRegularExpression>
 #include <QDateTimeEdit>
+#include <QTimer>
 namespace Ui {
 class Car;
 }
@@ -49,6 +50,9 @@ private slots:
 
     //创建饼图
     //void create_pie();
+
+    //创建车位展示
+    void park_num();
 
     void on_DeleteCar_clicked();
 

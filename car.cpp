@@ -7,26 +7,11 @@ Car::Car(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("停车场管理系统车牌识别");
-    mysql(); //mysql初始化
-    mysql().create_car();  //初始化车库表格
-    //初始化停车表
-    mysql().create_parking(); //创建车表
-
-    mysql().Parking_init(); //初始化车表数据
-
-    //判断是否在
-
-
-    // 隐藏行号
-    //ui->tablectrol->verticalHeader()->setVisible(false);
-
-    //设置管理员列表第一列ID为只读
 
     //创建饼图
+    //实现简单的数据呈现
+    park_num();
     //create_pie();
-
-
-
 
     //先给视频一个图片
     // 创建QPixmap对象，加载png图像存储到pix变量中，使用new关键字分配堆内存来储存该对象
@@ -177,6 +162,11 @@ void Car::on_ButtonModify_clicked()
         QString username = ui->tablectrol->item(row,1)->text();
         QString password = ui->tablectrol->item(row,2)->text();
         QString telephone = ui->tablectrol->item(row,3)->text();
+        if(telephone.length()>11)
+        {
+            QMessageBox::information(this,"添加失败","您输入的手机号不符合11位");
+            return;
+        }
         QString truename = ui->tablectrol->item(row,4)->text();
         //输出信息测试
         //qDebug()<<ID<<username<<password<<telephone<<truename;
@@ -214,6 +204,11 @@ void Car::on_ButtonADD_clicked()
         QString username = ui->tablectrol->item(row,1)->text();
         QString password = ui->tablectrol->item(row,2)->text();
         QString telephone = ui->tablectrol->item(row,3)->text();
+        if(telephone.length()>11)
+        {
+            QMessageBox::information(this,"添加失败","您输入的手机号不符合11位");
+            return ;
+        }
         QString truename = ui->tablectrol->item(row,4)->text();
         //输出信息测试
         //qDebug()<<ID<<username<<password<<telephone<<truename;
@@ -275,6 +270,7 @@ void Car::on_ButtonDelete_clicked()
 void Car::on_submitCar_clicked()
 {
 
+
     //读取车牌号
     QString license_plate = ui->Car_idinput->text(); //读取输入或识别出来的车牌号
     //检查车牌是否合规，不合规直接退出
@@ -285,18 +281,30 @@ void Car::on_submitCar_clicked()
         return;
     }
 
+    if((mysql().parking_now_count+mysql().park_reserve)>mysql().parking_count)
+    {
+        //当预定车位满时，判断车牌是否在预定表中，如果在则入库，若不在则出库
+
+
+        QMessageBox::information(this,"入场失败","当前停车场已满！");
+        return ;
+    }
     //检查当前车牌是否在车库内部还未出库
     QSqlQuery qISin;
-    qISin.prepare("select check_out_time from car WHERE license_plate = :license_plate;");
+    qISin.prepare("select check_in_time check_out_time from car WHERE license_plate = :license_plate;");
     qISin.bindValue(":license_plate", license_plate);
     qISin.exec();
     qISin.next();
-    if(qISin.value(0).isNull()) //如果车还未出库，则禁止入库
+    if(!qISin.value(0).isNull()&&qISin.value(1).isNull()) //如果车入库时间非空，出库未空则未出场
     {
+        //qDebug()<<qISin.value(0);
+        //qDebug()<<qISin.value(1);
         QMessageBox::information(this,"入场失败","车辆仍未出场");
         ui->Car_idinput->clear();
         return ;
     }
+    //qDebug()<<qISin.value(0);
+    //qDebug()<<qISin.value(1);
 
     //获取当前的时间
     // 获取当前时间
@@ -305,7 +313,7 @@ void Car::on_submitCar_clicked()
     QString formattedDateTime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss");
     //将信息上传到数据库
     //位置
-    QString location = "新科停车场";
+    QString location = mysql().Parking_name;
 
     QString sql_submitCar = QStringLiteral("INSERT INTO CAR (license_plate, check_in_time,location) VALUES ('%1','%2','%3');").arg(license_plate,formattedDateTime,location);
 
@@ -314,9 +322,19 @@ void Car::on_submitCar_clicked()
         qDebug()<<"车牌数据插入成功";
         ui->Car_idinput->clear();  //清空输入框
         QMessageBox::information(this,"停车入库","车牌入库成功!");
+        // Create a new QMessageBox object
+//        QMessageBox *msgBox = new QMessageBox(this);
+//        msgBox->setWindowTitle("停车入库");
+//        msgBox->setText("车牌入库成功!");
+
+//        // Set the timeout to 1000 milliseconds (1 second)
+//        QTimer::singleShot(1000, msgBox, SLOT(close()));
+
+//        msgBox->exec(); // Show the message box
         //车牌插入成功后，更新车库数据
-        ui->Car_idinput->clear();
+
         mysql().parking_acc(); //让现有车库加一
+        park_num();
 
     }
     else {
@@ -359,6 +377,26 @@ void Car::on_messageButton_clicked()
             i++;
         }
     }
+    //读取数据库数据，将车位剩余情况显示到TextLabel当中
+
+}
+//简单展示现有的车位图
+void Car::park_num()
+{
+    //连接数据库，当前停车场名称的数据库，对应的现有停车场数量，和总停车场数量
+    QString park_name = mysql().Parking_name;
+    QSqlQuery q;
+    q.prepare("SELECT P_now_count,P_all_count,P_reserve_count FROM parking WHERE P_name = :park_name;");
+    q.bindValue(":park_name", park_name);
+    q.exec();
+    q.next();
+    QString now_count = q.value(1).toString();
+    QString all_count = q.value(0).toString();
+    QString reserve_count = q.value(2).toString();
+    //将停车场数据呈现到图表中
+    ui->park_now->setText(now_count);
+    ui->park_all->setText(all_count);
+    ui->park_reserve->setText(reserve_count);//车位预定数
 }
 //创建饼图
 //收费函数
@@ -494,6 +532,7 @@ void Car::on_DeleteCar_clicked()
         QMessageBox::information(this,"停车出库库",message);
         //车牌插入成功后，更新车库数据
         mysql().parking_dec(); //让现有车位数量减一
+        park_num();
 
     }
     else {

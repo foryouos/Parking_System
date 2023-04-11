@@ -170,27 +170,6 @@ font: 14pt &quot;华文隶书&quot;;</string>
      <string>登陆</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="initmysql">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>0</y>
-      <width>91</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border:0px groove gray;
-background-color: rgb(255, 255, 127);
-border-radius:6px;
-padding:2px 4px;
-font: 14pt &quot;华文隶书&quot;;
-</string>
-    </property>
-    <property name="text">
-     <string>初始化</string>
-    </property>
-   </widget>
   </widget>
  </widget>
  <resources/>

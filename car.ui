@@ -161,19 +161,6 @@ border-radius:7px;</string>
       <string>出库</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>810</x>
-       <y>30</y>
-       <width>291</width>
-       <height>231</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>出库现有车位与已经使用车位</string>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="Car_output">
      <property name="geometry">
       <rect>
@@ -192,6 +179,93 @@ font: 10pt &quot;华文隶书&quot;;</string>
      </property>
      <property name="placeholderText">
       <string>车牌号</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="park_now">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>120</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="park_all">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>50</y>
+       <width>131</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>50</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
+     </property>
+     <property name="text">
+      <string>入库数：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>120</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
+     </property>
+     <property name="text">
+      <string>总车位：</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="park_reserve">
+     <property name="geometry">
+      <rect>
+       <x>870</x>
+       <y>190</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>760</x>
+       <y>190</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
+     </property>
+     <property name="text">
+      <string>预定数：</string>
      </property>
     </widget>
    </widget>
@@ -215,7 +289,7 @@ font: 10pt &quot;华文隶书&quot;;</string>
     <widget class="QTableWidget" name="tableCar">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>70</x>
        <y>110</y>
        <width>1091</width>
        <height>591</height>
