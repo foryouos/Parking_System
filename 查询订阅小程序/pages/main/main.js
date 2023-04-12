@@ -8,29 +8,30 @@ Component({
    * 页面的初始数据
    */
   data: {
-    place:
-    [
-      {
-        place_names: "新工停车场",
-        place_number: 200
-      },
-      {
-        place_names: "新乡停车场",
-        place_number: 600
-      },
-      {
-        place_names: "郑州停车场",
-        place_number: 900
-      },
-      {
-        place_names: "开封停车场",
-        place_number: 700
-      },
-      {
-        place_names: "洛阳停车场",
-        place_number: 450
-      },
-    ],
+    place:"",
+    // place:
+    // [
+    //   {
+    //     place_names: "新工停车场",
+    //     place_number: 200
+    //   },
+    //   {
+    //     place_names: "新乡停车场",
+    //     place_number: 600
+    //   },
+    //   {
+    //     place_names: "郑州停车场",
+    //     place_number: 900
+    //   },
+    //   {
+    //     place_names: "开封停车场",
+    //     place_number: 700
+    //   },
+    //   {
+    //     place_names: "洛阳停车场",
+    //     place_number: 450
+    //   },
+    // ],
     selected: 0,
     color: "#7A7E83",
     selectedColor: "#3cc51f",
@@ -57,15 +58,52 @@ Component({
     //pass :'',
 
   },
-  methods: {
+  methods: 
+  {
+    //当打开页面呈现的内容
     onShow() {
       if (typeof this.getTabBar === 'function' &&
-      this.getTabBar()) {
+      this.getTabBar()) 
+      {
         this.getTabBar().setData({
           //唯一标识（其它设置不同的整数）  
           selected: 0
         })
       };
+       //调用API读取停车场名和停车位传递给data的place
+       wx.request
+      ({
+        url: 'http://36.133.121.177:66/connect_get.php', //上传预约信息
+        data:
+        {
+        name:'36_133_121_177',
+        password:'5211314',
+        database:'36_133_121_177',
+        },
+        header: {
+          'content-type': 'application/json;'
+        },
+        success:(res)=>
+        {
+          var place = JSON.parse(decodeURIComponent(res.data))
+          //console.log(place)
+          console.log("读取数据成功")
+          this.setData
+          (
+            {
+              "place":place,
+            }
+          )
+        },
+        fail:(f)=>
+        {
+          wx.showModal
+          ({
+            title: '提示',
+            content: '读取数据失败',
+          })
+        }
+      })
       wx.getStorage( //异步获取存储
         {
           key:'licence_plate', //读取本地缓存
@@ -93,7 +131,6 @@ Component({
      * 生命周期函数--监听页面卸载
      */
     onUnload() {
-  
     },
   
     /**
@@ -135,7 +172,7 @@ Component({
           }
         )
       },
-      readpassword(res)
+    readpassword(res)
       {
         this.setData(
           {
@@ -165,7 +202,7 @@ Component({
       const placeName = place.place_names
       //console.log(`点击了 ${placeName} 的按钮`)
       wx.request({
-        url: 'http://36.133.121.177:66/connect.php',
+        url: 'http://36.133.121.177:66/connect_up.php', //上传预约信息
         data:{
           name:'36_133_121_177',
           password:'5211314',
@@ -205,28 +242,20 @@ Component({
         }
       })
     }
-  },
+    },
 
-  },
-  /**
-   * 生命周期函数--监听页面加载
-   * 首次打开加载一次
-   */
-  onLoad(options) {
-    
-  },
+    connectmysqlget:function(e)
+    {
+      //调用API读取停车场名和停车位传递给data的place
+     
+    }
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   * 打开页面就加载
-   */
+},
+ 
   
   
 })
+
+
+
+

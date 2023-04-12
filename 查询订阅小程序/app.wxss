@@ -7,16 +7,18 @@
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
+  background-image: url('https://i.imgtg.com/2023/04/12/8vjOS.jpg');
+  background-size: cover; /* 可以使用 cover 或 100% 100% */
 } 
 
 /* 设置下标导航栏 */
 .tab-bar {
   position: fixed;
-  bottom: 0;
+  bottom: -2%;
   left: 0;
   right: 0;
   height: 130rpx;
-  background: white;
+  background: none;
   display: flex;
   padding-bottom: env(safe-area-inset-bottom);
   justify-content: center;

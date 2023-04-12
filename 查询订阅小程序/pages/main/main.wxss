@@ -10,11 +10,16 @@
 
 }
 .header {
+  height: 50rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20rpx;
   background-color: #f0f0f0;
+  font-size: 40rpx;
+  font-weight: bold;
+  border-radius: 8px;
+  opacity: 0.8;
 }
 .title {
   font-size: 30rpx;
@@ -22,11 +27,19 @@
   margin-left: 30px; /* 设置底部外边距为 10 像素 */
   margin-right: 20px; /* 设置底部外边距为 10 像素 */
 }
-.list {
 
+
+
+
+
+.list {
   background-color: #fff;
   flex: 1;
   padding: 20rpx;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  opacity: 0.8;
+  overflow: scroll;
 }
 .item {
   display: flex;

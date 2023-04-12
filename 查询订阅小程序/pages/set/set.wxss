@@ -9,6 +9,7 @@
 
 .logo-box {
   margin-bottom: 20px;
+  opacity: 0.8;
 }
 
 .logo {
@@ -26,10 +27,12 @@
 }
 .input_css {
   height: 40px;
-  color: #333;
+  color: rgb(46, 219, 11);
   border: 2px solid #ccc;
   border-radius: 5px;
   text-align: center;
+  font-weight: bold;
+  
 }
 input[type="text"] {
   box-shadow: 3px 5px 5px rgb(0 0 0 / 30%);

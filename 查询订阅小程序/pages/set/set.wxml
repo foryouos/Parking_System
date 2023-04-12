@@ -1,4 +1,5 @@
 <!--pages/set/set.wxml-->
+<body>
 <view class="container">
   <view class="logo-box">
     <image src="/image/car.png" class="logo"/>
@@ -21,4 +22,5 @@
 
 
 </view>
+</body>
 
