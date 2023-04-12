@@ -59,6 +59,7 @@ void Signup::on_pushButton_sure_clicked()
         {
             qDebug()<<username<<encryptedPassword<<telephone<<truename;
             qDebug()<<"insert into error";
+
         }
         else
         {

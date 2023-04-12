@@ -67,6 +67,7 @@ void initFile::on_submit_init_clicked()
 
             mysql().Parking_init(); //初始化车表数据
 
+            mysql().create_user(); //初始化用户表格
 
             //文件存在启动主程序
             MainWindow *w = new MainWindow;

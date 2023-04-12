@@ -1,0 +1,42 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+
+/* 设置下标导航栏 */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 130rpx;
+  background: white;
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  justify-content: center;
+  
+}
+
+
+.tab-bar-item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  margin-left: 2%;
+}
+
+.tab-bar-item cover-image {
+  width: 118rpx;
+  height: 84rpx;
+  
+}
+
+.tab-bar-item cover-view {
+  font-size: 10px;
+}

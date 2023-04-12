@@ -1,0 +1,28 @@
+<!--pages/main.wxml-->
+<view class="container">
+  <!-- <text>停车场订阅查询系统</text> -->
+  <view class="header">
+    <text class="title">停车场名</text>
+    <text class="title">停车位</text>
+    <text class="title">一键预定</text>
+  </view>
+    <view class="list">
+      <view class="item" wx:for="{{place}}" wx:key="item" data-parent-index="{{index}}">
+        <text class="place">{{item.place_names}}</text>
+        <text class="number">{{item.place_number}}个</text>
+        <button class="button"  bindtap='connectMysqlup_input' class="mini-btn" type="primary" size="mini" data-index="{{index}}">预定</button>
+      </view>
+    </view>
+
+<cover-view class="tab-bar">
+  <!-- <cover-view class="tab-bar-border"></cover-view> -->
+  <cover-view wx:for="{{list}}" wx:key="index" class="tab-bar-item" data-path="{{item.pagePath}}" data-index="{{index}}" bindtap="switchTab">
+    <cover-image src="{{selected === index ? item.selectedIconPath : item.iconPath}}"></cover-image>
+    <!-- <cover-view class="{{currentName ==  item.name ? 'text-active' : 'tabbar-text'}}">{{item.text}}</cover-view> -->
+  </cover-view>
+</cover-view>
+  
+</view>
+
+
+

@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     //初始化sqlite数据库
     //sqlite_Init();
     mysql(); //mysql初始化
-    mysql().create_user(); //初始化用户表格
+
 
 
     //设置登陆页面左边背景图

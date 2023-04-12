@@ -21,7 +21,7 @@ public:
     QString Parking_name; //位置
     int parking_count;  //总停车位
     int parking_now_count; //现有停车位
-    int park_reserve;  //预定的车位数
+    int reserve;  //预定的车位数
     int p_fee; //车位单价
 
     void create_user(); //创建管理员用户表格

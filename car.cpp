@@ -52,9 +52,9 @@ void Car::SwitchPage(){
 bool Car::checkPlateNumber(QString license_plate)
 {
     //判断车牌位数企微，读取QString的位数
-    if(license_plate.length() != 7)
+    if(license_plate.length() != 7||license_plate.length() != 8)
     {
-        QMessageBox::information(this,"入场失败","车牌号不足七位");
+        QMessageBox::information(this,"入场失败","车牌号位数不对");
         ui->Car_idinput->clear();
         return false; //不满足7位，非法
     }
@@ -281,21 +281,24 @@ void Car::on_submitCar_clicked()
         return;
     }
 
-    if((mysql().parking_now_count+mysql().park_reserve)>mysql().parking_count)
+
+    qDebug()<<"输入时:"<<mysql().reserve;
+    if((mysql().parking_now_count+mysql().reserve)>mysql().parking_count)
     {
         //当预定车位满时，判断车牌是否在预定表中，如果在则入库，若不在则出库
 
-
+        qDebug()<<"现有车位"<<mysql().parking_now_count<<"预约量:"<<mysql().reserve<<"总车位:"<<mysql().parking_count;
         QMessageBox::information(this,"入场失败","当前停车场已满！");
         return ;
     }
     //检查当前车牌是否在车库内部还未出库
     QSqlQuery qISin;
-    qISin.prepare("select check_in_time check_out_time from car WHERE license_plate = :license_plate;");
+    qISin.prepare("select check_in_time,check_out_time from car WHERE license_plate = :license_plate;");
     qISin.bindValue(":license_plate", license_plate);
     qISin.exec();
     qISin.next();
-    if(!qISin.value(0).isNull()&&qISin.value(1).isNull()) //如果车入库时间非空，出库未空则未出场
+    //qDebug()<<qISin.value(0)<<qISin.value(1);
+    if((!qISin.value(0).isNull())&&qISin.value(1).isNull()) //如果车入库时间非空，出库未空则未出场
     {
         //qDebug()<<qISin.value(0);
         //qDebug()<<qISin.value(1);
@@ -383,6 +386,7 @@ void Car::on_messageButton_clicked()
 //简单展示现有的车位图
 void Car::park_num()
 {
+    //qDebug()<<"num进入"<<mysql().reserve;
     //连接数据库，当前停车场名称的数据库，对应的现有停车场数量，和总停车场数量
     QString park_name = mysql().Parking_name;
     QSqlQuery q;
@@ -397,6 +401,9 @@ void Car::park_num()
     ui->park_now->setText(now_count);
     ui->park_all->setText(all_count);
     ui->park_reserve->setText(reserve_count);//车位预定数
+    mysql mysql_instance;
+    mysql_instance.reserve = reserve_count.toInt();
+
 }
 //创建饼图
 //收费函数

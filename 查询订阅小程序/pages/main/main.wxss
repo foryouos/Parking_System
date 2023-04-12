@@ -1,0 +1,57 @@
+/* pages/main.wxss */
+.mini-bin{
+   margin-right: 10rpx;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #f0f0f0;
+}
+.title {
+  font-size: 30rpx;
+  color: #333;
+  margin-left: 30px; /* 设置底部外边距为 10 像素 */
+  margin-right: 20px; /* 设置底部外边距为 10 像素 */
+}
+.list {
+
+  background-color: #fff;
+  flex: 1;
+  padding: 20rpx;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.place {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  margin-left: 10px; /* 设置底部外边距为 10 像素 */
+  margin-right: 55px; /* 设置底部外边距为 10 像素 */
+}
+.number {
+  font-size: 26rpx;
+  color: #999;
+  margin-left: -5px; /* 设置底部外边距为 10 像素 */
+  margin-right: 45px; /* 设置底部外边距为 10 像素 */
+}
+.button {
+  font-size: 26rpx;
+  padding: 5rpx 15rpx;
+  border-radius: 30rpx;
+  background-color: #ff7043;
+  color: #fff;
+}
+

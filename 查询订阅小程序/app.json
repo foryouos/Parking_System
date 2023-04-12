@@ -1,0 +1,35 @@
+{ 
+  "pages": [ 
+    "pages/main/main",
+    "pages/set/set"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#248067",
+    "navigationBarTitleText": "停车订阅系统",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/main/main",
+        "text": "首页",
+        "iconPath": "/image/首页.png",
+        "selectedIconPath": "/image/首页.png"
+      },
+      {
+        "pagePath": "pages/set/set",
+        "text": "我的",
+        "iconPath": "/image/我的.png",
+        "selectedIconPath": "/image/我的.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,45 @@
+/* pages/set/set.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.logo-box {
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+.input_css {
+  height: 40px;
+  color: #333;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+input[type="text"] {
+  box-shadow: 3px 5px 5px rgb(0 0 0 / 30%);
+}
+
+.tip {
+  margin-bottom: 30px;
+  color: rgb(12, 204, 21);
+}
+.mini-btn{
+  margin-top: 20px;
+  height: 28%;
+}

@@ -21,6 +21,8 @@ mysql::mysql()
         Parking_name=jsonObj["park_name"].toString();
         p_fee = jsonObj["P_fee"].toInt();
         parking_count =jsonObj["P_count"].toInt();
+        reserve = 0;
+
 
         //中容量
 
@@ -131,12 +133,14 @@ void mysql::Parking_init()
         QString name = mysql().Parking_name;
         int all_count = mysql().parking_count;
         int now_count = 0;
+        int park_reserve = 0;
         int p_fee = mysql().p_fee;
         //将停车场数据插入进入
         QSqlQuery qp;
-        qp.prepare("insert into PARKING(P_name,P_now_count,P_all_count,P_fee) values(:name,:now_count,:all_count,:p_fee);");
+        qp.prepare("insert into PARKING(P_name,P_now_count,P_reserve_count,P_all_count,P_fee) values(:name,:now_count,:P_reserve_count,:all_count,:p_fee);");
         qp.bindValue(":name",name);
         qp.bindValue(":now_count",now_count);
+        qp.bindValue(":P_reserve_count",park_reserve);
         qp.bindValue(":all_count",all_count);
         qp.bindValue(":p_fee",p_fee);
         if(qp.exec())
