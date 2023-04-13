@@ -395,14 +395,51 @@ void Car::park_num()
     QString all_count = q.value(0).toString();
     QString reserve_count = q.value(2).toString();
     //将停车场数据呈现到图表中
-    ui->park_now->setText(now_count);
-    ui->park_all->setText(all_count);
-    ui->park_reserve->setText(reserve_count);//车位预定数
     mysql mysql_instance;
     mysql_instance.reserve = reserve_count.toInt();
 
+    //创建饼图
+    // 创建一个QPieSeries对象并添加数据//为每个分块设置颜色
+    series = new QPieSeries();
+    series->append("预约数", reserve_count.toInt());
+    series->append("入库数", mysql_instance.parking_now_count)->setColor("#FFA500");
+    series->append("剩余数", mysql_instance.parking_count-mysql_instance.parking_now_count-reserve_count.toInt());
+    series->setHoleSize(0.3); //设置中间 空洞大小
+    series->pieSize();
+
+
+    //为每个分块设置标签文字
+    for(int i = 0;i<=2;i++)
+    {
+        slice = series->slices().at(i); //获取分块
+        slice->setLabel(slice->label()+QString::asprintf(":%.0f,%.1f%%",slice->value(),slice->percentage()*100));
+        connect(slice,SIGNAL(hovered(bool)),this,SLOT(on_PieSliceHighlight(bool)));
+
+    }
+    slice->setExploded(true); //最后一个设置为exploded
+    series->setLabelsVisible(true);
+
+    // 创建一个QChart对象，并将QPieSeries对象添加到图表中
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("停车场车位");
+    chart->legend()->setVisible(false);//图例
+    chart->legend()->setAlignment(Qt::AlignBottom);
+
+
+    // 创建一个QChartView对象并设置图表
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->resize(500,400);
+
+    // 将QChartView对象转换为QPixmap对象
+    QPixmap pixmap = chartView->grab();
+
+    // 将QPixmap对象显示到QLabel中
+    ui->label_pie->setPixmap(pixmap);
+
 }
-//创建饼图
+
 //收费函数
 int Car::fee_charge(QDateTime oldDateTime, QDateTime currentDateTime,QString license_plate)
 {
@@ -476,6 +513,13 @@ void Car::print_widget(QSqlQuery q,int i)
     //第七列
     ui->tableCar->setItem(i,6,new QTableWidgetItem(q.value(6).toString()));
     ui->tableCar->item(i,6)->setTextAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+}
+
+void Car::on_PieSliceHighlight(bool show)
+{
+    //鼠标移入，移出时发射hovered()信号，动态设置exploed效果
+    QPieSlice* slice = static_cast<QPieSlice *>(sender());
+    slice->setExploded(show);
 }
 //当出库操作之后
 void Car::on_DeleteCar_clicked()

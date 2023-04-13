@@ -377,6 +377,19 @@ QSlider#customSlider::add-page:horizontal {
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="label_pie">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>10</y>
+       <width>471</width>
+       <height>341</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="message">
     <widget class="QLabel" name="labelCar">

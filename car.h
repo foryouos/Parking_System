@@ -19,6 +19,13 @@
 #include <QDateTime>
 #include <QtGui/QScreen>
 
+// 添加下面这行头文件包含语句
+#include <QChart>
+#include <QPieSeries>
+#include <QChartView>
+//添头文件
+QT_CHARTS_USE_NAMESPACE
+
 namespace Ui {
 class Car;
 }
@@ -40,6 +47,9 @@ public:
     void print_widget(QSqlQuery q,int i);
 
 private slots:
+
+    //槽函数
+    void on_PieSliceHighlight(bool show);
 
     //初始化停车场数据
     //初始化停车场数据
@@ -126,6 +136,13 @@ private:
     //判断视频是否暂停
     bool cameraPaused = false;
     QWidget *centerWidget;
+    //饼图
+    QChart *qchart;
+    QPieSeries *series;
+    QChartView *chartView;
+    //获取分块
+    QPieSlice *slice;  //饼图分块
+    void PIE();
 
 };
 
