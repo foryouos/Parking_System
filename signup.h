@@ -2,7 +2,7 @@
 #define SIGNUP_H
 
 #include <QWidget>
-
+#include "mainwindow.h" //引入登陆窗口
 namespace Ui {
 class Signup;
 }
@@ -22,6 +22,7 @@ private slots:
 
 private:
     Ui::Signup *ui;
+    mysql mysql_c;
 };
 
 #endif // SIGNUP_H

@@ -1,6 +1,10 @@
 # 引入数据库模块
 QT       += core gui sql widgets uitools
 
+# 音频视频所需要的依赖
+QT       += multimedia
+QT       += multimediawidgets
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11

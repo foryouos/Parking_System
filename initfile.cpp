@@ -59,15 +59,15 @@ void initFile::on_submit_init_clicked()
             file.close();
             //首次启动的表格，触发器初始化
             mysql(); //mysql初始化
-            mysql().create_car();  //初始化车库表格
+            mysql_c.create_car();  //初始化车库表格
             //建立车库预定表
-            mysql().parking_reserve(); //建立车库预定表，并生成触发器
+            mysql_c.parking_reserve(); //建立车库预定表，并生成触发器
             //初始化停车表
-            mysql().create_parking(); //创建车表
+            mysql_c.create_parking(); //创建车表
 
-            mysql().Parking_init(); //初始化车表数据
+            mysql_c.Parking_init(); //初始化车表数据
 
-            mysql().create_user(); //初始化用户表格
+            mysql_c.create_user(); //初始化用户表格
 
             //文件存在启动主程序
             MainWindow *w = new MainWindow;

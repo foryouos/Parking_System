@@ -1,6 +1,6 @@
 #include "signup.h"
 #include "ui_signup.h"
-#include "mainwindow.h" //引入登陆窗口
+
 Signup::Signup(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Signup)
@@ -19,7 +19,7 @@ Signup::Signup(QWidget *parent) :
 
 Signup::~Signup()
 {
-    mysql().mysql_close();
+    mysql_c.mysql_close();
     delete ui;
 }
 
@@ -55,7 +55,7 @@ void Signup::on_pushButton_sure_clicked()
         QString sql = QStringLiteral("insert into USER(username,password,telephone,truename) values('%1','%2','%3','%4');").arg(username, encryptedPassword,telephone,truename);
 
         //判断执行结果
-        if(!mysql().execute_bool(sql))
+        if(!mysql_c.execute_bool(sql))
         {
             qDebug()<<username<<encryptedPassword<<telephone<<truename;
             qDebug()<<"insert into error";

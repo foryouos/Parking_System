@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    mysql().mysql_close(); //关闭窗口则私房数据库连接
+    mysql_c.mysql_close(); //关闭窗口则私房数据库连接
     delete ui;
 
 }
@@ -73,7 +73,7 @@ void MainWindow::on_pushButton_2_clicked()
     QString sql = QStringLiteral("select * from USER WHERE username='%1' and password = '%2'").arg(username,encryptedPassword);
 
     //判断执行结果
-    if(!mysql().execute(sql).next())
+    if(!mysql_c.execute(sql).next())
     {
         qDebug()<<"Login error";
         QMessageBox::information(this,"登陆认证","账户或密码错误");

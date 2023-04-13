@@ -33,5 +33,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    mysql mysql_c;
 };
 #endif // MAINWINDOW_H

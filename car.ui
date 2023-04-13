@@ -88,19 +88,6 @@ border-radius:7px;</string>
       <string>识别的车牌号</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_video">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>621</width>
-       <height>381</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>视频</string>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="Car_idinput">
      <property name="geometry">
       <rect>
@@ -266,6 +253,128 @@ font: 10pt &quot;华文隶书&quot;;</string>
      </property>
      <property name="text">
       <string>预定数：</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>350</y>
+       <width>471</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">/* 需要先设置groove，水平滑动条*/
+QSlider#customSlider::groove:horizontal {
+    border: none;
+    height: 6px;
+    border-radius: 3px;
+    background: lightgray;
+}
+QSlider#customSlider::handle:horizontal {
+    border: none;
+    margin: -5px 0px; /* 上下边距和左右边距*/
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background: #e83c3c;
+    border-image: url(:/images/white.png);
+}
+/*划过部分*/
+QSlider#customSlider::sub-page:horizontal {
+    background: red;
+    height: 4px;
+    border-radius: 3px;
+}
+/*未划过部分*/
+QSlider#customSlider::add-page:horizontal {
+    background: lightgray;
+    height: 4px;
+    border-radius: 3px;
+}
+</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="camera_take">
+     <property name="geometry">
+      <rect>
+       <x>220</x>
+       <y>570</y>
+       <width>91</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>截取照片</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="fileopen">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>420</y>
+       <width>91</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>视频</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="video_start">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>570</y>
+       <width>101</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>播放</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="video_pause">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>570</y>
+       <width>101</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>暂停</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="camera_button">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>420</y>
+       <width>91</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>摄像头</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="screen_label">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>410</y>
+       <width>211</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>

@@ -22,6 +22,7 @@ private slots:
 
 private:
     Ui::initFile *ui;
+    mysql mysql_c;
 };
 
 #endif // INITFILE_H

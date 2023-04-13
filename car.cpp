@@ -1,6 +1,8 @@
 #include "car.h"
 #include "ui_car.h"
 #include <mainwindow.h> //引用登录函数的初始化数据库
+#include "QFileDialog"
+#include <QDebug>
 Car::Car(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Car)
@@ -8,6 +10,13 @@ Car::Car(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle("停车场管理系统车牌识别");
 
+    //播放视频初始化
+    video_Init();
+    //调用摄像头初始化
+    camera_Init();
+    //默认使用摄像头工作
+    viemfinder->setVisible(true); //显示摄像头显示区域
+    camera->start();  //让摄像头开始工作
     //创建饼图
     //实现简单的数据呈现
     park_num();
@@ -15,9 +24,6 @@ Car::Car(QWidget *parent) :
 
     //先给视频一个图片
     // 创建QPixmap对象，加载png图像存储到pix变量中，使用new关键字分配堆内存来储存该对象
-    QPixmap *pix = new QPixmap(":/images/car.jpg");
-    QSize sz = ui->label_video->size();
-    ui->label_video->setPixmap(pix->scaled(sz));
 
     // 设置默认显示第二页
     ui->stack->setCurrentIndex(0);
@@ -29,7 +35,7 @@ Car::Car(QWidget *parent) :
 
 Car::~Car()
 {
-    mysql().mysql_close();
+    mysql_C.mysql_close();
     delete ui;
 }
 
@@ -52,7 +58,7 @@ void Car::SwitchPage(){
 bool Car::checkPlateNumber(QString license_plate)
 {
     //判断车牌位数企微，读取QString的位数
-    if(license_plate.length() != 7||license_plate.length() != 8)
+    if(license_plate.length() != 7&&license_plate.length() != 8)
     {
         QMessageBox::information(this,"入场失败","车牌号位数不对");
         ui->Car_idinput->clear();
@@ -110,7 +116,7 @@ void Car::on_CtrolButton_clicked()
 
     //使用MySQL语句查询
     QString sqlstr="select id,username,password,telephone,truename  from USER;";
-    QSqlQuery q;
+
     q.prepare(sqlstr);
     int i = 0;
     if(q.exec())
@@ -174,10 +180,10 @@ void Car::on_ButtonModify_clicked()
         //将读取到的数据更新到数据库
         QString encryptedPassword = encryptPassword(password); // 对密码进行加密
         QString sql_update = QStringLiteral("UPDATE USER SET username='%1', password='%2', telephone='%3',truename='%4' WHERE id='%5';").arg(username,encryptedPassword,telephone,truename,ID);
-        QSqlQuery query;
-        query.prepare(sql_update);
-        if (query.exec()) {
-            if (query.numRowsAffected() == 1) {
+
+        q.prepare(sql_update);
+        if (q.exec()) {
+            if (q.numRowsAffected() == 1) {
                 qDebug() << "User updated successfully.";
                 Car::on_CtrolButton_clicked(); //模拟点击，更新
             } else {
@@ -217,7 +223,7 @@ void Car::on_ButtonADD_clicked()
         QString encryptedPassword = encryptPassword(password); // 对密码进行加密
         QString sql_insert = QStringLiteral("insert into USER(id,username,password,telephone,truename) values('%1','%2','%3','%4','%5');").arg(ID,username, encryptedPassword,telephone,truename);
 
-        if (mysql().execute_bool(sql_insert))
+        if (mysql_C.execute_bool(sql_insert))
         {
             qDebug() << "User Add successfully.";
             //为添加过后的每i行第0列设置数据只读
@@ -246,7 +252,7 @@ void Car::on_ButtonDelete_clicked()
 
         QString sql_Drop = QStringLiteral("DELETE FROM USER WHERE id = '%1';").arg(ID);
 
-        if (mysql().execute_bool(sql_Drop))
+        if (mysql_C.execute_bool(sql_Drop))
         {
             qDebug() << "User Add successfully.";
             //恢复可读
@@ -282,32 +288,32 @@ void Car::on_submitCar_clicked()
     }
 
 
-    qDebug()<<"输入时:"<<mysql().reserve;
-    if((mysql().parking_now_count+mysql().reserve)>mysql().parking_count)
+    qDebug()<<"输入时:"<<mysql_C.reserve;
+    if((mysql_C.parking_now_count+mysql_C.reserve)>mysql_C.parking_count)
     {
         //当预定车位满时，判断车牌是否在预定表中，如果在则入库，若不在则出库
 
-        qDebug()<<"现有车位"<<mysql().parking_now_count<<"预约量:"<<mysql().reserve<<"总车位:"<<mysql().parking_count;
+        qDebug()<<"现有车位"<<mysql_C.parking_now_count<<"预约量:"<<mysql_C.reserve<<"总车位:"<<mysql_C.parking_count;
         QMessageBox::information(this,"入场失败","当前停车场已满！");
         return ;
     }
     //检查当前车牌是否在车库内部还未出库
-    QSqlQuery qISin;
-    qISin.prepare("select check_in_time,check_out_time from car WHERE license_plate = :license_plate;");
-    qISin.bindValue(":license_plate", license_plate);
-    qISin.exec();
-    qISin.next();
+
+    q.prepare("select check_in_time,check_out_time from car WHERE license_plate = :license_plate;");
+    q.bindValue(":license_plate", license_plate);
+    q.exec();
+    q.next();
     //qDebug()<<qISin.value(0)<<qISin.value(1);
-    if((!qISin.value(0).isNull())&&qISin.value(1).isNull()) //如果车入库时间非空，出库未空则未出场
+    if((!q.value(0).isNull())&&q.value(1).isNull()) //如果车入库时间非空，出库未空则未出场
     {
-        //qDebug()<<qISin.value(0);
-        //qDebug()<<qISin.value(1);
+        //qDebug()<<q.value(0);
+        //qDebug()<<q.value(1);
         QMessageBox::information(this,"入场失败","车辆仍未出场");
         ui->Car_idinput->clear();
         return ;
     }
-    //qDebug()<<qISin.value(0);
-    //qDebug()<<qISin.value(1);
+    //qDebug()<<q.value(0);
+    //qDebug()<<q.value(1);
 
     //获取当前的时间
     // 获取当前时间
@@ -316,18 +322,18 @@ void Car::on_submitCar_clicked()
     QString formattedDateTime = currentDateTime.toString("yyyy-MM-dd hh:mm:ss");
     //将信息上传到数据库
     //位置
-    QString location = mysql().Parking_name;
+    QString location = mysql_C.Parking_name;
 
     QString sql_submitCar = QStringLiteral("INSERT INTO CAR (license_plate, check_in_time,location) VALUES ('%1','%2','%3');").arg(license_plate,formattedDateTime,location);
 
-    if(mysql().execute_bool(sql_submitCar))
+    if(mysql_C.execute_bool(sql_submitCar))
     {
         qDebug()<<"车牌数据插入成功";
         ui->Car_idinput->clear();  //清空输入框
         QMessageBox::information(this,"停车入库","车牌入库成功!");
 
 
-        mysql().parking_acc(); //让现有车库加一
+        mysql_C.parking_acc(); //让现有车库加一
         park_num();
 
     }
@@ -377,10 +383,10 @@ void Car::on_messageButton_clicked()
 //简单展示现有的车位图
 void Car::park_num()
 {
-    //qDebug()<<"num进入"<<mysql().reserve;
+    //qDebug()<<"num进入"<<mysql_C.reserve;
     //连接数据库，当前停车场名称的数据库，对应的现有停车场数量，和总停车场数量
-    QString park_name = mysql().Parking_name;
-    QSqlQuery q;
+    QString park_name = mysql_C.Parking_name;
+
     q.prepare("SELECT P_now_count,P_all_count,P_reserve_count FROM parking WHERE P_name = :park_name;");
     q.bindValue(":park_name", park_name);
     q.exec();
@@ -411,7 +417,7 @@ int Car::fee_charge(QDateTime oldDateTime, QDateTime currentDateTime,QString lic
         return 0;
     }
     QString sql_fee= QStringLiteral("SELECT parking.P_fee FROM parking JOIN car ON car.location = parking.P_name WHERE CAR.license_plate='%1';").arg(license_plate);
-    QSqlQuery q = mysql().execute(sql_fee);
+    QSqlQuery q = mysql_C.execute(sql_fee);
     q.next();
     int p_fee = q.value(0).toInt();
 
@@ -483,7 +489,7 @@ void Car::on_DeleteCar_clicked()
     }
     //先检查车牌是否已入库，若未入库则报错，并返回时间
     QString sqlplate_check= QStringLiteral("select id from CAR where license_plate = '%1' AND check_out_time IS NULL; ").arg(license_plate);
-    QSqlQuery query =mysql().execute(sqlplate_check);
+    QSqlQuery query =mysql_C.execute(sqlplate_check);
     if(!query.size()) //如果不存在此数据
     {
          QMessageBox::information(this,"入库检测","当前车牌不在车库当中!!");
@@ -491,7 +497,7 @@ void Car::on_DeleteCar_clicked()
     }
     //获取当前车牌号的时间
     QString sql_time= QStringLiteral("select check_in_time from CAR where license_plate = '%1' ORDER BY check_in_time DESC;").arg(license_plate);
-    QSqlQuery q = mysql().execute(sql_time);
+    QSqlQuery q = mysql_C.execute(sql_time);
     q.next();
     QDateTime oldDateTime = q.value(0).toDateTime();
 
@@ -515,13 +521,13 @@ void Car::on_DeleteCar_clicked()
 
 
     //QString sql_submitfee = QStringLiteral("UPDATE CAR SET check_out_time='%1', fee='%2' WHERE license_plate='%3';").arg(formattedDateTime,fee,QChar::fromLatin1(license_plate.toLatin1()[0]));
-    QSqlQuery qupdate;
-    qupdate.prepare("UPDATE CAR SET check_out_time=:check_out_time, fee=:fee WHERE license_plate=:license_plate");
-    qupdate.bindValue(":check_out_time", formattedDateTime);
-    qupdate.bindValue(":fee", fee);
-    qupdate.bindValue(":license_plate", license_plate);
 
-    if(qupdate.exec())
+    q.prepare("UPDATE CAR SET check_out_time=:check_out_time, fee=:fee WHERE license_plate=:license_plate");
+    q.bindValue(":check_out_time", formattedDateTime);
+    q.bindValue(":fee", fee);
+    q.bindValue(":license_plate", license_plate);
+
+    if(q.exec())
     {
         qDebug()<<"车辆出库成功";
         ui->Car_output->clear();  //清空输入框
@@ -529,7 +535,7 @@ void Car::on_DeleteCar_clicked()
 
         QMessageBox::information(this,"停车出库库",message);
         //车牌插入成功后，更新车库数据
-        mysql().parking_dec(); //让现有车位数量减一
+        mysql_C.parking_dec(); //让现有车位数量减一
         park_num();
 
     }
@@ -557,7 +563,7 @@ void Car::on_Carcheck_clicked()
     {
         //名字为空根据时间查询
         //qDebug()<<"名字为空"<<begin_time<<end_time;
-        QSqlQuery q;
+
         q.prepare("SELECT id, license_plate, check_in_time, check_out_time, fee, location, P_fee from car JOIN parking ON car.location = parking.P_name WHERE check_in_time BETWEEN :begin_time AND :end_time;");
         q.bindValue(":begin_time", begin_time);
         q.bindValue(":end_time", end_time);
@@ -574,7 +580,7 @@ void Car::on_Carcheck_clicked()
     else
     {   //名字不为空，根据时间和 名字
             //qDebug()<<"名字为空"<<begin_time<<end_time;
-            QSqlQuery q;
+
             q.prepare("SELECT id, license_plate, check_in_time, check_out_time, fee, location, P_fee from car JOIN parking ON car.location = parking.P_name WHERE check_in_time BETWEEN :begin_time AND :end_time AND license_plate =:Car_name;");
             q.bindValue(":begin_time", begin_time);
             q.bindValue(":end_time", end_time);
@@ -607,7 +613,7 @@ void Car::on_Car_delete_clicked()
 
         QString sql_Drop_car = QStringLiteral("DELETE FROM CAR WHERE license_plate = '%1';").arg(license_plate);
 
-        if (mysql().execute_bool(sql_Drop_car))
+        if (mysql_C.execute_bool(sql_Drop_car))
         {
             qDebug() << "CAR delete successfully.";
             Car::on_messageButton_clicked(); //模拟点击，更新
@@ -621,3 +627,216 @@ void Car::on_Car_delete_clicked()
 
     }
 }
+
+void Car::video_Init()
+{
+    //本地视频播放初始化
+    //初始化
+    player = new QMediaPlayer(this);
+    //显示的窗体
+    videowidget = new QVideoWidget(this);
+//    videowidget->resize(500,250);
+    videowidget->setGeometry(20, 10, 500, 282); //设置窗口位置和大小
+    //播放视频
+    player->setVideoOutput(videowidget);   //设置输出到哪里
+
+
+    //获取视频总时长
+    connect(player,&QMediaPlayer::durationChanged,this,&Car::Get_Duration);
+
+    connect(player, &QMediaPlayer::positionChanged, this, &Car::On_Position_Changed);
+    //Open File为打开窗体名称
+
+    //让滑动与视频时长产生关联
+    connect(ui->horizontalSlider,&QSlider::valueChanged,this,&Car::Slider_Changed);
+}
+
+void Car::camera_Init()
+{
+    //摄像头初始化
+    //输出所有摄像头信息
+    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+    if(cameras.count() > 0)
+    {
+        foreach (const QCameraInfo &cameraInfo, cameras)
+            qDebug() << cameraInfo.deviceName();
+        camera = new QCamera(cameras.at(0));  //编号为第几个摄像头
+    }
+    viemfinder = new QCameraViewfinder(this); //创建显示的区域
+    camera->setViewfinder(viemfinder);  //显示出摄像头捕获的画面
+    //设置摄像头显示的大小
+    //viemfinder->resize(500,260);
+    viemfinder->setGeometry(10, 10, 500, 250); //设置窗口位置和大小
+    //用户摄像头截图
+    imageCapture = new QCameraImageCapture(camera);
+}
+
+//打开文件
+void Car::on_fileopen_clicked()
+{
+
+
+    //判断摄像头是否工作
+    //判断摄像头是否初始化
+
+        // camera已经被定义
+    if(camera->state() == QCamera::ActiveState)
+    {
+        camera->stop(); //停止摄像头
+        viemfinder->setVisible(false); //隐藏摄像头显示区域
+        player->setVideoOutput(videowidget);//将显示区域设置为文件播放的QVideoWidget
+        //delete_video_Init();
+        videowidget->setVisible(true); //隐藏文件播放的QVideoWidget
+    }
+    fileName = QFileDialog::getOpenFileName(this,"选择播放的视频文件","..\\"); //打开文件(当前文件夹)放到fileName
+    //将打开的文件作为视频播放的来源
+    player->setMedia(QUrl::fromLocalFile(fileName)); //作为player的来源
+    //获取视频时长
+    player->play();  //播放
+
+}
+//视频播放
+void Car::on_video_start_clicked()
+{
+//    qDebug()<<camera->state();
+    if((camera->state() == QCamera::LoadedState) &&(cameraPaused == true) )
+    {
+        camera->start(); //摄像头开启
+        cameraPaused = false;
+    }
+    else
+    {
+        player->play(); //视频播放
+    }
+
+}
+//暂停
+
+void Car::on_video_pause_clicked()
+{
+    if(camera->state() == QCamera::ActiveState)
+    {
+        camera->stop(); //摄像头暂停
+        cameraPaused = true; //设置状态变量为真
+    }
+    else
+    {
+        player->pause(); //视频播放暂停
+    }
+
+}
+
+void Car::Get_Duration()
+{
+    //获取视频时长
+    //qDebug()<<player->duration(); //持续时间
+    //设置进度条最大值
+    ui->horizontalSlider->setMaximum(int(player->duration()));
+}
+
+void Car::Slider_Changed()
+{
+    pos = ui->horizontalSlider->value(); //获取当前的值
+    player->setPosition(pos);  //改变播放位置
+}
+void Car::On_Position_Changed(qint64 position)
+{
+    ui->horizontalSlider->setValue(int(position)); // 更新进度条的值
+}
+
+//画面捕获，拍照
+void Car::on_camera_take_clicked()
+{
+    //如果摄像头播放
+    if(camera->state() == QCamera::ActiveState)
+    {
+        camera->setCaptureMode(QCamera::CaptureStillImage);  //捕获图片
+        //弹出标准对话框
+        QString fileName = QFileDialog::getSaveFileName(nullptr, QString(), QString(), QString(), nullptr, QFileDialog::DontConfirmOverwrite); //保存的文件名字
+        //开始进行捕获
+        imageCapture->capture(fileName);  //捕获图片，保存到要保存的目录为上面对话框设定的目录
+
+        qDebug()<<fileName;
+
+
+
+
+    }
+    //如果视频播放
+    else
+    {
+
+        // 保存整个屏幕为QPixmap
+            QScreen *screen = QGuiApplication::primaryScreen();
+            //QString filePathName = QFileDialog::getSaveFileName(); //保存的文件名字
+            QString filePathName = "cut-";
+            filePathName += QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz");
+            filePathName += ".png";
+            pixmap = screen->grabWindow(0);
+//            if(!pixmap.save(filePathName,"png"))
+//            {
+//                qDebug()<<"cut save png failed"<<endl;
+//            }
+
+            // 计算视频的位置和大小
+            qDebug()<<"Full pixmap width: "<<pixmap.width()<<" height: "<<pixmap.height()<<endl;
+            QRect geo = this->geometry();
+            QRect appGeo = geo; // 整个应用程序在图片中的位置。
+            qDebug()<<"App x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
+
+            geo = videowidget->geometry(); // 播放视频在图片中的位置。
+            qDebug()<<"VW x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
+
+            //QWidget *centerWidget = centralWidget(); // QMainWindow在应用程序的位置
+
+            // 假设非主窗口是由主窗口创建的
+            // 在非主窗口中获取指向主窗口实例的指针
+            QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parent());
+            if (mainWindow)
+            {
+                // 获取指向中心窗口部件的指针
+                QWidget *centerWidget = mainWindow->centralWidget();
+                // 执行相关操作
+                QRect centerRect = centerWidget->geometry();
+                qDebug()<<"center x: "<<centerRect.x()<<" y: "<<centerRect.y()<<" width: "<<centerRect.width()<<" height: "<<centerRect.height()<<endl;
+
+                QRect copyGeo;
+                copyGeo.setX(geo.x() + appGeo.x() + centerRect.x()); // x=三个x相加
+                copyGeo.setY(geo.y() + appGeo.y() + centerRect.y());
+                copyGeo.setWidth(geo.width());
+                copyGeo.setHeight(geo.height());
+                qDebug()<<"VW1 x: "<<copyGeo.x()<<" y: "<<copyGeo.y()<<" width: "<<copyGeo.width()<<" height: "<<copyGeo.height()<<endl;
+
+                QPixmap pixmapCopy = pixmap.copy(copyGeo); // copy图片
+                filePathName.prepend("Copy+");
+
+                QString fileName = QFileDialog::getSaveFileName(); //保存的文件名字
+                if(!pixmapCopy.save(fileName,"png"))
+                {
+                    qDebug()<<"copy cut save png failed"<<endl;
+                }
+                else {
+                    qDebug()<<"copy cut save png successfull "<<endl;
+                }
+            }
+
+
+    }
+
+}
+
+
+//点击摄像头后，摄像头开始工作
+void Car::on_camera_button_clicked()
+{
+
+    if(player->state() == QMediaPlayer::PlayingState)
+    {
+        player->stop(); //停止播放文件
+        videowidget->setVisible(false); //隐藏文件播放的QVideoWidget
+        camera->setViewfinder(viemfinder); //将显示区域设置为摄像头捕获的QCameraViewfinder
+    }
+    viemfinder->setVisible(true); //显示摄像头显示区域
+    camera->start();  //让摄像头开始工作
+}
+
