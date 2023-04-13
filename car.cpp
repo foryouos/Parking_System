@@ -325,16 +325,7 @@ void Car::on_submitCar_clicked()
         qDebug()<<"车牌数据插入成功";
         ui->Car_idinput->clear();  //清空输入框
         QMessageBox::information(this,"停车入库","车牌入库成功!");
-        // Create a new QMessageBox object
-//        QMessageBox *msgBox = new QMessageBox(this);
-//        msgBox->setWindowTitle("停车入库");
-//        msgBox->setText("车牌入库成功!");
 
-//        // Set the timeout to 1000 milliseconds (1 second)
-//        QTimer::singleShot(1000, msgBox, SLOT(close()));
-
-//        msgBox->exec(); // Show the message box
-        //车牌插入成功后，更新车库数据
 
         mysql().parking_acc(); //让现有车库加一
         park_num();

@@ -217,7 +217,7 @@ border-radius:7px;</string>
   <widget class="QLineEdit" name="lineEdit_tel">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>620</x>
      <y>350</y>
      <width>121</width>
      <height>41</height>

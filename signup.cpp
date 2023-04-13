@@ -64,7 +64,7 @@ void Signup::on_pushButton_sure_clicked()
         else
         {
             qDebug()<<"inert into success";
-            QMessageBox::information(this,"注册成功","注册账号成功!");
+            QMessageBox::information(this,"注册成功", "注册账号成功!");
             //创建主登陆页面的堆空间，进入登陆页面，释放注册页面空间
             MainWindow *w = new MainWindow;
             w->show();

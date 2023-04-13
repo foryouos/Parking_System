@@ -14,7 +14,7 @@
       </view>
     </view>
 
-    <button class="button"  bindtap='connectmysqlget' class="mini-btn" type="primary" size="mini" data-index="{{index}}">测试</button>
+    <!-- <button class="button"  bindtap='connectmysqlget' class="mini-btn" type="primary" size="mini" data-index="{{index}}">测试</button> -->
 
 <cover-view class="tab-bar">
   <!-- <cover-view class="tab-bar-border"></cover-view> -->
