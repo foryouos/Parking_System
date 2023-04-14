@@ -76,7 +76,7 @@ border-radius:7px;</string>
      <property name="geometry">
       <rect>
        <x>870</x>
-       <y>410</y>
+       <y>380</y>
        <width>141</width>
        <height>41</height>
       </rect>
@@ -91,8 +91,8 @@ border-radius:7px;</string>
     <widget class="QLineEdit" name="Car_idinput">
      <property name="geometry">
       <rect>
-       <x>740</x>
-       <y>490</y>
+       <x>730</x>
+       <y>430</y>
        <width>181</width>
        <height>51</height>
       </rect>
@@ -105,14 +105,14 @@ padding:2px 4px;
 font: 10pt &quot;华文隶书&quot;;</string>
      </property>
      <property name="placeholderText">
-      <string>车牌号</string>
+      <string>入库车牌号</string>
      </property>
     </widget>
     <widget class="QPushButton" name="submitCar">
      <property name="geometry">
       <rect>
        <x>750</x>
-       <y>560</y>
+       <y>570</y>
        <width>121</width>
        <height>51</height>
       </rect>
@@ -131,7 +131,7 @@ border-radius:7px;</string>
     <widget class="QPushButton" name="DeleteCar">
      <property name="geometry">
       <rect>
-       <x>990</x>
+       <x>1020</x>
        <y>570</y>
        <width>121</width>
        <height>51</height>
@@ -151,8 +151,8 @@ border-radius:7px;</string>
     <widget class="QLineEdit" name="Car_output">
      <property name="geometry">
       <rect>
-       <x>980</x>
-       <y>490</y>
+       <x>990</x>
+       <y>430</y>
        <width>181</width>
        <height>51</height>
       </rect>
@@ -165,7 +165,7 @@ padding:2px 4px;
 font: 10pt &quot;华文隶书&quot;;</string>
      </property>
      <property name="placeholderText">
-      <string>车牌号</string>
+      <string>出库车牌号</string>
      </property>
     </widget>
     <widget class="QLabel" name="park_now">
@@ -308,6 +308,13 @@ QSlider#customSlider::add-page:horizontal {
        <height>51</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+     </property>
      <property name="text">
       <string>截取照片</string>
      </property>
@@ -320,6 +327,13 @@ QSlider#customSlider::add-page:horizontal {
        <width>91</width>
        <height>51</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
      </property>
      <property name="text">
       <string>视频</string>
@@ -334,6 +348,13 @@ QSlider#customSlider::add-page:horizontal {
        <height>51</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+     </property>
      <property name="text">
       <string>播放</string>
      </property>
@@ -347,6 +368,13 @@ QSlider#customSlider::add-page:horizontal {
        <height>51</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+     </property>
      <property name="text">
       <string>暂停</string>
      </property>
@@ -359,6 +387,13 @@ QSlider#customSlider::add-page:horizontal {
        <width>91</width>
        <height>51</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
      </property>
      <property name="text">
       <string>摄像头</string>
@@ -380,11 +415,14 @@ QSlider#customSlider::add-page:horizontal {
     <widget class="QLabel" name="label_pie">
      <property name="geometry">
       <rect>
-       <x>680</x>
-       <y>10</y>
-       <width>471</width>
-       <height>341</height>
+       <x>640</x>
+       <y>-10</y>
+       <width>531</width>
+       <height>371</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
      <property name="text">
       <string/>

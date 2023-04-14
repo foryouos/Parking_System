@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "mysql.h"
+#include <QtSql> //检测数据库
 #include <QDateTime>
 #include <QRegExp>
 #include <QRegularExpression>
@@ -107,6 +108,10 @@ private slots:
     void on_camera_take_clicked();
 
     void on_camera_button_clicked();
+
+    void on_MainButton_clicked();
+
+    void checkMySQLData();
 
 private:
     Ui::Car *ui;

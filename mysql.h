@@ -54,6 +54,8 @@ public:
     //建立车位预定信息表，在数据库初始化完毕时创建
     void parking_reserve();
 
+    //获取数据库连接
+    QSqlDatabase get_db();
 };
 
 #endif // MYSQL_H

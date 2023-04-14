@@ -20,7 +20,7 @@ mysql::mysql()
 
         Parking_name=jsonObj["park_name"].toString();
         p_fee = jsonObj["P_fee"].toInt();
-        parking_count =jsonObj["P_count"].toInt();
+        parking_count =jsonObj["P_count"].toInt(); //总量
         reserve = 0;
 
 
@@ -44,6 +44,7 @@ mysql::mysql()
                     }
         }
     }
+
 }
 
 mysql::~mysql()
@@ -222,7 +223,7 @@ void mysql::parking_acc()
     if(mysql().execute_bool(createsql_Parking))
     {
         parking_now_count++;
-        qDebug()<<"Parking Acc successful";
+        qDebug()<<"Parking Acc successful"<<parking_now_count;
     }
     else {
         qDebug()<<"Parking ACC Error";
@@ -267,7 +268,7 @@ void mysql::parking_reserve()
     QSqlQuery query;
     QStringList sqlStatements; // 存储多个SQL语句
     sqlStatements << "SET GLOBAL event_scheduler = ON;"; // 添加时间调度器
-    sqlStatements << "CREATE EVENT IF NOT EXISTS clean_reservations ON SCHEDULE EVERY 30 MINUTE DO DELETE FROM reservations WHERE TIMESTAMPDIFF(MINUTE, created_at, NOW()) > 30;";  //创建清理 任务
+    sqlStatements << "CREATE EVENT IF NOT EXISTS clean_reservations ON SCHEDULE EVERY 1 MINUTE DO DELETE FROM reservations WHERE TIMESTAMPDIFF(MINUTE, created_at, NOW()) > 30;";  //创建清理 任务
     sqlStatements << QString("CREATE TRIGGER update_reserve_count AFTER INSERT ON reservations FOR EACH ROW BEGIN UPDATE PARKING SET P_reserve_count = P_reserve_count + 1 WHERE P_name = '%1'; END;").arg(Parking_name); //创建触发器，添加自动+1
     sqlStatements << QString("CREATE TRIGGER update_reserve_count2 AFTER DELETE ON reservations FOR EACH ROW BEGIN UPDATE PARKING SET P_reserve_count = P_reserve_count -1 where P_name = '%1' ;END;").arg(Parking_name); //创建触发器，减小后减一
     for (QStringList::iterator it = sqlStatements.begin(); it != sqlStatements.end(); it++) {
@@ -275,5 +276,10 @@ void mysql::parking_reserve()
             qDebug() << "触发器 executing SQL statement: " << query.lastError();
         }
     }
+}
+
+QSqlDatabase mysql::get_db()
+{
+    return db;
 }
 

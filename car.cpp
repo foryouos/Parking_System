@@ -9,6 +9,7 @@ Car::Car(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("停车场管理系统车牌识别");
+    //车表初始化，更新几个数据
 
     //播放视频初始化
     video_Init();
@@ -31,6 +32,23 @@ Car::Car(QWidget *parent) :
     connect(ui->MainButton,&QPushButton::clicked,this,&Car::SwitchPage);
     connect(ui->messageButton,&QPushButton::clicked,this,&Car::SwitchPage);
     connect(ui->CtrolButton,&QPushButton::clicked,this,&Car::SwitchPage);
+
+    //定时更新
+//    QSqlTableModel model(nullptr, mysql_C.get_db());
+//    model.setTable("reservations");
+//    model.select();
+//    // 监视模型以检测更改
+//    while (true) {
+//        if (model.rowCount() != model.select()) {
+//            qDebug() << "表已更新";
+//            // 在此进行处理更新操作
+//            park_num();
+//        }
+//    }
+    QTimer* timer = new QTimer(this); // 创建定时器对象
+    connect(timer, &QTimer::timeout, this, &Car::checkMySQLData); // 将timeout信号连接到槽函数
+    timer->start(1000); // 启动定时器，每隔1秒检查一次
+
 }
 
 Car::~Car()
@@ -92,6 +110,13 @@ bool Car::checkPlateNumber(QString license_plate)
 
 void Car::on_CtrolButton_clicked()
 {
+    //判断摄像头和视频，如果视频暂停，隐藏，如果摄像头，隐藏即可
+    if(camera->state() == QCamera::ActiveState||camera->state() == QCamera::LoadedState||player->state() == QMediaPlayer::PlayingState||player->state() == QMediaPlayer::PausedState)
+    {
+        player->stop(); //停止播放文件
+        videowidget->setVisible(false); //隐藏文件播放的QVideoWidget
+        viemfinder->setVisible(false); //隐藏摄像头显示区域
+    }
     //初始化数据连接
     ui->tablectrol->size();//设置表格
 
@@ -334,6 +359,7 @@ void Car::on_submitCar_clicked()
 
 
         mysql_C.parking_acc(); //让现有车库加一
+        qDebug()<<mysql_C.parking_now_count;
         park_num();
 
     }
@@ -351,6 +377,15 @@ void Car::on_submitCar_clicked()
 
 void Car::on_messageButton_clicked()
 {
+    //判断摄像头和视频，如果视频暂停，隐藏，如果摄像头，隐藏即可
+    if(camera->state() == QCamera::ActiveState||camera->state() == QCamera::LoadedState||player->state() == QMediaPlayer::PlayingState||player->state() == QMediaPlayer::PausedState)
+    {
+        player->stop(); //停止播放文件
+        videowidget->setVisible(false); //隐藏文件播放的QVideoWidget
+        viemfinder->setVisible(false); //隐藏摄像头显示区域
+    }
+
+
     // 隐藏车辆信息的列号
     ui->tableCar->verticalHeader()->setVisible(false);
     // 设置表头
@@ -391,52 +426,70 @@ void Car::park_num()
     q.bindValue(":park_name", park_name);
     q.exec();
     q.next();
-    QString now_count = q.value(1).toString();
-    QString all_count = q.value(0).toString();
+    QString now_count = q.value(0).toString();
+    QString all_count = q.value(1).toString();
     QString reserve_count = q.value(2).toString();
     //将停车场数据呈现到图表中
     mysql mysql_instance;
     mysql_instance.reserve = reserve_count.toInt();
-
+    mysql_instance.parking_now_count = q.value(0).toInt();
     //创建饼图
     // 创建一个QPieSeries对象并添加数据//为每个分块设置颜色
     series = new QPieSeries();
-    series->append("预约数", reserve_count.toInt());
-    series->append("入库数", mysql_instance.parking_now_count)->setColor("#FFA500");
-    series->append("剩余数", mysql_instance.parking_count-mysql_instance.parking_now_count-reserve_count.toInt());
+    series->append("预约数", q.value(2).toInt());
+    series->append("入库数", q.value(0).toInt())->setColor("#FFA500");
+    series->append("剩余数", mysql_instance.parking_count-q.value(2).toInt()-q.value(0).toInt());
     series->setHoleSize(0.3); //设置中间 空洞大小
     series->pieSize();
+    //qDebug()<<mysql_instance.parking_now_count<<reserve_count.toInt()<<mysql_instance.parking_count-mysql_instance.parking_now_count-reserve_count.toInt();
+    //qDebug()<<"数据库"<<now_count.toInt()<<all_count<<reserve_count;
 
 
     //为每个分块设置标签文字
     for(int i = 0;i<=2;i++)
     {
         slice = series->slices().at(i); //获取分块
-        slice->setLabel(slice->label()+QString::asprintf(":%.0f,%.1f%%",slice->value(),slice->percentage()*100));
+
+        slice->setLabel(slice->label()+QString::asprintf(":%.0f",slice->value()));
+        if(slice->value()<10)
+        {
+            slice->setLabelVisible(false);
+        }
+        else {
+            slice->setLabelVisible(true);
+
+        }
+
+
         connect(slice,SIGNAL(hovered(bool)),this,SLOT(on_PieSliceHighlight(bool)));
 
     }
-    slice->setExploded(true); //最后一个设置为exploded
-    series->setLabelsVisible(true);
+    slice->setExploded(true); //最后一个设置为exploded,设置分裂效果
+    slice->setExplodeDistanceFactor(0.1);
+
 
     // 创建一个QChart对象，并将QPieSeries对象添加到图表中
     QChart *chart = new QChart();
     chart->addSeries(series);
-    chart->setTitle("停车场车位");
-    chart->legend()->setVisible(false);//图例
+    chart->setTitle(park_name);
+    chart->legend()->setVisible(true);//图例
     chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->setBackgroundBrush(QBrush(QColor(255, 255, 255))); //设置背景为白色
 
 
     // 创建一个QChartView对象并设置图表
     QChartView *chartView = new QChartView(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->resize(500,400);
+    chartView->resize(532,371);
+    chartView->backgroundBrush();
 
     // 将QChartView对象转换为QPixmap对象
     QPixmap pixmap = chartView->grab();
 
     // 将QPixmap对象显示到QLabel中
     ui->label_pie->setPixmap(pixmap);
+
+
 
 }
 
@@ -676,6 +729,7 @@ void Car::video_Init()
 {
     //本地视频播放初始化
     //初始化
+
     player = new QMediaPlayer(this);
     //显示的窗体
     videowidget = new QVideoWidget(this);
@@ -800,11 +854,13 @@ void Car::on_camera_take_clicked()
         //开始进行捕获
         imageCapture->capture(fileName);  //捕获图片，保存到要保存的目录为上面对话框设定的目录
 
-        qDebug()<<fileName;
+        // 创建QPixmap对象
+//        QPixmap pix;
 
+//        pix.load("./screen.jpg"); //加载图片
+//        qDebug()<<pix;
 
-
-
+        //ui->screen_label;
     }
     //如果视频播放
     else
@@ -817,53 +873,58 @@ void Car::on_camera_take_clicked()
             filePathName += QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz");
             filePathName += ".png";
             pixmap = screen->grabWindow(0);
-//            if(!pixmap.save(filePathName,"png"))
-//            {
-//                qDebug()<<"cut save png failed"<<endl;
-//            }
-
-            // 计算视频的位置和大小
-            qDebug()<<"Full pixmap width: "<<pixmap.width()<<" height: "<<pixmap.height()<<endl;
-            QRect geo = this->geometry();
-            QRect appGeo = geo; // 整个应用程序在图片中的位置。
-            qDebug()<<"App x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
-
-            geo = videowidget->geometry(); // 播放视频在图片中的位置。
-            qDebug()<<"VW x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
-
-            //QWidget *centerWidget = centralWidget(); // QMainWindow在应用程序的位置
-
-            // 假设非主窗口是由主窗口创建的
-            // 在非主窗口中获取指向主窗口实例的指针
-            QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parent());
-            if (mainWindow)
+            if(!pixmap.save(filePathName,"png"))
             {
-                // 获取指向中心窗口部件的指针
-                QWidget *centerWidget = mainWindow->centralWidget();
-                // 执行相关操作
-                QRect centerRect = centerWidget->geometry();
-                qDebug()<<"center x: "<<centerRect.x()<<" y: "<<centerRect.y()<<" width: "<<centerRect.width()<<" height: "<<centerRect.height()<<endl;
+                qDebug()<<"cut save png failed"<<endl;
+            }
+            else {
+                qDebug()<<"cut save png successful"<<endl;
+                // 计算视频的位置和大小
+                qDebug()<<"Full pixmap width: "<<pixmap.width()<<" height: "<<pixmap.height()<<endl;
+                QRect geo = this->geometry();
+                QRect appGeo = geo; // 整个应用程序在图片中的位置。
+                qDebug()<<"App x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
 
-                QRect copyGeo;
-                copyGeo.setX(geo.x() + appGeo.x() + centerRect.x()); // x=三个x相加
-                copyGeo.setY(geo.y() + appGeo.y() + centerRect.y());
-                copyGeo.setWidth(geo.width());
-                copyGeo.setHeight(geo.height());
-                qDebug()<<"VW1 x: "<<copyGeo.x()<<" y: "<<copyGeo.y()<<" width: "<<copyGeo.width()<<" height: "<<copyGeo.height()<<endl;
+                geo = videowidget->geometry(); // 播放视频在图片中的位置。
+                qDebug()<<"VW x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
 
-                QPixmap pixmapCopy = pixmap.copy(copyGeo); // copy图片
-                filePathName.prepend("Copy+");
+                //QWidget *centerWidget = centralWidget(); // QMainWindow在应用程序的位置
 
-                QString fileName = QFileDialog::getSaveFileName(); //保存的文件名字
-                if(!pixmapCopy.save(fileName,"png"))
+                // 假设非主窗口是由主窗口创建的
+                // 在非主窗口中获取指向主窗口实例的指针
+                QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parent());
+                if (mainWindow)
                 {
-                    qDebug()<<"copy cut save png failed"<<endl;
+                    // 获取指向中心窗口部件的指针
+                    QWidget *centerWidget = mainWindow->centralWidget();
+                    // 执行相关操作
+                    QRect centerRect = centerWidget->geometry();
+                    qDebug()<<"center x: "<<centerRect.x()<<" y: "<<centerRect.y()<<" width: "<<centerRect.width()<<" height: "<<centerRect.height()<<endl;
+
+                    QRect copyGeo;
+                    copyGeo.setX(geo.x() + appGeo.x() + centerRect.x()); // x=三个x相加
+                    copyGeo.setY(geo.y() + appGeo.y() + centerRect.y());
+                    copyGeo.setWidth(geo.width());
+                    copyGeo.setHeight(geo.height());
+                    qDebug()<<"VW1 x: "<<copyGeo.x()<<" y: "<<copyGeo.y()<<" width: "<<copyGeo.width()<<" height: "<<copyGeo.height()<<endl;
+
+                    QPixmap pixmapCopy = pixmap.copy(copyGeo); // copy图片
+                    filePathName.prepend("Copy+");
+
+                    //QString fileName = QFileDialog::getSaveFileName(); //保存的文件名字
+                    if(!pixmapCopy.save(fileName,"png"))
+                    {
+                        qDebug()<<"copy cut save png failed"<<endl;
+                    }
+                    else {
+                        qDebug()<<"copy cut save png successfull "<<endl;
+                    }
                 }
-                else {
-                    qDebug()<<"copy cut save png successfull "<<endl;
+                else
+                {
+                    qDebug()<<"mainwindow error";
                 }
             }
-
 
     }
 
@@ -884,3 +945,39 @@ void Car::on_camera_button_clicked()
     camera->start();  //让摄像头开始工作
 }
 
+//当 点击主页判断状态
+void Car::on_MainButton_clicked()
+{
+    //判断摄像头和视频，如果视频暂停，隐藏，如果摄像头，隐藏即可
+    if(camera->state() == QCamera::ActiveState||camera->state() == QCamera::LoadedState)
+    {
+
+        viemfinder->setVisible(true); //隐藏摄像头显示区域
+    }
+    else
+    {
+        //player->stop(); //停止播放文件
+        videowidget->setVisible(true); //隐藏文件播放的QVideoWidget
+    }
+    park_num();
+}
+//，若更新，则更新饼图，直接更新
+void Car::checkMySQLData()
+{
+    QString park_name = mysql_C.Parking_name;
+
+    q.prepare("SELECT P_reserve_count FROM parking WHERE P_name = :park_name;");
+    q.bindValue(":park_name", park_name);
+    q.exec();
+    q.next();
+    int reserve_count = q.value(0).toInt();
+    if(reserve_count!=mysql_C.reserve)//如果数据库预约数与本地不同，则进行同步
+    {
+         park_num();
+    }
+    else
+    {
+        return ;
+    }
+
+}

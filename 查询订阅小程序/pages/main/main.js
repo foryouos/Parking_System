@@ -76,9 +76,9 @@ Component({
         url: 'http://36.133.121.177:66/connect_get.php', //上传预约信息
         data:
         {
-        name:'36_133_121_177',
+        name:'foryouos',
         password:'5211314',
-        database:'36_133_121_177',
+        database:'foryouos',
         },
         header: {
           'content-type': 'application/json;'
@@ -204,9 +204,9 @@ Component({
       wx.request({
         url: 'http://36.133.121.177:66/connect_up.php', //上传预约信息
         data:{
-          name:'36_133_121_177',
+          name:'foryouos',
           password:'5211314',
-          database:'36_133_121_177',
+          database:'foryouos',
           licence_plate:this.data.licence_plate, //上传车牌号
           licence_name : placeName,  //上传选中的停车场
         },
