@@ -13,7 +13,7 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Query the database for parking lot names and available spots
-    $sql = "SELECT P_name, P_all_count - P_reserve_count - P_reserve_count AS surplus FROM parking;";
+    $sql = "SELECT P_name, P_all_count - P_reserve_count - P_now_count AS surplus FROM parking;";
     $result = $conn->query($sql);
 
     // Create an empty array to store the parking lot information

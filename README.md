@@ -16,6 +16,7 @@
 - [ ] 优化数据库和QT多次调用的TCP开销
 
 ## UI展示
+![整体页面](https://i.imgtg.com/2023/04/14/86qAB.png "整体页面")
 ![前端页面](https://i.imgtg.com/2023/04/13/8RJGj.jpg "QT前端页面")
 ![微信小程序UI](https://i.imgtg.com/2023/04/13/8RysX.jpg "微信小程序UI")
 
@@ -31,6 +32,7 @@
 * `C++11`
 * `MySql 8.0.27`
 * OpenCV 3.2.0
+* 安装K-Lite_Codec_Pack_1676_Standard解析视频\(安装全部默认选项即可)
 
 ### 微信小程序
 #### 后台

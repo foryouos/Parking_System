@@ -71,39 +71,11 @@ Component({
         })
       };
        //调用API读取停车场名和停车位传递给data的place
-       wx.request
-      ({
-        url: 'http://36.133.121.177:66/connect_get.php', //上传预约信息
-        data:
-        {
-        name:'foryouos',
-        password:'5211314',
-        database:'foryouos',
-        },
-        header: {
-          'content-type': 'application/json;'
-        },
-        success:(res)=>
-        {
-          var place = JSON.parse(decodeURIComponent(res.data))
-          //console.log(place)
-          console.log("读取数据成功")
-          this.setData
-          (
-            {
-              "place":place,
-            }
-          )
-        },
-        fail:(f)=>
-        {
-          wx.showModal
-          ({
-            title: '提示',
-            content: '读取数据失败',
-          })
-        }
-      })
+       this.connectmysqlget();
+
+
+
+       
       wx.getStorage( //异步获取存储
         {
           key:'licence_plate', //读取本地缓存
@@ -213,6 +185,8 @@ Component({
         success:(res)=>
         {
           console.log(res.data)
+          //成功之后调用查询
+          this.connectmysqlget();
           wx.showModal({
             title: '成功',
             content: '预定成功，请您半小时后达到，否则将自动取消！',
@@ -247,7 +221,39 @@ Component({
     connectmysqlget:function(e)
     {
       //调用API读取停车场名和停车位传递给data的place
-     
+      wx.request
+      ({
+        url: 'http://36.133.121.177:66/connect_get.php', //上传预约信息
+        data:
+        {
+        name:'foryouos',
+        password:'5211314',
+        database:'foryouos',
+        },
+        header: {
+          'content-type': 'application/json;'
+        },
+        success:(res)=>
+        {
+          var place = JSON.parse(decodeURIComponent(res.data))
+          //console.log(place)
+          console.log("读取数据成功")
+          this.setData
+          (
+            {
+              "place":place,
+            }
+          )
+        },
+        fail:(f)=>
+        {
+          wx.showModal
+          ({
+            title: '提示',
+            content: '读取数据失败',
+          })
+        }
+      })
     }
 
 },

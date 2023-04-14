@@ -935,7 +935,7 @@ void Car::on_camera_take_clicked()
 void Car::on_camera_button_clicked()
 {
 
-    if(player->state() == QMediaPlayer::PlayingState)
+    if(player->state() == QMediaPlayer::PlayingState||player->state() == QMediaPlayer::StoppedState||player->state() == QMediaPlayer::PausedState)
     {
         player->stop(); //停止播放文件
         videowidget->setVisible(false); //隐藏文件播放的QVideoWidget
