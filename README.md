@@ -60,6 +60,8 @@ QT       += core gui sql
 
 ![mysql环境](https://i.imgtg.com/2023/04/04/22u3S.png "mysql环境")
 
+![OpenCV环境配置](https://blog.csdn.net/Mr_robot_strange/article/details/110677323 "openCV环境配置")
+
 ### 微信小程序
 
 * [微信小程序`连接MySQL`数据库](https://blog.csdn.net/qq_37666407/article/details/126025101)

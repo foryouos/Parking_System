@@ -694,8 +694,6 @@ void Car::on_Carcheck_clicked()
     }
 
     //调用函数输出
-
-
 }
 //读取当前鼠标所在车牌号，进行删除
 void Car::on_Car_delete_clicked()
@@ -850,81 +848,129 @@ void Car::on_camera_take_clicked()
     {
         camera->setCaptureMode(QCamera::CaptureStillImage);  //捕获图片
         //弹出标准对话框
-        QString fileName = QFileDialog::getSaveFileName(nullptr, QString(), QString(), QString(), nullptr, QFileDialog::DontConfirmOverwrite); //保存的文件名字
+        //QString fileName = QFileDialog::getSaveFileName(nullptr, QString(), QString(), QString(), nullptr, QFileDialog::DontConfirmOverwrite); //保存的文件名字
+
+        imageCapture = new QCameraImageCapture(camera);  //创建一个用于捕获图片的对象
+
+      //当摄像头成功捕获一张图片后
+      connect(imageCapture, &QCameraImageCapture::imageCaptured, this, [=](int /*id*/, const QImage& img)
+      {
+          Mat src;
+          Mat rgbImg;
+          //src = Mat(img.height(), img.width(), CV_8UC4, (uchar*)img.bits(), img.bytesPerLine()).clone();
+          src = Mat(img.height(), img.width(), CV_8UC4, const_cast<unsigned char*>(img.bits()), static_cast<size_t>(img.bytesPerLine())).clone();
+
+          cvtColor(src, rgbImg, CV_BGRA2RGB);  //将OpenCV中颜色通道排列方式与Qt中不同的图片格式转换为Qt中正常的图片格式
+          //QImage qImg(rgbImg.data, rgbImg.cols, rgbImg.rows, rgbImg.step, QImage::Format_RGB888);
+          QImage qImg(rgbImg.data, rgbImg.cols, rgbImg.rows, static_cast<int>(rgbImg.step), QImage::Format_RGB888);
+
+          //缩放图片到指定大小
+          QSize newSize(200,100);
+          QImage scaledImg = qImg.scaled(newSize,Qt::KeepAspectRatio);
+
+          ui->screen_label->setPixmap(QPixmap::fromImage(scaledImg));
+      });
+
         //开始进行捕获
         imageCapture->capture(fileName);  //捕获图片，保存到要保存的目录为上面对话框设定的目录
-
-        // 创建QPixmap对象
-//        QPixmap pix;
-
-//        pix.load("./screen.jpg"); //加载图片
-//        qDebug()<<pix;
-
-        //ui->screen_label;
     }
     //如果视频播放
     else
     {
+        //使用OpenCV截取图片
+        //获取当前帧的时间
+        qint64 currentTime = player->position();
+        //将播放器跳转到当前时间
+        player->setPosition(currentTime);
+        //获取当前媒体文件的URL地址
+        //QString filePath = player->currentMedia().canonicalUrl().toString();
+        //获取当前媒体文件的本地文件路径
+        QString filePath = player->currentMedia().canonicalUrl().toLocalFile();
+        //使用OpenCV库读取该路径下的视频
+        VideoCapture cap(filePath.toStdString());
+        //
+        if(!cap.isOpened())
+        {
+            qDebug()<<"Failed to open file:"<<filePath;
+            return ;
+        }
+        //跳转到当前时间
+        cap.set(CAP_PROP_POS_MSEC,currentTime);
+        Mat  frame;
+        cap.read(frame);
+        //将获取到的图片显示在QLabel上供用户选择保存位置
+        QImage img(static_cast<const uchar*>(frame.data),frame.cols,frame.rows,QImage::Format_RGB888);
+        //缩放图片到指定大小
+        QSize newSize(200,100);
+        QImage scaledImg = img.scaled(newSize,Qt::KeepAspectRatio);
+
+        ui->screen_label->setPixmap(QPixmap::fromImage(scaledImg));
+
+
+
+
+
+
 
         // 保存整个屏幕为QPixmap
-            QScreen *screen = QGuiApplication::primaryScreen();
-            //QString filePathName = QFileDialog::getSaveFileName(); //保存的文件名字
-            QString filePathName = "cut-";
-            filePathName += QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz");
-            filePathName += ".png";
-            pixmap = screen->grabWindow(0);
-            if(!pixmap.save(filePathName,"png"))
-            {
-                qDebug()<<"cut save png failed"<<endl;
-            }
-            else {
-                qDebug()<<"cut save png successful"<<endl;
-                // 计算视频的位置和大小
-                qDebug()<<"Full pixmap width: "<<pixmap.width()<<" height: "<<pixmap.height()<<endl;
-                QRect geo = this->geometry();
-                QRect appGeo = geo; // 整个应用程序在图片中的位置。
-                qDebug()<<"App x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
+//            QScreen *screen = QGuiApplication::primaryScreen();
+//            //QString filePathName = QFileDialog::getSaveFileName(); //保存的文件名字
+//            QString filePathName = "cut-";
+//            filePathName += QDateTime::currentDateTime().toString("yyyy-MM-dd hh-mm-ss-zzz");
+//            filePathName += ".png";
+//            pixmap = screen->grabWindow(0);
+//            if(!pixmap.save(filePathName,"png"))
+//            {
+//                qDebug()<<"cut save png failed"<<endl;
+//            }
+//            else {
+//                qDebug()<<"cut save png successful"<<endl;
+//                // 计算视频的位置和大小
+//                qDebug()<<"Full pixmap width: "<<pixmap.width()<<" height: "<<pixmap.height()<<endl;
+//                QRect geo = this->geometry();
+//                QRect appGeo = geo; // 整个应用程序在图片中的位置。
+//                qDebug()<<"App x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
 
-                geo = videowidget->geometry(); // 播放视频在图片中的位置。
-                qDebug()<<"VW x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
+//                geo = videowidget->geometry(); // 播放视频在图片中的位置。
+//                qDebug()<<"VW x: "<<geo.x()<<" y: "<<geo.y()<<" width: "<<geo.width()<<" height: "<<geo.height()<<endl;
 
-                //QWidget *centerWidget = centralWidget(); // QMainWindow在应用程序的位置
+//                //QWidget *centerWidget = centralWidget(); // QMainWindow在应用程序的位置
 
-                // 假设非主窗口是由主窗口创建的
-                // 在非主窗口中获取指向主窗口实例的指针
-                QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parent());
-                if (mainWindow)
-                {
-                    // 获取指向中心窗口部件的指针
-                    QWidget *centerWidget = mainWindow->centralWidget();
-                    // 执行相关操作
-                    QRect centerRect = centerWidget->geometry();
-                    qDebug()<<"center x: "<<centerRect.x()<<" y: "<<centerRect.y()<<" width: "<<centerRect.width()<<" height: "<<centerRect.height()<<endl;
+//                // 假设非主窗口是由主窗口创建的
+//                // 在非主窗口中获取指向主窗口实例的指针
+//                QMainWindow *mainWindow = qobject_cast<QMainWindow *>(parent());
+//                if (mainWindow)
+//                {
+//                    // 获取指向中心窗口部件的指针
+//                    QWidget *centerWidget = mainWindow->centralWidget();
+//                    // 执行相关操作
+//                    QRect centerRect = centerWidget->geometry();
+//                    qDebug()<<"center x: "<<centerRect.x()<<" y: "<<centerRect.y()<<" width: "<<centerRect.width()<<" height: "<<centerRect.height()<<endl;
 
-                    QRect copyGeo;
-                    copyGeo.setX(geo.x() + appGeo.x() + centerRect.x()); // x=三个x相加
-                    copyGeo.setY(geo.y() + appGeo.y() + centerRect.y());
-                    copyGeo.setWidth(geo.width());
-                    copyGeo.setHeight(geo.height());
-                    qDebug()<<"VW1 x: "<<copyGeo.x()<<" y: "<<copyGeo.y()<<" width: "<<copyGeo.width()<<" height: "<<copyGeo.height()<<endl;
+//                    QRect copyGeo;
+//                    copyGeo.setX(geo.x() + appGeo.x() + centerRect.x()); // x=三个x相加
+//                    copyGeo.setY(geo.y() + appGeo.y() + centerRect.y());
+//                    copyGeo.setWidth(geo.width());
+//                    copyGeo.setHeight(geo.height());
+//                    qDebug()<<"VW1 x: "<<copyGeo.x()<<" y: "<<copyGeo.y()<<" width: "<<copyGeo.width()<<" height: "<<copyGeo.height()<<endl;
 
-                    QPixmap pixmapCopy = pixmap.copy(copyGeo); // copy图片
-                    filePathName.prepend("Copy+");
+//                    QPixmap pixmapCopy = pixmap.copy(copyGeo); // copy图片
+//                    filePathName.prepend("Copy+");
 
-                    //QString fileName = QFileDialog::getSaveFileName(); //保存的文件名字
-                    if(!pixmapCopy.save(fileName,"png"))
-                    {
-                        qDebug()<<"copy cut save png failed"<<endl;
-                    }
-                    else {
-                        qDebug()<<"copy cut save png successfull "<<endl;
-                    }
-                }
-                else
-                {
-                    qDebug()<<"mainwindow error";
-                }
-            }
+//                    //QString fileName = QFileDialog::getSaveFileName(); //保存的文件名字
+//                    if(!pixmapCopy.save(fileName,"png"))
+//                    {
+//                        qDebug()<<"copy cut save png failed"<<endl;
+//                    }
+//                    else {
+//                        qDebug()<<"copy cut save png successfull "<<endl;
+//                    }
+//                }
+//                else
+//                {
+//                    qDebug()<<"mainwindow error";
+//                }
+//            }
 
     }
 

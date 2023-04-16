@@ -24,6 +24,11 @@
 #include <QChart>
 #include <QPieSeries>
 #include <QChartView>
+
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <QImage>
+using namespace cv;
 //添头文件
 QT_CHARTS_USE_NAMESPACE
 

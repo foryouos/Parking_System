@@ -402,10 +402,10 @@ border-radius:7px;</string>
     <widget class="QLabel" name="screen_label">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>180</x>
        <y>410</y>
-       <width>211</width>
-       <height>121</height>
+       <width>200</width>
+       <height>100</height>
       </rect>
      </property>
      <property name="text">

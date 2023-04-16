@@ -47,8 +47,10 @@ RESOURCES += \
     images.qrc
 
 # 引入OpenCV
-#INCLUDEPATH += D:\openCV3.2.0\opencv\build\include
-#LIBS += -L"D:\openCV3.2.0\opencv\build\x64\vc14\lib\opencv_world320d.lib"
+INCLUDEPATH += D:\Qt\build\install\include\
+               D:\Qt\build\install\include\opencv2\
+               D:\Qt\build\install\include\opencv
 
-DISTFILES +=
+LIBS += -L D:\Qt\build\install\x64\mingw\lib\libopencv_*.a
+
 

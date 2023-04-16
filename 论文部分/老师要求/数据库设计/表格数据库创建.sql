@@ -19,6 +19,7 @@ IF
 	NOT EXISTS PARKING (
 		P_id INT NOT NULL AUTO_INCREMENT,
 		P_name VARCHAR ( 255 ) NOT NULL,
+		P_reserve_count INT,
 		P_now_count INT,
 		P_all_count INT,
 		P_fee DECIMAL ( 10, 2 ),
@@ -29,7 +30,7 @@ IF
 CREATE TABLE
 IF
 	NOT EXISTS CAR (
-		id INT NOT NULL AUTO_INCREMENT,
+		C_id INT NOT NULL AUTO_INCREMENT,
 		license_plate VARCHAR ( 20 ) NOT NULL,
 		check_in_time DATETIME NOT NULL,
 		check_out_time DATETIME DEFAULT NULL,
@@ -37,4 +38,13 @@ IF
 		location VARCHAR ( 20 ) NOT NULL,
 		PRIMARY KEY ( id ),
 	INDEX ( license_plate ) 
+	);
+	
+	CREATE TABLE IF NOT EXISTS reservations 
+	( 
+	R_id INT PRIMARY KEY AUTO_INCREMENT, 
+	license_plate VARCHAR ( 10 ) NOT NULL, 
+	P_name VARCHAR ( 255 ) NOT NULL,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE INDEX(license_plate)
 	);
