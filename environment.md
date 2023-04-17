@@ -129,11 +129,11 @@ CONFIG += c++11
 QMAKE_CXXFLAGS+=-std=c++11
 ```
 * 下载`EasyPR1.6`之后的文件目录,我们需要也就是`所选的`,`test`也要，要部分代码
-  ![01](E:\parkingcar\Login\assets\01.png)
+  ![01](https://i.imgtg.com/2023/04/17/XXbBq.png)
 
 * 将上面`五`个文件夹保存到Qt`创建`的项目地址`对应`的`根目录`下
 * qt创建一个普通项目之后，添加已经存在的文件
-  ![image-20230417205708627](E:\parkingcar\Login\assets\image-20230417205708627.png)
+  ![image-20230417205708627](https://i.imgtg.com/2023/04/17/XXTpY.png)
 * test不用添加，将剩余`4`个文件夹全部选进去，选好之后对应的.pro文件，#为删掉的，切记可能在加入test后，将会对应两个main.cpp导致最后无法运行
 ```cpp
 SOURCES += \
@@ -238,7 +238,7 @@ DISTFILES += \
 * 接下来发现所有的文件好像`都无法`加载`EasyPR`对应的`文件`
 
 * 每个文件都打开，将头`文件无法读取`的，`查`看对应的`位置`，都是在`include`文件夹下的文件`无法`读取，所以在`头文件`上面`加`上`include`,例如下面，有耐心查看，基本上每个文件都要修改。`所有文件都打开一遍`
-![image-20230417210720275](E:\parkingcar\Login\assets\image-20230417210720275.png)
+![image-20230417210720275](https://i.imgtg.com/2023/04/17/XXUfv.png)
 * 修改`Header/include/config.h`读取的model路径全部该为自己的`绝对路径`,记得`//`很容易`不细心`,最后OpenCV`无法读取`而`失败`.例如下面的报错
 ```sh
 加载断点
@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
 ```
 * 修改`main.cpp`后会有大量的警告`unused`，或者使用`老旧`的格式，会警告，`不`用管，毕竟八年没有更新
 
-![image-20230417212952648](E:\parkingcar\Login\assets\image-20230417212952648.png)
+![image-20230417212952648](https://i.imgtg.com/2023/04/17/XXBxU.png)
 
 * 当然编译运行后，肯定`不会成功`，会有`各种各样`的找不到，报错 ，肯定会有下面函数找不到，根据对应名字，在core文件里，找到头文件，把它`添加到对应的文件当中`
 
