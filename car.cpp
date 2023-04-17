@@ -867,7 +867,7 @@ void Car::on_camera_take_clicked()
 
         imageCapture = new QCameraImageCapture(camera);  //创建一个用于捕获图片的对象
 
-      //当摄像头成功捕获一张图片后
+      //当摄像头成功捕获一张图片后进行车牌识别
       connect(imageCapture, &QCameraImageCapture::imageCaptured, this, [=](int /*id*/, const QImage& img)
       {
           Mat src;
@@ -908,11 +908,6 @@ void Car::on_camera_take_clicked()
               ui->Car_output->setText(plateStr);
               qDebug()<<plateStr;
               std::cout << "plate: " << plate.getPlateStr() << std::endl;
-              // 4. 输出识别结果
-
-              // 连接信号槽，实现在 QLineEdit 中输入值
-              //connect(someObject, &SomeClass::someSignal, lineEdit, &QLineEdit::setText);
-
           }
 
 
@@ -951,7 +946,35 @@ void Car::on_camera_take_clicked()
         QSize newSize(200,100);
         QImage scaledImg = img.scaled(newSize,Qt::KeepAspectRatio);
 
-        ui->screen_label->setPixmap(QPixmap::fromImage(scaledImg));
+
+        //使用easyPR获取车牌信息
+        std::vector<easypr::CPlate> plates;
+        m_plateRecognize.plateRecognize(frame,plates,0);
+        for (auto plate : plates) {
+            std::cout << "plate: " << plate.getPlateStr() << std::endl;
+        }
+        qDebug()<<"内部输出";
+        if(plates.size()>0)
+        {
+            //显示车牌图片和号码
+            easypr::CPlate plate = plates[0];
+            Mat plateImg = plate.getPlateMat();
+            QImage qPlateImg(plateImg.data,plateImg.cols,plateImg.rows,static_cast<int>(plateImg.step), QImage::Format_RGB888);
+            ui->screen_label->setPixmap(QPixmap::fromImage(qPlateImg));
+
+            QString plateStr = QString::fromLocal8Bit(plate.getPlateStr().c_str());
+            // 获取车牌号码的部分字符串
+            QStringList list = plateStr.split(":");
+            if (list.size() >= 2) {
+                plateStr = list[1].trimmed();
+            }
+            ui->Car_idinput->setText(plateStr);
+            ui->Car_output->setText(plateStr);
+            qDebug()<<plateStr;
+            std::cout << "plate: " << plate.getPlateStr() << std::endl;
+        }
+
+        //ui->screen_label->setPixmap(QPixmap::fromImage(scaledImg));
 
 
 
