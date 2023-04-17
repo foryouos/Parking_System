@@ -28,6 +28,12 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <QImage>
+
+//添加车牌识别训练模型
+#include <opencv2/opencv.hpp>
+#include "include/easypr.h"
+
+using namespace easypr;
 using namespace cv;
 //添头文件
 QT_CHARTS_USE_NAMESPACE
@@ -153,6 +159,8 @@ private:
     //获取分块
     QPieSlice *slice;  //饼图分块
     void PIE();
+    //车牌识别
+    easypr::CPlateRecognize m_plateRecognize;
 
 };
 

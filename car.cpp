@@ -49,6 +49,20 @@ Car::Car(QWidget *parent) :
     connect(timer, &QTimer::timeout, this, &Car::checkMySQLData); // 将timeout信号连接到槽函数
     timer->start(1000); // 启动定时器，每隔1秒检查一次
 
+    //加载车牌识别的训练模型
+    // 1. 加载车牌识别模型
+    CPlateRecognize pr;
+    pr.LoadSVM("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//svm_hist.xml");
+
+    pr.LoadANN("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//ann.xml");
+
+    pr.LoadChineseANN("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//ann_chinese.xml");
+
+
+    // new in v1.6
+    pr.LoadGrayChANN("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//annCh.xml");
+    pr.LoadChineseMapping("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//province_mapping");
+
 }
 
 Car::~Car()
@@ -841,6 +855,7 @@ void Car::On_Position_Changed(qint64 position)
 }
 
 //画面捕获，拍照
+//使用easyPR将车牌号放到固定区域，然后将识别的照片放到入库和出库的位置
 void Car::on_camera_take_clicked()
 {
     //如果摄像头播放
@@ -868,7 +883,39 @@ void Car::on_camera_take_clicked()
           QSize newSize(200,100);
           QImage scaledImg = qImg.scaled(newSize,Qt::KeepAspectRatio);
 
-          ui->screen_label->setPixmap(QPixmap::fromImage(scaledImg));
+          //使用easyPR获取车牌信息
+          std::vector<easypr::CPlate> plates;
+          m_plateRecognize.plateRecognize(rgbImg,plates,0);
+          for (auto plate : plates) {
+              std::cout << "plate: " << plate.getPlateStr() << std::endl;
+          }
+          qDebug()<<"内部输出";
+          if(plates.size()>0)
+          {
+              //显示车牌图片和号码
+              easypr::CPlate plate = plates[0];
+              Mat plateImg = plate.getPlateMat();
+              QImage qPlateImg(plateImg.data,plateImg.cols,plateImg.rows,static_cast<int>(plateImg.step), QImage::Format_RGB888);
+              ui->screen_label->setPixmap(QPixmap::fromImage(qPlateImg));
+
+              QString plateStr = QString::fromLocal8Bit(plate.getPlateStr().c_str());
+              // 获取车牌号码的部分字符串
+              QStringList list = plateStr.split(":");
+              if (list.size() >= 2) {
+                  plateStr = list[1].trimmed();
+              }
+              ui->Car_idinput->setText(plateStr);
+              ui->Car_output->setText(plateStr);
+              qDebug()<<plateStr;
+              std::cout << "plate: " << plate.getPlateStr() << std::endl;
+              // 4. 输出识别结果
+
+              // 连接信号槽，实现在 QLineEdit 中输入值
+              //connect(someObject, &SomeClass::someSignal, lineEdit, &QLineEdit::setText);
+
+          }
+
+
       });
 
         //开始进行捕获

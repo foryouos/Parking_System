@@ -10,9 +10,9 @@
 - [x] 微信小程序调用`PHP`数据库后端查询车场车位
 - [x] 微信小程序预定系统
 - [x] 调用`摄像头`和`视频`
-- [ ] `车牌识别`
+- [x] `车牌识别`
 - [x] 剩余车位预定可视化展示(实时同步小程序)
-- [ ] 多线程连接池
+- [ ] 前端多线程连接池
 - [ ] 优化数据库和QT多次调用的TCP开销
 
 ## UI展示
@@ -60,7 +60,10 @@ QT       += core gui sql
 
 ![mysql环境](https://i.imgtg.com/2023/04/04/22u3S.png "mysql环境")
 
-![OpenCV环境配置](https://blog.csdn.net/Mr_robot_strange/article/details/110677323 "openCV环境配置")
+* [OpenCV环境配置](https://blog.csdn.net/Mr_robot_strange/article/details/110677323 "openCV环境配置")
+* [EasyPr换将配置](https://www.jianshu.com/p/22617e584f28 "easyPR环境配置")
+
+
 
 ### 微信小程序
 
