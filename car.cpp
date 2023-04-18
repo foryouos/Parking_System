@@ -444,15 +444,15 @@ void Car::park_num()
     QString all_count = q.value(1).toString();
     QString reserve_count = q.value(2).toString();
     //将停车场数据呈现到图表中
-    mysql mysql_instance;
-    mysql_instance.reserve = reserve_count.toInt();
-    mysql_instance.parking_now_count = q.value(0).toInt();
+
+    mysql_C.reserve = reserve_count.toInt();
+    mysql_C.parking_now_count = q.value(0).toInt();
     //创建饼图
     // 创建一个QPieSeries对象并添加数据//为每个分块设置颜色
     series = new QPieSeries();
     series->append("预约数", q.value(2).toInt());
     series->append("入库数", q.value(0).toInt())->setColor("#FFA500");
-    series->append("剩余数", mysql_instance.parking_count-q.value(2).toInt()-q.value(0).toInt());
+    series->append("剩余数", mysql_C.parking_count-q.value(2).toInt()-q.value(0).toInt());
     series->setHoleSize(0.3); //设置中间 空洞大小
     series->pieSize();
     //qDebug()<<mysql_instance.parking_now_count<<reserve_count.toInt()<<mysql_instance.parking_count-mysql_instance.parking_now_count-reserve_count.toInt();

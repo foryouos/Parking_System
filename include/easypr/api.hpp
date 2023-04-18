@@ -8,7 +8,9 @@
 #include <vector>
 #include "opencv2/opencv.hpp"
 #include "include/easypr/config.h"
-
+#include "include/easypr/core/plate_judge.h"
+#include "include/easypr/core/plate_locate.h"
+#include "include/easypr/core/plate_recognize.h"
 namespace easypr {
 
 namespace api {

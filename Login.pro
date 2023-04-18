@@ -13,6 +13,20 @@ QMAKE_CXXFLAGS+=-std=c++11
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# 去除变量为使用的警告
+QMAKE_CXXFLAGS += -Wno-unused-parameter
+
+QMAKE_CXXFLAGS += -Wno-unused-variable
+
+QMAKE_CXXFLAGS_WARN_ON -= -Wunused-function
+QMAKE_CXXFLAGS += -Wno-unused-function
+#添加 使用OpenMP的pragma
+QMAKE_CXXFLAGS += -fopenmp
+QMAKE_LFLAGS +=  -fopenmp
+
+LIBS += -fopenmp
+
+# 文件
 SOURCES += \
     car.cpp \
     main.cpp \
