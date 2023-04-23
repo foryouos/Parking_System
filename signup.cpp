@@ -46,13 +46,13 @@ void Signup::on_pushButton_sure_clicked()
         QMessageBox::warning(this, "注册认证", "账户和密码不能为空");
         return;
     }
+
     //判断确认密码是够一致
     if(password == surepass)
     {
         QString encryptedPassword = encryptPassword(password); // 对密码进行加密
-        //插入语句
-
         QString sql = QStringLiteral("insert into USER(username,password,telephone,truename) values('%1','%2','%3','%4');").arg(username, encryptedPassword,telephone,truename);
+
 
         //判断执行结果
         if(!mysql_c.execute_bool(sql))

@@ -3,29 +3,36 @@
 #include <mainwindow.h> //引用登录函数的初始化数据库
 #include "QFileDialog"
 #include <QDebug>
+#include "pthreadpool.h"
 Car::Car(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Car)
 {
     ui->setupUi(this);
     setWindowTitle("停车场管理系统车牌识别");
-    //车表初始化，更新几个数据
 
     //播放视频初始化
     video_Init();
-    //调用摄像头初始化
+    //点击视频，进行视频初始化
+    //connect(ui->fileopen,&QPushButton::clicked,this,&Car::camera_Init);
+    //connect(ui->fileopen,&QPushButton::clicked,this,&Car::on_fileopen_clicked);
+    //调用摄像头初始化所有窗体的操作必须是主线程
     camera_Init();
+
     //默认使用摄像头工作
     viemfinder->setVisible(true); //显示摄像头显示区域
     camera->start();  //让摄像头开始工作
     //创建饼图
     //实现简单的数据呈现
     park_num();
-    //create_pie();
-
     //先给视频一个图片
     // 创建QPixmap对象，加载png图像存储到pix变量中，使用new关键字分配堆内存来储存该对象
 
+    //定时更新 ---使用子线程
+    //QTimer* timer = new QTimer(this); // 创建定时器对象
+    //调用子线程去检测
+    connect(timer, &QTimer::timeout, this, &Car::checkMySQLData); // 将timeout信号连接到槽函数
+    timer->start(2000); // 启动定时器，每隔1秒检查一次
     // 设置默认显示第二页
     ui->stack->setCurrentIndex(0);
     //链接
@@ -33,35 +40,20 @@ Car::Car(QWidget *parent) :
     connect(ui->messageButton,&QPushButton::clicked,this,&Car::SwitchPage);
     connect(ui->CtrolButton,&QPushButton::clicked,this,&Car::SwitchPage);
 
-    //定时更新
-//    QSqlTableModel model(nullptr, mysql_C.get_db());
-//    model.setTable("reservations");
-//    model.select();
-//    // 监视模型以检测更改
-//    while (true) {
-//        if (model.rowCount() != model.select()) {
-//            qDebug() << "表已更新";
-//            // 在此进行处理更新操作
-//            park_num();
-//        }
-//    }
-    QTimer* timer = new QTimer(this); // 创建定时器对象
-    connect(timer, &QTimer::timeout, this, &Car::checkMySQLData); // 将timeout信号连接到槽函数
-    timer->start(1000); // 启动定时器，每隔1秒检查一次
+
 
     //加载车牌识别的训练模型
     // 1. 加载车牌识别模型
+    //车牌识别部分，加入线程
     CPlateRecognize pr;
-    pr.LoadSVM("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//svm_hist.xml");
+    pr.LoadSVM("E://parkingcar//Login//model//svm_hist.xml");
 
-    pr.LoadANN("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//ann.xml");
+    pr.LoadANN("E://parkingcar//Login//model//ann.xml");
 
-    pr.LoadChineseANN("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//ann_chinese.xml");
-
-
+    pr.LoadChineseANN("E://parkingcar//Login//model//ann_chinese.xml");
     // new in v1.6
-    pr.LoadGrayChANN("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//annCh.xml");
-    pr.LoadChineseMapping("E://Cstudy//QT//QT_exercise//easyPR//easypr2//model//province_mapping");
+    pr.LoadGrayChANN("E://parkingcar//Login//model//annCh.xml");
+    pr.LoadChineseMapping("E://parkingcar//Login//model//province_mapping");
 
 }
 
@@ -89,6 +81,7 @@ void Car::SwitchPage(){
 
 bool Car::checkPlateNumber(QString license_plate)
 {
+
     //判断车牌位数企微，读取QString的位数
     if(license_plate.length() != 7&&license_plate.length() != 8)
     {
@@ -113,8 +106,8 @@ bool Car::checkPlateNumber(QString license_plate)
         ui->Car_idinput->clear();
         return false; //判断第二位是否符合规定
     }
-
     return true;
+
 }
 
 
@@ -124,6 +117,7 @@ bool Car::checkPlateNumber(QString license_plate)
 
 void Car::on_CtrolButton_clicked()
 {
+    timer->stop();
     //判断摄像头和视频，如果视频暂停，隐藏，如果摄像头，隐藏即可
     if(camera->state() == QCamera::ActiveState||camera->state() == QCamera::LoadedState||player->state() == QMediaPlayer::PlayingState||player->state() == QMediaPlayer::PausedState)
     {
@@ -391,6 +385,7 @@ void Car::on_submitCar_clicked()
 
 void Car::on_messageButton_clicked()
 {
+    timer->stop();
     //判断摄像头和视频，如果视频暂停，隐藏，如果摄像头，隐藏即可
     if(camera->state() == QCamera::ActiveState||camera->state() == QCamera::LoadedState||player->state() == QMediaPlayer::PlayingState||player->state() == QMediaPlayer::PausedState)
     {
@@ -432,8 +427,7 @@ void Car::on_messageButton_clicked()
 //简单展示现有的车位图
 void Car::park_num()
 {
-    //qDebug()<<"num进入"<<mysql_C.reserve;
-    //连接数据库，当前停车场名称的数据库，对应的现有停车场数量，和总停车场数量
+
     QString park_name = mysql_C.Parking_name;
 
     q.prepare("SELECT P_now_count,P_all_count,P_reserve_count FROM parking WHERE P_name = :park_name;");
@@ -447,64 +441,25 @@ void Car::park_num()
 
     mysql_C.reserve = reserve_count.toInt();
     mysql_C.parking_now_count = q.value(0).toInt();
-    //创建饼图
-    // 创建一个QPieSeries对象并添加数据//为每个分块设置颜色
-    series = new QPieSeries();
-    series->append("预约数", q.value(2).toInt());
-    series->append("入库数", q.value(0).toInt())->setColor("#FFA500");
-    series->append("剩余数", mysql_C.parking_count-q.value(2).toInt()-q.value(0).toInt());
-    series->setHoleSize(0.3); //设置中间 空洞大小
-    series->pieSize();
-    //qDebug()<<mysql_instance.parking_now_count<<reserve_count.toInt()<<mysql_instance.parking_count-mysql_instance.parking_now_count-reserve_count.toInt();
-    //qDebug()<<"数据库"<<now_count.toInt()<<all_count<<reserve_count;
-
-
-    //为每个分块设置标签文字
-    for(int i = 0;i<=2;i++)
-    {
-        slice = series->slices().at(i); //获取分块
-
-        slice->setLabel(slice->label()+QString::asprintf(":%.0f",slice->value()));
-        if(slice->value()<10)
-        {
-            slice->setLabelVisible(false);
-        }
-        else {
-            slice->setLabelVisible(true);
-
-        }
-
-
-        connect(slice,SIGNAL(hovered(bool)),this,SLOT(on_PieSliceHighlight(bool)));
-
-    }
-    slice->setExploded(true); //最后一个设置为exploded,设置分裂效果
-    slice->setExplodeDistanceFactor(0.1);
-
-
-    // 创建一个QChart对象，并将QPieSeries对象添加到图表中
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->setTitle(park_name);
-    chart->legend()->setVisible(true);//图例
-    chart->legend()->setAlignment(Qt::AlignBottom);
-    chart->setBackgroundBrush(QBrush(QColor(255, 255, 255))); //设置背景为白色
-
-
-    // 创建一个QChartView对象并设置图表
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->resize(532,371);
-    chartView->backgroundBrush();
-
-    // 将QChartView对象转换为QPixmap对象
-    QPixmap pixmap = chartView->grab();
-
-    // 将QPixmap对象显示到QLabel中
-    ui->label_pie->setPixmap(pixmap);
+    create_pie(reserve_count.toInt(),now_count.toInt(),all_count.toInt()-reserve_count.toInt()-now_count.toInt());
 
 
 
+
+    //线程池  --- 更新预约数据
+    //创建任务类对象
+//    PReserve* reser = new PReserve;
+//    connect(this,&Car::starting,reser,&PReserve::recName);
+//    emit starting(q,parking_name);
+//    QThreadPool::globalInstance()->start(reser); //线程池中运行
+
+//    connect(reser,&PReserve::finish,this,[=](int reserve,int now_reserve) //将连接池完成后返回的值进行操作
+//    {
+//            mysql_C.reserve = reserve;
+//            mysql_C.parking_now_count = now_reserve;
+//            qDebug()<<reserve<<now_reserve;
+//            create_pie(reserve,now_reserve,mysql_C.parking_count-reserve-now_reserve);
+//    });
 }
 
 //收费函数
@@ -761,17 +716,28 @@ void Car::video_Init()
     connect(ui->horizontalSlider,&QSlider::valueChanged,this,&Car::Slider_Changed);
 }
 
+
 void Car::camera_Init()
 {
     //摄像头初始化
     //输出所有摄像头信息
+
     QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
     if(cameras.count() > 0)
     {
         foreach (const QCameraInfo &cameraInfo, cameras)
             qDebug() << cameraInfo.deviceName();
-        camera = new QCamera(cameras.at(0));  //编号为第几个摄像头
+        //CameraThread* thread = new CameraThread(this);
+        //现在主线程传递处理的信号
+
+
+//        connect(thread, &CameraThread::cameraInitialized, this, &Car::camera_initialized);
+//        connect(thread, &QThread::finished, thread, &QObject::deleteLater); // 线程结束时自动删除
+//        thread->start();
+
+       camera = new QCamera(cameras.at(0));  //编号为第几个摄像头
     }
+
     viemfinder = new QCameraViewfinder(this); //创建显示的区域
     camera->setViewfinder(viemfinder);  //显示出摄像头捕获的画面
     //设置摄像头显示的大小
@@ -779,7 +745,25 @@ void Car::camera_Init()
     viemfinder->setGeometry(10, 10, 500, 250); //设置窗口位置和大小
     //用户摄像头截图
     imageCapture = new QCameraImageCapture(camera);
+
 }
+
+//void Car::camera_initialized(QCamera *newCamera, QCameraImageCapture *newImageCapture)
+//{
+
+//    // 保存指针
+//    camera = newCamera;
+//    viemfinder = new QCameraViewfinder();
+//    camera->setViewfinder(viemfinder);
+//    imageCapture = newImageCapture;
+//    viemfinder = new QCameraViewfinder(this);
+//    viemfinder->setGeometry(10, 10, 500, 250); // 设置窗口位置和大小
+//    //layout()->addWidget(viemfinder);
+
+//    camera->start(); // 让摄像头开始工作
+//}
+
+
 
 //打开文件
 void Car::on_fileopen_clicked()
@@ -861,6 +845,17 @@ void Car::on_camera_take_clicked()
     //如果摄像头播放
     if(camera->state() == QCamera::ActiveState)
     {
+//        qRegisterMetaType<cv::Mat>("cv::Mat");
+//        QThread *t1 = new QThread;
+
+//        Recognize* rec = new Recognize;
+
+//        rec->moveToThread(t1);
+//        //建立信号与槽，连接统建
+//        connect(this,&Car::starting1,rec,&Recognize::working);
+
+
+
         camera->setCaptureMode(QCamera::CaptureStillImage);  //捕获图片
         //弹出标准对话框
         //QString fileName = QFileDialog::getSaveFileName(nullptr, QString(), QString(), QString(), nullptr, QFileDialog::DontConfirmOverwrite); //保存的文件名字
@@ -882,6 +877,9 @@ void Car::on_camera_take_clicked()
           //缩放图片到指定大小
           QSize newSize(200,100);
           QImage scaledImg = qImg.scaled(newSize,Qt::KeepAspectRatio);
+
+
+
 
           //使用easyPR获取车牌信息
           std::vector<easypr::CPlate> plates;
@@ -909,6 +907,19 @@ void Car::on_camera_take_clicked()
               qDebug()<<plateStr;
               std::cout << "plate: " << plate.getPlateStr() << std::endl;
           }
+
+          //使用多线程获取车牌信息
+
+//        emit starting1(rgbImg);
+//        t1->start();
+//        connect(rec,&Recognize::finish,this,[=](QImage qPlateImg,QString plateStr)
+//        {
+//            ui->screen_label->setPixmap(QPixmap::fromImage(qPlateImg));
+//            ui->Car_idinput->setText(plateStr);
+//            ui->Car_output->setText(plateStr);
+
+//        });
+
 
 
       });
@@ -996,6 +1007,7 @@ void Car::on_camera_button_clicked()
 //当 点击主页判断状态
 void Car::on_MainButton_clicked()
 {
+    timer->start(2000);
     //判断摄像头和视频，如果视频暂停，隐藏，如果摄像头，隐藏即可
     if(camera->state() == QCamera::ActiveState||camera->state() == QCamera::LoadedState)
     {
@@ -1027,5 +1039,66 @@ void Car::checkMySQLData()
     {
         return ;
     }
+}
+//创建饼图
+void Car::create_pie(int reserve,int now,int surplus)
+{
+
+    //创建饼图
+    // 创建一个QPieSeries对象并添加数据//为每个分块设置颜色
+    series = new QPieSeries();
+    series->append("预约数", reserve);
+    series->append("入库数", now)->setColor("#FFA500");
+    series->append("剩余数", surplus);
+    series->setHoleSize(0.3); //设置中间 空洞大小
+    series->pieSize();
+    //qDebug()<<mysql_instance.parking_now_count<<reserve_count.toInt()<<mysql_instance.parking_count-mysql_instance.parking_now_count-reserve_count.toInt();
+    //qDebug()<<"数据库"<<now_count.toInt()<<all_count<<reserve_count;
+
+
+    //为每个分块设置标签文字
+    for(int i = 0;i<=2;i++)
+    {
+        slice = series->slices().at(i); //获取分块
+
+        slice->setLabel(slice->label()+QString::asprintf(":%.0f",slice->value()));
+        if(slice->value()<10)
+        {
+            slice->setLabelVisible(false);
+        }
+        else {
+            slice->setLabelVisible(true);
+
+        }
+
+
+        connect(slice,SIGNAL(hovered(bool)),this,SLOT(on_PieSliceHighlight(bool)));
+
+    }
+    slice->setExploded(true); //最后一个设置为exploded,设置分裂效果
+    slice->setExplodeDistanceFactor(0.1);
+
+
+    // 创建一个QChart对象，并将QPieSeries对象添加到图表中
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle(mysql_C.Parking_name);
+    chart->legend()->setVisible(true);//图例
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->setBackgroundBrush(QBrush(QColor(255, 255, 255))); //设置背景为白色
+
+
+    // 创建一个QChartView对象并设置图表
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->resize(532,371);
+    chartView->backgroundBrush();
+
+    // 将QChartView对象转换为QPixmap对象
+    QPixmap pixmap = chartView->grab();
+
+    // 将QPixmap对象显示到QLabel中
+    ui->label_pie->setPixmap(pixmap);
+
 
 }

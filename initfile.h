@@ -17,12 +17,15 @@ public:
     explicit initFile(QWidget *parent = nullptr);
     ~initFile();
 
+signals:
+    void starting(mysql mysql_c);
+
 private slots:
     void on_submit_init_clicked();
 
 private:
     Ui::initFile *ui;
-    mysql mysql_c;
+
 };
 
 #endif // INITFILE_H

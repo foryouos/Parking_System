@@ -1,6 +1,6 @@
 #include "initfile.h"
 #include "ui_initfile.h"
-
+#include "pthreadpool.h"
 initFile::initFile(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::initFile)
@@ -58,7 +58,43 @@ void initFile::on_submit_init_clicked()
             file.write(jsonString.toUtf8());
             file.close();
             //首次启动的表格，触发器初始化
-            mysql(); //mysql初始化
+
+            mysql mysql_c;
+//            QThread* t1 = new QThread;
+//            QThread* t2 = new QThread;
+//            INIT* init = new INIT;
+//            init->moveToThread(t2);
+//            connect(ui->submit_init,&QPushButton::clicked,this,[=]()
+//            {
+//                qDebug()<<"调用mysqlc";
+//                emit starting(mysql_c);
+//                t1->start();//调用子线程方法
+//            });
+
+//            connect(init,&INIT::finish,this,[=]()
+//            {
+//                MainWindow *w = new MainWindow;
+//                w->show();
+//                //关闭当前窗口
+//                this->close(); //关闭当前窗口
+//            });
+//            //手写销毁资源
+//            connect(this,&initFile::destroy,this,[=]()
+//            {
+//                t1->quit();
+//                t1->wait();
+//                t1->deleteLater(); //释放空间
+
+
+//                init->deleteLater();
+
+//            });
+
+
+
+
+            //在线程中跑
+
             mysql_c.create_car();  //初始化车库表格
             //建立车库预定表
             mysql_c.parking_reserve(); //建立车库预定表，并生成触发器
@@ -69,11 +105,24 @@ void initFile::on_submit_init_clicked()
 
             mysql_c.create_user(); //初始化用户表格
 
+            //使用子线程
+            if(mysql_c.execute_bool("select * from user;"))
+            {
+                MainWindow *w = new MainWindow;
+                w->show();
+                //关闭当前窗口
+                this->close(); //关闭当前窗口
+            }
+            else
+            {
+                qDebug()<<"数据库未连接";
+                QMessageBox::information(this,"登录失败", "请检查你的初始化信息请重新输入!");
+                //删除文件
+                QFile::remove(filePath);
+
+            }
             //文件存在启动主程序
-            MainWindow *w = new MainWindow;
-            w->show();
-            //关闭当前窗口
-            this->close(); //关闭当前窗口
+
         }
     }
 

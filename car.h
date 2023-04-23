@@ -33,6 +33,10 @@
 #include <opencv2/opencv.hpp>
 #include "include/easypr.h"
 
+//添加线程池
+#include <QThreadPool>
+#include "pthread.h"
+
 using namespace easypr;
 using namespace cv;
 //添头文件
@@ -58,6 +62,10 @@ public:
     //设置函数输出到Qtable widget中数据，传入参数数据库对象
     void print_widget(QSqlQuery q,int i);
 
+signals:
+    void starting(QSqlQuery q,QString name);
+
+    void starting1(Mat rgbImg);
 private slots:
 
     //槽函数
@@ -81,8 +89,7 @@ private slots:
 
     //void on_MainButton_clicked();
 
-    //创建饼图
-    //void create_pie();
+
 
     //创建车位展示
     void park_num();
@@ -123,6 +130,8 @@ private slots:
     void on_MainButton_clicked();
 
     void checkMySQLData();
+//    void camera_initialized(QCamera*,QCameraImageCapture*);
+
 
 private:
     Ui::Car *ui;
@@ -161,6 +170,18 @@ private:
     void PIE();
     //车牌识别
     easypr::CPlateRecognize m_plateRecognize;
+
+    //创建饼图
+    void create_pie(int reserve,int now,int surplus);
+    //计时器
+    QTimer* timer = new QTimer(this);
+
+    QString parking_name = mysql_C.Parking_name;
+
+
+
+
+
 
 };
 

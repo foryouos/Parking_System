@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "mainwindow.h" //引入登陆窗口
+#include "pthreadpool.h"
 namespace Ui {
 class Signup;
 }
@@ -19,6 +20,9 @@ private slots:
     void on_pushButton_back_clicked();
 
     void on_pushButton_sure_clicked();
+signals:
+//    //设置开始的信号，用于给子线程传递
+//    void starting(QString sql);
 
 private:
     Ui::Signup *ui;

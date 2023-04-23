@@ -3,9 +3,13 @@
 #include <QSqlDatabase>
 #include <QApplication>
 #include "initfile.h"
+#include <opencv2/opencv.hpp>
+#include <QCoreApplication>
 int main(int argc, char *argv[])
 {
+    qRegisterMetaType<cv::Mat>("cv::Mat");
     QApplication a(argc, argv);
+
     //判断是否存在初始化文件若不存在启动，初始化程序
     QString filePath =QApplication::applicationDirPath() + "/parkinginit.json";
     QFile file(filePath);

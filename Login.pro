@@ -57,7 +57,8 @@ SOURCES += \
     thirdparty/mser/mser2.cpp \
     thirdparty/svm/corrected_svm.cpp \
     thirdparty/textDetect/erfilter.cpp \
-    thirdparty/xmlParser/xmlParser.cpp
+    thirdparty/xmlParser/xmlParser.cpp \
+    pthreadpool.cpp
 
 HEADERS += \
     car.h \
@@ -100,7 +101,8 @@ HEADERS += \
     thirdparty/mser/mser2.hpp \
     thirdparty/svm/precomp.hpp \
     thirdparty/textDetect/erfilter.hpp \
-    thirdparty/xmlParser/xmlParser.h
+    thirdparty/xmlParser/xmlParser.h \
+    pthreadpool.h
 
 
 FORMS += \

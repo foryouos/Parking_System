@@ -72,6 +72,9 @@ void MainWindow::on_pushButton_2_clicked()
     QString encryptedPassword = encryptPassword(password); // 对密码进行加密
     QString sql = QStringLiteral("select * from USER WHERE username='%1' and password = '%2'").arg(username,encryptedPassword);
 
+    //使用线程去执行MySQL语句
+
+
     //判断执行结果
     if(!mysql_c.execute(sql).next())
     {
