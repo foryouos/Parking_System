@@ -7,6 +7,10 @@ initFile::initFile(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("停车场初始化");
+    //设置label垂直布局
+    QString str = ui->label->text();
+    ui->label->setText(str.split("",QString::SkipEmptyParts).join("\n"));
+    ui->label->setAlignment(Qt::AlignCenter);
 }
 
 initFile::~initFile()
@@ -126,4 +130,20 @@ void initFile::on_submit_init_clicked()
         }
     }
 
+}
+//点击关闭窗口
+void initFile::on_cancel_submit_clicked()
+{
+    //调用确认窗口
+    QMessageBox::Button btn= QMessageBox::question(this,"关闭窗口","您确定要退出关闭窗口吗？");
+
+    //如果选择的确认则关闭
+    if(btn==QMessageBox::Yes)
+    {
+        //关闭窗口
+        this->close();
+    }
+    else {
+
+    }
 }

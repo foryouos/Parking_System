@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "login.h"
 #include "ui_mainwindow.h"
 #include <QGraphicsDropShadowEffect>
 #include <QCryptographicHash> //加载加密函数库

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1320</width>
-    <height>734</height>
+    <width>1152</width>
+    <height>822</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,256 +16,92 @@
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255, 255, 255);</string>
   </property>
-  <widget class="QPushButton" name="MainButton">
-   <property name="geometry">
-    <rect>
-     <x>1200</x>
-     <y>160</y>
-     <width>101</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-   </property>
-   <property name="text">
-    <string>主页</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="messageButton">
-   <property name="geometry">
-    <rect>
-     <x>1200</x>
-     <y>80</y>
-     <width>101</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-   </property>
-   <property name="text">
-    <string>车辆信息</string>
-   </property>
-  </widget>
-  <widget class="QStackedWidget" name="stack">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1201</width>
-     <height>751</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
-   </property>
-   <property name="currentIndex">
-    <number>1</number>
-   </property>
-   <widget class="QWidget" name="main">
-    <widget class="QLabel" name="label_title">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>380</y>
-       <width>141</width>
-       <height>41</height>
-      </rect>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="1">
+    <spacer name="verticalSpacer_16">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="2">
+    <spacer name="horizontalSpacer_10">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+    <widget class="QStackedWidget" name="stack">
+     <property name="minimumSize">
+      <size>
+       <width>1030</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="sizeIncrement">
+      <size>
+       <width>30</width>
+       <height>30</height>
+      </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
-     <property name="text">
-      <string>识别的车牌号</string>
+     <property name="currentIndex">
+      <number>3</number>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="Car_idinput">
-     <property name="geometry">
-      <rect>
-       <x>730</x>
-       <y>430</y>
-       <width>181</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(247, 247, 247);
-border:1px groove gray;
-border-radius:7px;
-padding:2px 4px;
-font: 10pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="placeholderText">
-      <string>入库车牌号</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="submitCar">
-     <property name="geometry">
-      <rect>
-       <x>750</x>
-       <y>570</y>
-       <width>121</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>入库</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="DeleteCar">
-     <property name="geometry">
-      <rect>
-       <x>1020</x>
-       <y>570</y>
-       <width>121</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>出库</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="Car_output">
-     <property name="geometry">
-      <rect>
-       <x>990</x>
-       <y>430</y>
-       <width>181</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(247, 247, 247);
-border:1px groove gray;
-border-radius:7px;
-padding:2px 4px;
-font: 10pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="placeholderText">
-      <string>出库车牌号</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="park_now">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>120</y>
-       <width>121</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="park_all">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>50</y>
-       <width>131</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>760</x>
-       <y>50</y>
-       <width>101</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="text">
-      <string>入库数：</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>760</x>
-       <y>120</y>
-       <width>101</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="text">
-      <string>总车位：</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="park_reserve">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>190</y>
-       <width>121</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>760</x>
-       <y>190</y>
-       <width>101</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="text">
-      <string>预定数：</string>
-     </property>
-    </widget>
-    <widget class="QSlider" name="horizontalSlider">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>350</y>
-       <width>471</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">/* 需要先设置groove，水平滑动条*/
+     <widget class="QWidget" name="main">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_pie">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>350</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="verticalSpacer_11">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QSlider" name="horizontalSlider">
+             <property name="styleSheet">
+              <string notr="true">/* 需要先设置groove，水平滑动条*/
 QSlider#customSlider::groove:horizontal {
     border: none;
     height: 6px;
@@ -294,557 +130,1260 @@ QSlider#customSlider::add-page:horizontal {
     border-radius: 3px;
 }
 </string>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="fileopen">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+               </property>
+               <property name="text">
+                <string>视频</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="screen_label">
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="camera_button">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+               </property>
+               <property name="text">
+                <string>摄像头</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="video_pause">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+               </property>
+               <property name="text">
+                <string>暂停</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="camera_take">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+               </property>
+               <property name="text">
+                <string>截取照片</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="video_start">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+               </property>
+               <property name="text">
+                <string>播放</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="2">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_title">
+             <property name="styleSheet">
+              <string notr="true">font: 13pt &quot;华文隶书&quot;;</string>
+             </property>
+             <property name="text">
+              <string>识别的车牌号</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <widget class="QLineEdit" name="Car_idinput">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>55</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>入库车牌号</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="submitCar">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>45</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+                 </property>
+                 <property name="text">
+                  <string>入库</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QLineEdit" name="Car_output">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>55</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>出库车牌号</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="DeleteCar">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>45</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+                 </property>
+                 <property name="text">
+                  <string>出库</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="1">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="camera">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>500</width>
+             <height>250</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="park_all">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="park_now">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="park_reserve">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="message">
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>-10</x>
+         <y>0</y>
+         <width>1041</width>
+         <height>741</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <spacer name="verticalSpacer_13">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_14">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="labelCar">
+              <property name="styleSheet">
+               <string notr="true">font: 17pt &quot;华文隶书&quot;;</string>
+              </property>
+              <property name="text">
+               <string>车库信息系统</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="find_lineEdit">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+              </property>
+              <property name="inputMask">
+               <string/>
+              </property>
+              <property name="placeholderText">
+               <string>查询的车牌号</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateTimeEdit" name="begin_dateTimeEdit">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+              </property>
+              <property name="dateTime">
+               <datetime>
+                <hour>0</hour>
+                <minute>0</minute>
+                <second>0</second>
+                <year>2023</year>
+                <month>1</month>
+                <day>1</day>
+               </datetime>
+              </property>
+              <property name="date">
+               <date>
+                <year>2023</year>
+                <month>1</month>
+                <day>1</day>
+               </date>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateTimeEdit" name="end_dateTimeEdit">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(247, 247, 247);
+border:1px groove gray;
+border-radius:7px;
+padding:2px 4px;
+font: 10pt &quot;华文隶书&quot;;</string>
+              </property>
+              <property name="dateTime">
+               <datetime>
+                <hour>0</hour>
+                <minute>0</minute>
+                <second>0</second>
+                <year>2024</year>
+                <month>1</month>
+                <day>1</day>
+               </datetime>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="Carcheck">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+              </property>
+              <property name="text">
+               <string>查询</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="Car_delete">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>鼠标选中车牌后点击即可删除</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>-3</number>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+              </property>
+              <property name="text">
+               <string>删除</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_15">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableCar">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>1000</width>
+              <height>650</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);
+border: none;</string>
+            </property>
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <property name="rowCount">
+             <number>10</number>
+            </property>
+            <property name="columnCount">
+             <number>7</number>
+            </property>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <row/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+            <column/>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_12">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="ctrol">
+      <widget class="QWidget" name="">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>1021</width>
+         <height>691</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="1">
+         <widget class="QLabel" name="label">
+          <property name="styleSheet">
+           <string notr="true">font: 20pt &quot;华文隶书&quot;;</string>
+          </property>
+          <property name="text">
+           <string>管理员信息</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <spacer name="horizontalSpacer_14">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="ButtonADD">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>在表格输入新用户信息点击即可</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+            </property>
+            <property name="text">
+             <string>添加新用户</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_11">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="ButtonDelete">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>鼠标点击要删除的行</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+            </property>
+            <property name="text">
+             <string>删除</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_12">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="ButtonModify">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>直接进行修改点击</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+            </property>
+            <property name="text">
+             <string>修改</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="3" column="0">
+         <spacer name="horizontalSpacer_16">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="1">
+         <widget class="QTableWidget" name="tablectrol">
+          <property name="minimumSize">
+           <size>
+            <width>695</width>
+            <height>300</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">
+font: 25 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+          </property>
+          <property name="rowCount">
+           <number>6</number>
+          </property>
+          <property name="columnCount">
+           <number>5</number>
+          </property>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <row/>
+          <column/>
+          <column/>
+          <column/>
+          <column/>
+          <column/>
+          <item row="0" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="1" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="1" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="2" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="2" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="3" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="3" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="4" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="4" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="5" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="5" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <spacer name="verticalSpacer_18">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="1">
+         <spacer name="verticalSpacer_20">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="2">
+         <spacer name="horizontalSpacer_15">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="1">
+         <spacer name="verticalSpacer_19">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="6" column="1">
+         <spacer name="verticalSpacer_21">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="camera_page">
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>320</x>
+         <y>250</y>
+         <width>361</width>
+         <height>91</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>监控</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <spacer name="verticalSpacer_17">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="3">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="rightMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <spacer name="verticalSpacer_9">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="check_camera">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>45</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+       </property>
+       <property name="text">
+        <string>监控</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_10">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="CtrolButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>45</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+       </property>
+       <property name="text">
+        <string>管理页面</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="messageButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>45</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+       </property>
+       <property name="text">
+        <string>车辆信息</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="MainButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>45</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(0, 170, 127);
+color: rgb(255, 255, 255);
+font: 25 9pt &quot;Bahnschrift Light&quot;;
+font: 10pt &quot;华文隶书&quot;;
+border-radius:7px;</string>
+       </property>
+       <property name="text">
+        <string>主页</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_8">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <spacer name="horizontalSpacer_9">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-    </widget>
-    <widget class="QPushButton" name="camera_take">
-     <property name="geometry">
-      <rect>
-       <x>220</x>
-       <y>570</y>
-       <width>91</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>截取照片</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="fileopen">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>420</y>
-       <width>91</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>视频</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="video_start">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>570</y>
-       <width>101</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>播放</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="video_pause">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>570</y>
-       <width>101</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>暂停</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="camera_button">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>420</y>
-       <width>91</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>摄像头</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="screen_label">
-     <property name="geometry">
-      <rect>
-       <x>180</x>
-       <y>410</y>
-       <width>200</width>
-       <height>100</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_pie">
-     <property name="geometry">
-      <rect>
-       <x>640</x>
-       <y>-10</y>
-       <width>531</width>
-       <height>371</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="message">
-    <widget class="QLabel" name="labelCar">
-     <property name="geometry">
-      <rect>
-       <x>450</x>
-       <y>0</y>
-       <width>171</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 17pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="text">
-      <string>车库信息系统</string>
-     </property>
-    </widget>
-    <widget class="QTableWidget" name="tableCar">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>110</y>
-       <width>1091</width>
-       <height>591</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(255, 255, 255);
-border: none;</string>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="rowCount">
-      <number>10</number>
-     </property>
-     <property name="columnCount">
-      <number>7</number>
-     </property>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-    </widget>
-    <widget class="QLineEdit" name="find_lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>50</y>
-       <width>131</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(247, 247, 247);
-border:1px groove gray;
-border-radius:7px;
-padding:2px 4px;
-font: 10pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="inputMask">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string>查询的车牌号</string>
-     </property>
-    </widget>
-    <widget class="QDateTimeEdit" name="begin_dateTimeEdit">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>50</y>
-       <width>151</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(247, 247, 247);
-border:1px groove gray;
-border-radius:7px;
-padding:2px 4px;
-font: 10pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="dateTime">
-      <datetime>
-       <hour>0</hour>
-       <minute>0</minute>
-       <second>0</second>
-       <year>2023</year>
-       <month>1</month>
-       <day>1</day>
-      </datetime>
-     </property>
-     <property name="date">
-      <date>
-       <year>2023</year>
-       <month>1</month>
-       <day>1</day>
-      </date>
-     </property>
-    </widget>
-    <widget class="QDateTimeEdit" name="end_dateTimeEdit">
-     <property name="geometry">
-      <rect>
-       <x>530</x>
-       <y>50</y>
-       <width>151</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(247, 247, 247);
-border:1px groove gray;
-border-radius:7px;
-padding:2px 4px;
-font: 10pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="dateTime">
-      <datetime>
-       <hour>0</hour>
-       <minute>0</minute>
-       <second>0</second>
-       <year>2024</year>
-       <month>1</month>
-       <day>1</day>
-      </datetime>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="Carcheck">
-     <property name="geometry">
-      <rect>
-       <x>780</x>
-       <y>50</y>
-       <width>111</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>查询</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="Car_delete">
-     <property name="geometry">
-      <rect>
-       <x>940</x>
-       <y>50</y>
-       <width>111</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>鼠标选中车牌后点击即可删除</string>
-     </property>
-     <property name="toolTipDuration">
-      <number>-3</number>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>删除</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="ctrol">
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>60</y>
-       <width>171</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">font: 20pt &quot;华文隶书&quot;;</string>
-     </property>
-     <property name="text">
-      <string>管理员信息</string>
-     </property>
-    </widget>
-    <widget class="QTableWidget" name="tablectrol">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>200</y>
-       <width>661</width>
-       <height>261</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">
-font: 25 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="rowCount">
-      <number>6</number>
-     </property>
-     <property name="columnCount">
-      <number>5</number>
-     </property>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <row/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-     <column/>
-     <item row="0" column="0">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="1" column="0">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="1" column="1">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="2" column="0">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="2" column="1">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="3" column="0">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="3" column="1">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="4" column="0">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="4" column="1">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="5" column="0">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="5" column="1">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-    </widget>
-    <widget class="QPushButton" name="ButtonModify">
-     <property name="geometry">
-      <rect>
-       <x>760</x>
-       <y>500</y>
-       <width>131</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>直接进行修改点击</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>修改</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="ButtonADD">
-     <property name="geometry">
-      <rect>
-       <x>340</x>
-       <y>500</y>
-       <width>111</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>在表格输入新用户信息点击即可</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>添加新用户</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="ButtonDelete">
-     <property name="geometry">
-      <rect>
-       <x>550</x>
-       <y>500</y>
-       <width>131</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>鼠标点击要删除的行</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-     </property>
-     <property name="text">
-      <string>删除</string>
-     </property>
-    </widget>
-   </widget>
-  </widget>
-  <widget class="QPushButton" name="CtrolButton">
-   <property name="geometry">
-    <rect>
-     <x>1200</x>
-     <y>10</y>
-     <width>101</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 170, 127);
-color: rgb(255, 255, 255);
-font: 25 9pt &quot;Bahnschrift Light&quot;;
-font: 10pt &quot;华文隶书&quot;;
-border-radius:7px;</string>
-   </property>
-   <property name="text">
-    <string>管理页面</string>
-   </property>
-  </widget>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

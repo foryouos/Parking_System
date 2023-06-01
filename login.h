@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef LOGIN_H
+#define LOGIN_H
 
 #include <QMainWindow>
 #include <QSqlDatabase>  //添加数据库模块

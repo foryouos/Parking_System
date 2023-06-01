@@ -1,6 +1,6 @@
 #include "car.h"
 #include "ui_car.h"
-#include <mainwindow.h> //引用登录函数的初始化数据库
+#include <login.h> //引用登录函数的初始化数据库
 #include "QFileDialog"
 #include <QDebug>
 #include "pthreadpool.h"
@@ -39,6 +39,8 @@ Car::Car(QWidget *parent) :
     connect(ui->MainButton,&QPushButton::clicked,this,&Car::SwitchPage);
     connect(ui->messageButton,&QPushButton::clicked,this,&Car::SwitchPage);
     connect(ui->CtrolButton,&QPushButton::clicked,this,&Car::SwitchPage);
+    //点击查看监控后的相关处理
+    connect(ui->check_camera,&QPushButton::clicked,this,&Car::SwitchPage);
 
 
 
@@ -46,15 +48,21 @@ Car::Car(QWidget *parent) :
     // 1. 加载车牌识别模型
     //车牌识别部分，加入线程
     CPlateRecognize pr;
-    pr.LoadSVM("E://parkingcar//Login//model//svm_hist.xml");
+    pr.LoadSVM("E://parkingcar//Parking-system//model//svm_hist.xml");
 
-    pr.LoadANN("E://parkingcar//Login//model//ann.xml");
+    pr.LoadANN("E://parkingcar//Parking-system//model//ann.xml");
 
-    pr.LoadChineseANN("E://parkingcar//Login//model//ann_chinese.xml");
+    pr.LoadChineseANN("E://parkingcar//Parking-system//model//ann_chinese.xml");
     // new in v1.6
-    pr.LoadGrayChANN("E://parkingcar//Login//model//annCh.xml");
-    pr.LoadChineseMapping("E://parkingcar//Login//model//province_mapping");
+    pr.LoadGrayChANN("E://parkingcar//Parking-system//model//annCh.xml");
+    pr.LoadChineseMapping("E://parkingcar//Parking-system//model//province_mapping");
 
+
+    //建立信号当窗体发生变化时，QWidget跟着变化
+//    connect(this,&MainWindow::,this,[=]()
+//    {
+
+//    });
 }
 
 Car::~Car()
@@ -71,10 +79,12 @@ void Car::SwitchPage(){
     QPushButton *button = qobject_cast<QPushButton*>(sender());
     if(button==ui->MainButton)
         ui->stack->setCurrentIndex(0);
-    if(button==ui->messageButton)
+    else if(button==ui->messageButton)
         ui->stack->setCurrentIndex(1);
-    if(button==ui->CtrolButton)
+    else if(button==ui->CtrolButton)
         ui->stack->setCurrentIndex(2);
+    else if (button==ui->check_camera)
+        ui->stack->setCurrentIndex(3);
 
 }
 // 判断车牌是非合法
@@ -697,9 +707,9 @@ void Car::video_Init()
     //本地视频播放初始化
     //初始化
 
-    player = new QMediaPlayer(this);
+    player = new QMediaPlayer(ui->camera);
     //显示的窗体
-    videowidget = new QVideoWidget(this);
+    videowidget = new QVideoWidget(ui->camera);
 //    videowidget->resize(500,250);
     videowidget->setGeometry(20, 10, 500, 282); //设置窗口位置和大小
     //播放视频
@@ -738,11 +748,16 @@ void Car::camera_Init()
        camera = new QCamera(cameras.at(0));  //编号为第几个摄像头
     }
 
-    viemfinder = new QCameraViewfinder(this); //创建显示的区域
+    viemfinder = new QCameraViewfinder(ui->camera); //创建显示的区域
+    //viemfinder->resize(500,250);
+    viemfinder->setGeometry(10, 10, 500, 250);
     camera->setViewfinder(viemfinder);  //显示出摄像头捕获的画面
     //设置摄像头显示的大小
-    //viemfinder->resize(500,260);
-    viemfinder->setGeometry(10, 10, 500, 250); //设置窗口位置和大小
+
+
+    //viemfinder->setGeometry(10, 10, 500, 250); //设置窗口位置和大小
+
+
     //用户摄像头截图
     imageCapture = new QCameraImageCapture(camera);
 

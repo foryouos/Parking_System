@@ -2,7 +2,7 @@
 #define SIGNUP_H
 
 #include <QWidget>
-#include "mainwindow.h" //引入登陆窗口
+#include "login.h" //引入登陆窗口
 #include "pthreadpool.h"
 namespace Ui {
 class Signup;

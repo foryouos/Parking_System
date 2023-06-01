@@ -151,6 +151,7 @@ void mysql::Parking_init()
         else {
             qDebug()<<name<<all_count<<now_count<<p_fee;
             qDebug()<<"Parking Initative Error";
+            //向用户输出错误信息
         }
     }else
     {

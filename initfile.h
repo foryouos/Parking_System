@@ -4,7 +4,7 @@
 #include <QWidget>
 #include "mysql.h"
 #include <QJsonDocument>  //保存JSON数据
-#include "mainwindow.h"
+#include "login.h"
 namespace Ui {
 class initFile;
 }
@@ -22,6 +22,8 @@ signals:
 
 private slots:
     void on_submit_init_clicked();
+
+    void on_cancel_submit_clicked();
 
 private:
     Ui::initFile *ui;

@@ -6,7 +6,7 @@ QT       += multimedia
 QT       += multimediawidgets
 QT       += charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
+# CONFIG += console
 CONFIG += c++11
 QMAKE_CXXFLAGS+=-std=c++11
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -30,7 +30,6 @@ LIBS += -fopenmp
 SOURCES += \
     car.cpp \
     main.cpp \
-    mainwindow.cpp \
     signup.cpp \
     mysql.cpp \
     initfile.cpp\
@@ -58,11 +57,11 @@ SOURCES += \
     thirdparty/svm/corrected_svm.cpp \
     thirdparty/textDetect/erfilter.cpp \
     thirdparty/xmlParser/xmlParser.cpp \
-    pthreadpool.cpp
+    pthreadpool.cpp \
+    login.cpp
 
 HEADERS += \
     car.h \
-    mainwindow.h \
     signup.h \
     mysql.h \
     initfile.h\
@@ -102,14 +101,15 @@ HEADERS += \
     thirdparty/svm/precomp.hpp \
     thirdparty/textDetect/erfilter.hpp \
     thirdparty/xmlParser/xmlParser.h \
-    pthreadpool.h
+    pthreadpool.h \
+    login.h
 
 
 FORMS += \
     car.ui \
-    mainwindow.ui \
     signup.ui \
-    initfile.ui
+    initfile.ui \
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
