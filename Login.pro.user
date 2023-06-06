@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.8.1, 2023-06-01T22:33:25. -->
+<!-- Written by QtCreator 4.8.1, 2023-06-06T21:29:19. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -312,7 +312,7 @@
     <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="bool" key="RunConfiguration.UseTerminal">true</value>
+    <value type="bool" key="RunConfiguration.UseTerminal">false</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">E:/parkingcar/build-Login-Desktop_Qt_5_12_1_MinGW_64_bit-Debug</value>
    </valuemap>

@@ -63,6 +63,27 @@ Car::Car(QWidget *parent) :
 //    {
 
 //    });
+
+    //TODO摄像头局限性
+    //获得当前的摄像头数量
+    for(int i=0;i<Camera::getCameraCount();)
+    {
+
+        //将摄像头数量呈现到comboBox里面
+        ui->comboBox->addItem("摄像头:  "+QString::number(++i));
+        qDebug()<<i;
+    }
+
+
+    camerathread=new Camera();
+    camerathread->moveToThread(&thread); //将camera对象放在子线程，不推荐放在主线程执行。
+    //信号与槽
+    //向主函数的选择的摄像头编号，传递给子函数
+    connect(this, SIGNAL(cameraOperate(int)), camerathread, SLOT(Operate(int))); //camera的槽函数将在thread所在的线程执行
+    //将camera线程的信号传递过来的QImage，传递给主线程
+    connect(camerathread, SIGNAL(updateImage(QImage)), this, SLOT(updateImage(QImage))); //将采集的图像传入主线程（UI线程）
+    connect(camerathread, SIGNAL(updateImage(QImage)), this, SLOT(updateImage2(QImage))); //将采集的图像传入主线程（UI线程）
+    //默认启动进程
 }
 
 Car::~Car()
@@ -1055,6 +1076,34 @@ void Car::checkMySQLData()
         return ;
     }
 }
+
+void Car::updateImage(QImage image)
+{
+    //将子线程传递过来的图片呈现到label上面
+    ui->label->setPixmap(QPixmap::fromImage(image));
+}
+//重载窗口大小
+void Car::resizeEvent(QResizeEvent *ev)
+{
+//    qDebug() << "oldSize: " << ev->oldSize()
+//             << "currentSize: " << ev->size()
+//             << "stack"<<ui->stack->size();
+    //输出
+    ui->stack->resize(ev->size() - QSize(250,247));
+}
+
+void Car::closeEvent(QCloseEvent *event)
+{
+    int ret=QMessageBox::information(this,"System Quit","If you want to quit?",QMessageBox::Yes|QMessageBox::No);
+    if(ret==QMessageBox::Yes){
+        thread.terminate();
+        camerathread->close();
+        event->accept();
+        qApp->exit();
+    }
+    else
+        event->ignore();
+}
 //创建饼图
 void Car::create_pie(int reserve,int now,int surplus)
 {
@@ -1116,4 +1165,26 @@ void Car::create_pie(int reserve,int now,int surplus)
     ui->label_pie->setPixmap(pixmap);
 
 
+}
+
+void Car::on_pushButton_clicked()
+{
+    if(ui->pushButton->text()=="Open")
+    {
+        ui->pushButton->setText("Close");
+        thread.start(); //来时运行线程
+        emit cameraOperate(ui->comboBox->currentIndex()); //运行选中的摄像头编号
+    }
+    else{
+        ui->pushButton->setText("Open");
+        thread.terminate(); //关闭当前线程
+        camerathread->close();
+    }
+}
+
+void Car::on_check_camera_clicked()
+{
+    camera->stop(); //停止摄像头
+    thread.start(); //来时运行线程
+    emit cameraOperate(ui->comboBox->currentIndex()); //运行选中的摄像头编号
 }

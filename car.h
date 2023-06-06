@@ -37,6 +37,15 @@
 #include <QThreadPool>
 #include "pthread.h"
 
+#include "camerasthread.h"
+#include <QMainWindow>
+#include <QMessageBox>
+#include <QCloseEvent>
+#include <QFileDialog>
+#include "opencv2/opencv.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/imgproc/types_c.h"
 using namespace easypr;
 using namespace cv;
 //添头文件
@@ -66,6 +75,9 @@ signals:
     void starting(QSqlQuery q,QString name);
 
     void starting1(Mat rgbImg);
+
+    void cameraOperate(int);  //运行摄像头信号
+
 private slots:
 
     //槽函数
@@ -132,6 +144,17 @@ private slots:
     void checkMySQLData();
 //    void camera_initialized(QCamera*,QCameraImageCapture*);
 
+    void updateImage(QImage);
+
+    void on_pushButton_clicked();
+
+    void on_check_camera_clicked();
+
+protected:
+    //当窗口大小发生变化调用此函数，重写此函数
+    //当窗口大小发生变化时，调整QWidget的大小
+    void resizeEvent(QResizeEvent* ev) Q_DECL_OVERRIDE;
+    void closeEvent(QCloseEvent *event)  Q_DECL_OVERRIDE;
 
 private:
     Ui::Car *ui;
@@ -177,6 +200,9 @@ private:
     QTimer* timer = new QTimer(this);
 
     QString parking_name = mysql_C.Parking_name;
+    //监控处多线程
+    Camera* camerathread;
+    QThread thread;
 
 
 

@@ -58,7 +58,8 @@ SOURCES += \
     thirdparty/textDetect/erfilter.cpp \
     thirdparty/xmlParser/xmlParser.cpp \
     pthreadpool.cpp \
-    login.cpp
+    login.cpp \
+    camerasthread.cpp
 
 HEADERS += \
     car.h \
@@ -102,7 +103,8 @@ HEADERS += \
     thirdparty/textDetect/erfilter.hpp \
     thirdparty/xmlParser/xmlParser.h \
     pthreadpool.h \
-    login.h
+    login.h \
+    camerasthread.h
 
 
 FORMS += \
