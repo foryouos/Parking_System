@@ -75,14 +75,14 @@ Car::Car(QWidget *parent) :
     }
 
 
-    camerathread=new Camera();
-    camerathread->moveToThread(&thread); //将camera对象放在子线程，不推荐放在主线程执行。
+    //camerathread=new Camera();
+    //camerathread->moveToThread(&thread); //将camera对象放在子线程，不推荐放在主线程执行。
     //信号与槽
     //向主函数的选择的摄像头编号，传递给子函数
-    connect(this, SIGNAL(cameraOperate(int)), camerathread, SLOT(Operate(int))); //camera的槽函数将在thread所在的线程执行
+    //connect(this, SIGNAL(cameraOperate(int)), camerathread, SLOT(Operate(int))); //camera的槽函数将在thread所在的线程执行
     //将camera线程的信号传递过来的QImage，传递给主线程
-    connect(camerathread, SIGNAL(updateImage(QImage)), this, SLOT(updateImage(QImage))); //将采集的图像传入主线程（UI线程）
-    connect(camerathread, SIGNAL(updateImage(QImage)), this, SLOT(updateImage2(QImage))); //将采集的图像传入主线程（UI线程）
+    //connect(camerathread, SIGNAL(updateImage(QImage)), this, SLOT(updateImage(QImage))); //将采集的图像传入主线程（UI线程）
+    //connect(camerathread, SIGNAL(updateImage(QImage)), this, SLOT(updateImage2(QImage))); //将采集的图像传入主线程（UI线程）
     //默认启动进程
 }
 
