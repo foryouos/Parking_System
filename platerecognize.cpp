@@ -19,6 +19,7 @@ PlateRecognize::PlateRecognize(QObject *parent) : QObject(parent)
 }
 
 
+
 // 传入参数rgbImg 图片 Mat rgbImg;
 // 传出图片QImage qPlateImg，传出 QString plateStr
 

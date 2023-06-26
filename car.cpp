@@ -27,6 +27,7 @@ Car::Car(QWidget *parent) :
     //子线程
     QThread* t1 = new QThread;  // 图片识别
     QThread* t2 = new QThread;  // 更新饼图
+
     //创建饼图
     //实现简单的数据呈现
     park_num();
@@ -64,19 +65,8 @@ Car::Car(QWidget *parent) :
     //点击查看监控后的相关处理
     connect(ui->check_camera,&QPushButton::clicked,this,&Car::SwitchPage);
 
-    //TODO摄像头局限性
-    //获得当前的摄像头数量
-//    for(int i=0;i<Camera::getCameraCount();)
-//    {
 
-//        //将摄像头数量呈现到comboBox里面
-//        ui->comboBox->addItem("摄像头:  "+QString::number(++i));
-//        qDebug()<<i;
-//    }
-    //使用子线程处理EasyPR车牌识别
-
-
-    //创建任务类的对象
+    //创建任务类的对象 识别车牌
     PlateRecognize *Rec  = new PlateRecognize;
 
     //将任务队列添加到线程
@@ -91,6 +81,11 @@ Car::Car(QWidget *parent) :
         ui->Car_idinput->setText(plateStr);
         ui->Car_output->setText(plateStr);
     });
+
+    //线程池
+    QThreadPool::globalInstance()->setMaxThreadCount(4);
+
+
 
 }
 
@@ -384,7 +379,7 @@ void Car::on_submitCar_clicked()
     }
     else {
         qDebug()<<"车牌插入失败";
-        qDebug()<<sql_submitCar;
+
         QMessageBox::information(this,"停车入库","车牌入库失败！！");
 
     }
@@ -400,7 +395,6 @@ void Car::on_messageButton_clicked()
         videowidget->setVisible(false); //隐藏文件播放的QVideoWidget
         viemfinder->setVisible(false); //隐藏摄像头显示区域
     }
-
 
     // 隐藏车辆信息的列号
     ui->tableCar->verticalHeader()->setVisible(false);
@@ -637,7 +631,6 @@ void Car::on_Carcheck_clicked()
     else
     {   //名字不为空，根据时间和 名字
             //qDebug()<<"名字为空"<<begin_time<<end_time;
-
             q.prepare("SELECT id, license_plate, check_in_time, check_out_time, fee, location, P_fee from car JOIN parking ON car.location = parking.P_name WHERE check_in_time BETWEEN :begin_time AND :end_time AND license_plate =:Car_name;");
             q.bindValue(":begin_time", begin_time);
             q.bindValue(":end_time", end_time);
@@ -733,7 +726,6 @@ void Car::camera_Init()
     //viemfinder->setGeometry(10, 10, 500, 250); //设置窗口位置和大小
     //用户摄像头截图
     imageCapture = new QCameraImageCapture(camera);
-
 }
 
 
@@ -753,6 +745,7 @@ void Car::on_fileopen_clicked()
         videowidget->setVisible(true); //隐藏文件播放的QVideoWidget
     }
     fileName = QFileDialog::getOpenFileName(this,"选择播放的视频文件","..\\"); //打开文件(当前文件夹)放到fileName
+    qDebug()<<"filename:"<<fileName;
     //将打开的文件作为视频播放的来源
     player->setMedia(QUrl::fromLocalFile(fileName)); //作为player的来源
     //获取视频时长
@@ -836,7 +829,6 @@ void Car::on_camera_take_clicked()
           QImage scaledImg = qImg.scaled(newSize,Qt::KeepAspectRatio);
           //调用子线程获取照片
           emit Plate_start(rgbImg);
-
       });
 
         //开始进行捕获
@@ -909,25 +901,6 @@ void Car::on_MainButton_clicked()
     }
     park_num();
 }
-//，若更新，则更新饼图，直接更新
-void Car::checkMySQLData()
-{
-    QString park_name = mysql_C->Parking_name;
-
-    q.prepare("SELECT P_reserve_count FROM parking WHERE P_name = :park_name;");
-    q.bindValue(":park_name", park_name);
-    q.exec();
-    q.next();
-    int reserve_count = q.value(0).toInt();
-    if(reserve_count!=mysql_C->reserve)//如果数据库预约数与本地不同，则进行同步
-    {
-         park_num();
-    }
-    else
-    {
-        return ;
-    }
-}
 
 void Car::updateImage(QImage image)
 {
@@ -937,11 +910,12 @@ void Car::updateImage(QImage image)
 //重载窗口大小
 void Car::resizeEvent(QResizeEvent *ev)
 {
+
 //    qDebug() << "oldSize: " << ev->oldSize()
 //             << "currentSize: " << ev->size()
 //             << "stack"<<ui->stack->size();
     //输出
-    ui->stack->resize(ev->size() - QSize(250,247));
+    //ui->stack->resize(ev->size() - QSize(250,247));
 }
 
 void Car::closeEvent(QCloseEvent *event)
@@ -1009,24 +983,68 @@ void Car::create_pie(int reserve)
     ui->label_pie->setPixmap(pixmap);
 }
 
-void Car::on_pushButton_clicked()
+// 摄像头Page
+
+
+void Car::on_check_camera_clicked()  //打开右侧监控按钮
 {
-    if(ui->pushButton->text()=="Open")
-    {
-        ui->pushButton->setText("Close");
-        //thread.start(); //来时运行线程
-        //emit cameraOperate(ui->comboBox->currentIndex()); //运行选中的摄像头编号
-    }
-    else{
-        ui->pushButton->setText("Open");
-        //thread.terminate(); //关闭当前线程
-        //camerathread->close();
-    }
+   //获得当前的摄像头数量
+//    for(int i=0;i<Camera::getCameraCount();)
+//    {
+//        //将摄像头数量呈现到comboBox里面
+//        ui->comboBox->addItem("摄像头:  "+QString::number(++i));
+//        qDebug()<<i;
+//    }
+//    // 判断主线程的摄像头是否开启，关闭摄像头
+//    ui->comboBox->setCurrentIndex(0);  //默认为第一个
+//    camera->stop(); //停止摄像头
+
+
+//    threadviemfinder = new QCameraViewfinder(ui->camera_label);
+//    threadviemfinder->setAspectRatioMode(Qt::IgnoreAspectRatio); //设置宽高比为自由调整
+//    //viemfinder->resize(500,250);
+//    threadviemfinder->setGeometry(10, 10, 500, 250);
+
+    // Todo离开后释放资源
 }
 
-void Car::on_check_camera_clicked()
-{
-    camera->stop(); //停止摄像头
-    //thread.start(); //来时运行线程
-    emit cameraOperate(ui->comboBox->currentIndex()); //运行选中的摄像头编号
-}
+// 初始化
+//void Car::on_thread_camera_init_clicked()
+//{
+//    // 建立Camerathread线程
+//    Camera *camerth = new Camera(ui->comboBox->currentIndex()); //传入用于选中的并实现初始化
+//    QThread* t3 = new QThread;  // 摄像头线程
+//    camerth->moveToThread(t3);
+//    t3->start();
+//    //连接主线程启动子线程
+//    connect(this,&Car::Camerathread_open_Signale,camerth,&Camera::CameraShow);
+//    //子线程有图片传过来
+//    connect(camerth,&Camera::Camera_Image_signal,this,[=](int id,const QImage &preview)
+//    {
+//        qDebug()<<"子线程传入的图片ID"<<id;
+//        //将图片呈现到UI当中
+//        ui->camera_label->setPixmap(QPixmap::fromImage(preview));//将视频帧转入图片传到UI当中
+//    });
+//}
+// 释放摄像头子线程资源
+//void Car::on_thread_release_clicked()
+//{
+
+//}
+
+// 打开关闭摄像头操作
+//void Car::on_camera_open_button_clicked()
+//{
+//    qDebug()<<"启动按钮";
+//    if(ui->camera_open_button->text()=="Open")
+//    {
+//        qDebug()<<"启动子线程";
+//        emit Camerathread_open_Signale();
+//        ui->camera_open_button->setText("Close");
+
+//    }
+//    else{
+//        ui->camera_open_button->setText("Open");
+
+//    }
+//}

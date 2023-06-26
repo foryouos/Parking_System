@@ -44,8 +44,10 @@
 #include "opencv2/imgproc/types_c.h"
 #include "platerecognize.h"
 #include "updatapie.h"
-
+#include "camerasthread.h"
 #include <QGraphicsColorizeEffect>
+
+#include "pthreadpool.h"
 using namespace cv;
 //添头文件
 QT_CHARTS_USE_NAMESPACE
@@ -72,7 +74,7 @@ public:
 
 signals:
     void starting(QSqlQuery q,QString name);
-    void cameraOperate(int);  //运行摄像头信号
+    void Camerathread_open_Signale();  //运行摄像头信号
     void Plate_start(Mat rgbImg);
     void Plate_Recognize(Mat rgbImg,QString plateStr); //通知EasyPR识别图片
     // 更新饼图
@@ -80,6 +82,8 @@ signals:
     // 现有车辆-1/添加+1 调用 MySQl信号，对数据进行修改
     void now_count_dec_signal(); // 累减
     void now_count_acc_signal(); // 累加
+    // 到线程池中上传车牌信息
+    void sendPlate_signal(mysql* mysql,QString license_plate,QString formattedDateTime,QString location);
 
 
 private slots:
@@ -139,13 +143,17 @@ private slots:
 
     void on_MainButton_clicked();
 
-    void checkMySQLData();
 
     void updateImage(QImage);
 
-    void on_pushButton_clicked();
 
     void on_check_camera_clicked();
+
+//    void on_thread_camera_init_clicked();
+
+//    void on_thread_release_clicked();
+
+//    void on_camera_open_button_clicked();
 
 protected:
     //当窗口大小发生变化调用此函数，重写此函数
@@ -192,8 +200,8 @@ private:
     QTimer* timer = new QTimer(this);
 
     //监控处多线程
-//    Camera* camerathread;
-//    QThread thread;
+    //显示摄像头的指针
+    QCameraViewfinder *threadviemfinder;
 };
 
 #endif // CAR_H
