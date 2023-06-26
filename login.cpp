@@ -48,7 +48,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    mysql_c.mysql_close(); //关闭窗口则私房数据库连接
+//    qDebug()<<"关闭了数据库";
+//    mysql_c.mysql_close(); //关闭窗口则私房数据库连接
     delete ui;
 
 }
@@ -75,28 +76,27 @@ void MainWindow::on_pushButton_2_clicked()
     //使用线程去执行MySQL语句
 
 
+    QSqlQuery query = mysql_c.execute(sql);
     //判断执行结果
-    if(!mysql_c.execute(sql).next())
-    {
-        qDebug()<<"Login error";
-        QMessageBox::information(this,"登陆认证","账户或密码错误");
+    if (query.lastError().isValid()) {
+        qDebug() << "SQL error:" << query.lastError().text();
+        QMessageBox::information(this, "登陆认证", "数据库查询失败");
     }
-    else
+    else if(query.next())
     {
         qDebug()<<"Login success";
-
-        //QMessageBox::information(this,"登陆认证","登陆成功");
-        //登陆成功后跳转到其它页面
-        //QWidget *W = new QWidget;
-        //W->show();
-
-
         //创建登陆主页面
-        Car * w =new Car;
+        Car * w =new Car();
         //呈现Car主页面
         w->show();
         //关闭当前的注册页面
         this->close();
+        qDebug()<<"已关闭login";
+    }
+    else
+    {
+        qDebug() << "Login error";
+        QMessageBox::information(this, "登陆认证", "账户或密码错误");
 
     }
 
@@ -109,5 +109,6 @@ void MainWindow::on_return_2_clicked()
     this->close();
     Signup *s = new Signup;
     s->show();
+    s->setAttribute(Qt::WA_DeleteOnClose);
 }
 

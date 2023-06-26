@@ -273,6 +273,9 @@ border-radius:7px;
 padding:2px 4px;
 font: 10pt &quot;华文隶书&quot;;</string>
            </property>
+           <property name="text">
+            <string>5211314</string>
+           </property>
            <property name="echoMode">
             <enum>QLineEdit::Password</enum>
            </property>
@@ -296,6 +299,9 @@ border-radius:7px;
 padding:2px 4px;
 font: 10pt &quot;华文隶书&quot;;</string>
            </property>
+           <property name="text">
+            <string>foryouos</string>
+           </property>
            <property name="placeholderText">
             <string>请输入停车场名</string>
            </property>
@@ -316,6 +322,9 @@ border-radius:7px;
 padding:2px 4px;
 font: 10pt &quot;华文隶书&quot;;</string>
            </property>
+           <property name="text">
+            <string>25</string>
+           </property>
            <property name="placeholderText">
             <string>请输入停车场 单价每小时</string>
            </property>
@@ -335,6 +344,9 @@ border:1px groove gray;
 border-radius:7px;
 padding:2px 4px;
 font: 10pt &quot;华文隶书&quot;;</string>
+           </property>
+           <property name="text">
+            <string>500</string>
            </property>
            <property name="placeholderText">
             <string>停车场总容量</string>

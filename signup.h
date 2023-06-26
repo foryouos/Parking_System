@@ -26,7 +26,7 @@ signals:
 
 private:
     Ui::Signup *ui;
-    mysql mysql_c;
+    mysql *mysql_c;
 };
 
 #endif // SIGNUP_H

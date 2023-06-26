@@ -29,10 +29,6 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <QImage>
 
-//添加车牌识别训练模型
-#include <opencv2/opencv.hpp>
-#include "include/easypr.h"
-
 //添加线程池
 #include <QThreadPool>
 #include "pthread.h"
@@ -46,13 +42,16 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc/types_c.h"
-using namespace easypr;
+#include "platerecognize.h"
+#include "updatapie.h"
+
+#include <QGraphicsColorizeEffect>
 using namespace cv;
 //添头文件
 QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
-class Car;
+    class Car;
 }
 
 class Car : public QWidget
@@ -73,10 +72,15 @@ public:
 
 signals:
     void starting(QSqlQuery q,QString name);
-
-    void starting1(Mat rgbImg);
-
     void cameraOperate(int);  //运行摄像头信号
+    void Plate_start(Mat rgbImg);
+    void Plate_Recognize(Mat rgbImg,QString plateStr); //通知EasyPR识别图片
+    // 更新饼图
+    void UpPieData(QString m_Parking_name,int m_reserve,int m_now_count_L);
+    // 现有车辆-1/添加+1 调用 MySQl信号，对数据进行修改
+    void now_count_dec_signal(); // 累减
+    void now_count_acc_signal(); // 累加
+
 
 private slots:
 
@@ -101,16 +105,10 @@ private slots:
 
     //void on_MainButton_clicked();
 
-
-
     //创建车位展示
     void park_num();
 
     void on_DeleteCar_clicked();
-
-
-
-
 
     void on_Carcheck_clicked();
 
@@ -142,7 +140,6 @@ private slots:
     void on_MainButton_clicked();
 
     void checkMySQLData();
-//    void camera_initialized(QCamera*,QCameraImageCapture*);
 
     void updateImage(QImage);
 
@@ -159,11 +156,9 @@ protected:
 private:
     Ui::Car *ui;
     //定义mysql类
-    mysql mysql_C;
+    mysql *mysql_C;
     //数据库执行类
     QSqlQuery q;
-
-
     //音频文件对象
     QMediaPlayer *player;
     //视频文件对象
@@ -172,15 +167,12 @@ private:
     int pos;
     //视频帧截屏
     QPixmap pixmap;
-
-
     //创建摄像头对象
     QCamera *camera;
     //显示摄像头的指针
     QCameraViewfinder *viemfinder;
     //捕获图片,操作用于捕获的对象
     QCameraImageCapture *imageCapture;
-
     //判断视频是否暂停
     bool cameraPaused = false;
     QWidget *centerWidget;
@@ -195,20 +187,13 @@ private:
     easypr::CPlateRecognize m_plateRecognize;
 
     //创建饼图
-    void create_pie(int reserve,int now,int surplus);
+    void create_pie(int reserve);
     //计时器
     QTimer* timer = new QTimer(this);
 
-    QString parking_name = mysql_C.Parking_name;
     //监控处多线程
-    Camera* camerathread;
-    QThread thread;
-
-
-
-
-
-
+//    Camera* camerathread;
+//    QThread thread;
 };
 
 #endif // CAR_H

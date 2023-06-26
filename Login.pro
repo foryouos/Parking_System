@@ -59,7 +59,10 @@ SOURCES += \
     thirdparty/xmlParser/xmlParser.cpp \
     pthreadpool.cpp \
     login.cpp \
-    camerasthread.cpp
+    camerasthread.cpp \
+    mysqlinit.cpp \
+    platerecognize.cpp \
+    updatapie.cpp
 
 HEADERS += \
     car.h \
@@ -104,7 +107,10 @@ HEADERS += \
     thirdparty/xmlParser/xmlParser.h \
     pthreadpool.h \
     login.h \
-    camerasthread.h
+    camerasthread.h \
+    mysqlinit.h \
+    platerecognize.h \
+    updatapie.h
 
 
 FORMS += \

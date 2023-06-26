@@ -19,18 +19,18 @@ Signup::Signup(QWidget *parent) :
 
 Signup::~Signup()
 {
-    mysql_c.mysql_close();
     delete ui;
 }
 
 void Signup::on_pushButton_back_clicked()
 {
-    //创建登陆主页面
+    //创建登陆注册页面
     MainWindow * w =new MainWindow;
     //呈现登陆主页面
     w->show();
     //关闭当前的注册页面
     this->close();
+    w->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 //点击注册页面的确认按钮
@@ -55,7 +55,7 @@ void Signup::on_pushButton_sure_clicked()
 
 
         //判断执行结果
-        if(!mysql_c.execute_bool(sql))
+        if(!mysql_c->execute_bool(sql))
         {
             qDebug()<<username<<encryptedPassword<<telephone<<truename;
             qDebug()<<"insert into error";

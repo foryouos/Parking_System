@@ -1,5 +1,4 @@
 #include "login.h"
-
 #include <QSqlDatabase>
 #include <QApplication>
 #include "initfile.h"
@@ -16,23 +15,19 @@ int main(int argc, char *argv[])
     //如果文件不能打开不存在
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        //创建登陆主页面
-        //Car * w =new Car;
-        //呈现Car主页面
-        //w->show();
         qDebug()<<"文件不存在，初始化!";
-        initFile *i = new initFile;
-        i->show();
+        initFile *initmysql_file = new initFile;
+        initmysql_file->show();
+        file.close();
     }
     else
     {
         //文件存在启动主程序
         MainWindow *w = new MainWindow;
         w->show();
+        file.close();
+        w->setAttribute(Qt::WA_DeleteOnClose);
+
     }
-
-
-
-
     return a.exec();
 }
