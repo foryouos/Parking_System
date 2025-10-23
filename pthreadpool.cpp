@@ -18,3 +18,7 @@ void PthreadPool_Plate::run()
 {
 
 }
+void PthreadPool_Plate::RecvMess()
+{
+
+}
